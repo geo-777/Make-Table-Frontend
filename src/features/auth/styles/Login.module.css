@@ -41,24 +41,25 @@
 .infographics h3 {
   font-size: 2rem;
   margin-bottom: 0.3rem;
-  color: #222;
+  color: var(--foreground);
 }
 
 .infographics p {
-  color: #666;
+  color: var(--color-grey-500);
   font-size: 1.05rem;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1rem;
 }
 
 .form a {
+  margin-top: -0.3rem;
   align-self: flex-end;
-  color: var(--primary);
-  font-size: 0.9rem;
+  color: var(--foreground);
+  font-size: 0.8rem;
   text-decoration: none;
 }
 
@@ -77,10 +78,17 @@
 .loginBtn:hover {
   background-color: var(--sidebar-accent-foreground);
 }
+.loginBtn:disabled:hover {
+  background-color: var(--primary);
+}
+.loginBtn:focus {
+  outline: none;
+}
 .left h4 {
   font-weight: 400;
   align-self: center;
   margin-top: 2rem;
+  text-align: center;
 }
 .left h4 a {
   color: var(--primary);
@@ -101,7 +109,36 @@
   object-fit: cover;
   object-position: center;
 }
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
+/* loading animattion*/
+.submitBtn__loading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.submitBtn__loading::before {
+  position: relative;
+  content: "";
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  top: 1px;
+  animation: spin 0.8s linear infinite;
+}
 @media (max-width: 850px) {
   .container {
     grid-template-columns: 1fr;
@@ -117,5 +154,17 @@
 
   .left {
     padding: 2.5rem 1.8rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .left h4 a {
+    display: block;
+    text-align: center;
+  }
+}
+@media (max-width: 320px) {
+  .left {
+    padding: 1rem;
   }
 }

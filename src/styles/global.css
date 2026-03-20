@@ -12,3 +12,6 @@ body {
     -apple-system,
     sans-serif;
 }
+button:disabled {
+  cursor: not-allowed;
+}

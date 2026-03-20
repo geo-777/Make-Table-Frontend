@@ -3,14 +3,82 @@ import RequiredInputField from "../../../shared/components/inputfields/RequiredI
 import { useState } from "react";
 import sideBar from "../../../assets/side.png";
 import { Calendar } from "lucide-react";
+import axios from "axios";
+
 const Login = () => {
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
 
-  const loginHandler = (e) => {
+  const [errorState, setErrorStates] = useState({
+    username: null,
+    password: null,
+  });
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  const validateEntries = () => {
+    let hasError = false;
+    const newErrorStates = { ...errorState }; //copying state
+
+    //username validation
+    if (!form.username.trim()) {
+      newErrorStates.username = "Username is required";
+      hasError = true;
+    } else {
+      newErrorStates.username = null;
+    }
+
+    //password validation
+    if (!form.password.trim()) {
+      newErrorStates.password = "Password is required";
+      hasError = true;
+    } else if (form.password.length < 6) {
+      newErrorStates.password = "Password too short";
+      hasError = true;
+    } else {
+      newErrorStates.password = null;
+    }
+
+    setErrorStates(newErrorStates);
+    return hasError;
+  };
+
+  const loginHandler = async (e) => {
     e.preventDefault();
+    const formData = new URLSearchParams();
+    /*URL search params thingy is used here coz the backend application 
+      accepts only url encoded stuff.. it doesnt accepts json type shit here.*/
+    formData.append("username", form.username);
+    formData.append("password", form.password);
+    formData.append("grant_type", "password");
+    formData.append("scope", "");
+    formData.append("client_id", "");
+    formData.append("client_secret", "");
+    //the function returns true in case of error
+    if (validateEntries()) return;
+
+    //api
+    try {
+      setSubmitLoading(true);
+      const response = await axios.post("/api/login", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        withCredentials: true,
+      });
+      console.log("logged in");
+      //call api
+    } catch (error) {
+      if (error.status == 400) {
+        setErrorStates({
+          username: "Incorrect username or password",
+          password: "Incorrect username or password",
+        });
+      }
+    } finally {
+      setSubmitLoading(false);
+    }
   };
 
   return (
@@ -30,7 +98,7 @@ const Login = () => {
               type={"text"}
               label={"Username"}
               placeholder={"Username"}
-              errorState={null}
+              errorState={errorState.username}
               icon={"user"}
               value={form.username}
               setValue={(val) =>
@@ -43,15 +111,22 @@ const Login = () => {
               type={"password"}
               label={"Password"}
               placeholder={"Example@123"}
-              errorState={null}
+              errorState={errorState.password}
               icon={"pass"}
               value={form.password}
               setValue={(val) =>
                 setForm((prev) => ({ ...prev, password: val }))
               }
+              showPassIcon={true}
             />
             <a href="#">Forgot Password ?</a>
-            <button type="submit" className={styles.loginBtn}>
+            <button
+              type="submit"
+              disabled={submitLoading}
+              className={`${styles.loginBtn} ${
+                submitLoading ? styles.submitBtn__loading : ""
+              }`}
+            >
               Log In
             </button>
           </form>

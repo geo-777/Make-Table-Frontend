@@ -19,7 +19,8 @@
 
   --accent: hsl(255 60% 96%);
   --accent-foreground: hsl(255 65% 40%);
-
+  --color-danger: #e74c3c;
+  --danger-bg: #ebcecb81;
   --destructive: hsl(0 72% 51%);
   --destructive-foreground: hsl(0 0% 100%);
 
@@ -58,4 +59,10 @@
   --subject-pe: hsl(15 80% 55%);
   --subject-music: hsl(280 60% 55%);
   --subject-cs: hsl(210 70% 50%);
+
+  --color-grey-900: #2b2b2b;
+  --color-grey-700: #4a4a4a;
+  --color-grey-500: #7a7a7a;
+  --color-grey-300: #c7c7c7;
+  --color-grey-100: #eaeaea;
 }
