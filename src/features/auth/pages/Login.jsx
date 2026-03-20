@@ -4,8 +4,11 @@ import { useState } from "react";
 import sideBar from "../../../assets/side.png";
 import { Calendar } from "lucide-react";
 import axios from "axios";
+import { useAuth } from "../../../app/providers/AuthProvider";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const { confirmLogin } = useAuth();
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -67,7 +70,8 @@ const Login = () => {
         },
         withCredentials: true,
       });
-      console.log("logged in");
+
+      confirmLogin(form.username);
       //call api
     } catch (error) {
       if (error.status == 400) {
