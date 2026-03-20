@@ -12,7 +12,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const { isLoading } = useAuth();
-  console.log(isLoading);
 
   if (isLoading) {
     return <LoaderFull />;

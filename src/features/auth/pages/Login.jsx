@@ -3,8 +3,8 @@ import RequiredInputField from "../../../shared/components/inputfields/RequiredI
 import { useState } from "react";
 import sideBar from "../../../assets/side.png";
 import { Calendar } from "lucide-react";
-import axios from "axios";
 import { useAuth } from "../../../app/providers/AuthProvider";
+import { login } from "../../../api/auth.api";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -64,21 +64,17 @@ const Login = () => {
     //api
     try {
       setSubmitLoading(true);
-      const response = await axios.post("/api/login", formData, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        withCredentials: true,
-      });
 
+      await login(formData);
       confirmLogin(form.username);
-      //call api
     } catch (error) {
-      if (error.status == 400) {
+      if (error.response?.status == 400) {
         setErrorStates({
           username: "Incorrect username or password",
           password: "Incorrect username or password",
         });
+      } else {
+        toast.error("Unknown Error occured!");
       }
     } finally {
       setSubmitLoading(false);

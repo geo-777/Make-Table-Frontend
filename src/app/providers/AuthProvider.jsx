@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { checkLoggedIn, refresh } from "../../api/auth.api";
 
 const AuthContext = createContext(null);
 
@@ -19,15 +19,13 @@ const AuthProvider = ({ children }) => {
   };
 
   const fetchCurrentUser = async () => {
-    const response = await axios.get("/api/me", {
-      withCredentials: true,
-    });
+    const response = await checkLoggedIn();
     return response.data.username;
   };
 
   const refreshToken = async () => {
     console.log("REFRESHING TOKEN!!");
-    await axios.post("/api/refresh", { withCredentials: true });
+    await refresh();
     return fetchCurrentUser();
   };
 
