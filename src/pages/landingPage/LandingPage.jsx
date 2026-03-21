@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import styles from "./LandingPage.module.css";
 import logoFull from "../../assets/logo_full_width.png";
+import { Calendar } from "lucide-react";
 
 const FEATURES = [
   {
@@ -64,7 +65,13 @@ const LandingPage = () => {
     <div className={styles.container}>
       {/* ================= HEADER ================= */}
       <header className={styles.header}>
-        <img src={logoFull} alt="Logo" />
+        <div className={styles.logo}>
+          {" "}
+          <span>
+            <Calendar size={18} />
+          </span>{" "}
+          MakeTable
+        </div>
 
         <nav>
           <a href="#Features">Features</a>

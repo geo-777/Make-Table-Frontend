@@ -1,5 +1,21 @@
 /* ================= ROOT ================= */
+.logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--sidebar-accent-foreground);
+}
+.logo span {
+  color: var(--background);
+  /* background-image: var(--gradient-primary); */
+  padding: 0.5rem 0.5rem 0.3rem 0.5rem;
 
+  background-color: var(--sidebar-accent-foreground);
+  border-radius: 0.4rem;
+}
 .container {
   position: relative;
   min-height: 100vh;
