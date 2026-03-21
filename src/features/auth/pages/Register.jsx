@@ -9,6 +9,9 @@ import { toast } from "react-toastify";
 import useValidate from "../hooks/useValidate";
 import loginHelper from "../api/loginHelper";
 import { useAuth } from "../../../app/providers/AuthProvider";
+import { fadeUp } from "../../../shared/utils/animations";
+import { motion } from "framer-motion";
+import { UserPlus } from "lucide-react";
 
 const Register = () => {
   const { confirmLogin } = useAuth();
@@ -65,7 +68,13 @@ const Register = () => {
 
   return (
     <main className={styles.main}>
-      <div className={styles.container}>
+      <motion.div
+        className={styles.container}
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={{ duration: 0.3 }}
+      >
         <div className={styles.left}>
           <div className={styles.icon}>
             <Calendar />
@@ -130,7 +139,7 @@ const Register = () => {
                 submitLoading ? styles.submitBtn__loading : ""
               }`}
             >
-              Create account
+              Create Account <UserPlus size={16} strokeWidth={3} />
             </button>
           </form>
           <h4>
@@ -140,7 +149,7 @@ const Register = () => {
         <div className={styles.right}>
           <img src={sideBar} alt="" />
         </div>
-      </div>
+      </motion.div>
     </main>
   );
 };

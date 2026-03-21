@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoutes";
 import PublicRoutes from "./PublicRoutes";
 import Login from "../../features/auth/pages/Login";
-import LandingPage from "../../pages/LandingPage";
+import LandingPage from "../../pages/landingPage/LandingPage";
 import Dashboard from "../../features/dashboard/Dashboard";
 import Register from "../../features/auth/pages/Register";
 

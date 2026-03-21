@@ -74,6 +74,10 @@
   border-radius: 0.3rem;
   cursor: pointer;
   transition: all 0.1s ease-in;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 .loginBtn:hover {
   background-color: var(--sidebar-accent-foreground);

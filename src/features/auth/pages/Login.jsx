@@ -8,6 +8,9 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import useValidate from "../hooks/useValidate";
 import loginHelper from "../api/loginHelper";
+import { motion } from "framer-motion";
+import { fadeUp } from "../../../shared/utils/animations";
+import { LogIn } from "lucide-react";
 
 const Login = () => {
   const { confirmLogin } = useAuth();
@@ -50,7 +53,13 @@ const Login = () => {
 
   return (
     <main className={styles.main}>
-      <div className={styles.container}>
+      <motion.div
+        className={styles.container}
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={{ duration: 0.3 }}
+      >
         <div className={styles.left}>
           <div className={styles.icon}>
             <Calendar />
@@ -94,7 +103,7 @@ const Login = () => {
                 submitLoading ? styles.submitBtn__loading : ""
               }`}
             >
-              Log In
+              Log In <LogIn size={16} strokeWidth={3} />
             </button>
           </form>
           <h4>
@@ -104,7 +113,7 @@ const Login = () => {
         <div className={styles.right}>
           <img src={sideBar} alt="" />
         </div>
-      </div>
+      </motion.div>
     </main>
   );
 };
