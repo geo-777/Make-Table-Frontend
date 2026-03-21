@@ -9,6 +9,10 @@ export const login = async (data) => {
   });
 };
 
+export const register = async (data) => {
+  return axiosInstance.post("/register", data);
+};
+
 export const checkLoggedIn = async () => {
   return axiosInstance.get("/me", { withCredentials: true });
 };

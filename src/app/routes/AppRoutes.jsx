@@ -4,6 +4,7 @@ import PublicRoutes from "./PublicRoutes";
 import Login from "../../features/auth/pages/Login";
 import LandingPage from "../../pages/LandingPage";
 import Dashboard from "../../features/dashboard/Dashboard";
+import Register from "../../features/auth/pages/Register";
 
 const AppRoutes = () => {
   return (
@@ -22,6 +23,14 @@ const AppRoutes = () => {
         element={
           <PublicRoutes>
             <Login />
+          </PublicRoutes>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicRoutes>
+            <Register />
           </PublicRoutes>
         }
       />

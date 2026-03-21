@@ -1,7 +1,7 @@
 import styles from "./RequiredInputField.module.css";
 import "../../../styles/theme.css";
 import "../../../styles/global.css";
-import { User, LockKeyhole, Eye, EyeOff } from "lucide-react";
+import { User, LockKeyhole, Eye, EyeOff, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 
 /*
@@ -39,7 +39,6 @@ const RequiredInputField = ({
       return () => clearTimeout(timer);
     }
   }, [errorState]);
-
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={id} className={styles.label}>
@@ -60,6 +59,9 @@ const RequiredInputField = ({
         )}
         {icon === "pass" && (
           <LockKeyhole size={iconSize} strokeWidth={iconStrokeWidth} />
+        )}
+        {icon === "mail" && (
+          <Mail size={iconSize} strokeWidth={iconStrokeWidth} />
         )}
 
         <input

@@ -3,45 +3,60 @@ import RequiredInputField from "../../../shared/components/inputfields/RequiredI
 import { useState } from "react";
 import sideBar from "../../../assets/side.png";
 import { Calendar } from "lucide-react";
-import { useAuth } from "../../../app/providers/AuthProvider";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { register } from "../../../api/auth.api";
+import { toast } from "react-toastify";
 import useValidate from "../hooks/useValidate";
 import loginHelper from "../api/loginHelper";
+import { useAuth } from "../../../app/providers/AuthProvider";
 
-const Login = () => {
+const Register = () => {
   const { confirmLogin } = useAuth();
+
+  //states
   const [form, setForm] = useState({
     username: "",
     password: "",
+    email: "",
+    confirmPassword: "",
   });
 
   const [errorState, setErrorStates] = useState({
     username: null,
     password: null,
+    email: null,
+    confirmPassword: null,
   });
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  const loginHandler = async (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     const { hasError, newErrorStates } = useValidate(form);
     setErrorStates(newErrorStates);
     if (hasError) return;
 
-    //api
     try {
-      setSubmitLoading(true); // this shit is used for showing the circular loading animation
+      setSubmitLoading(true);
+      //creating account
+      await register({
+        username: form.username,
+        email: form.email,
+        password: form.password,
+      });
+      toast.success("Account created successfully.");
+      //logging in
       await loginHelper(form);
       confirmLogin(form.username);
     } catch (error) {
-      if (error.response?.status == 400) {
+      if (error.response?.status == 409) {
         setErrorStates({
-          username: "Incorrect username or password",
-          password: "Incorrect username or password",
+          ...errorState,
+          username: "Username or mail already in use.",
+          email: "Username or mail already in use.",
         });
       } else {
-        toast.error("Unknown Error occured!");
+        toast.error("Unknown error occured.");
       }
     } finally {
       setSubmitLoading(false);
@@ -56,10 +71,10 @@ const Login = () => {
             <Calendar />
           </div>
           <div className={styles.infographics}>
-            <h3>Welcome Back !</h3>
+            <h3>Create Account !</h3>
             <p>Enter your details and jump right in.</p>
           </div>
-          <form className={styles.form} onSubmit={loginHandler}>
+          <form className={styles.form} onSubmit={submitHandler}>
             <RequiredInputField
               id={"login-username"}
               type={"text"}
@@ -72,7 +87,16 @@ const Login = () => {
                 setForm((prev) => ({ ...prev, username: val }))
               }
             />
-
+            <RequiredInputField
+              id={"login-email"}
+              type={"text"}
+              label={"Email"}
+              placeholder={"Email"}
+              errorState={errorState.email}
+              icon={"mail"}
+              value={form.email}
+              setValue={(val) => setForm((prev) => ({ ...prev, email: val }))}
+            />
             <RequiredInputField
               id={"login-password"}
               type={"password"}
@@ -86,7 +110,19 @@ const Login = () => {
               }
               showPassIcon={true}
             />
-            <a href="#">Forgot Password ?</a>
+            <RequiredInputField
+              id={"login-password2"}
+              type={"password"}
+              label={"Confirm Password"}
+              placeholder={"Example@123"}
+              errorState={errorState.confirmPassword}
+              icon={"pass"}
+              value={form.confirmPassword}
+              setValue={(val) =>
+                setForm((prev) => ({ ...prev, confirmPassword: val }))
+              }
+              showPassIcon={true}
+            />
             <button
               type="submit"
               disabled={submitLoading}
@@ -94,11 +130,11 @@ const Login = () => {
                 submitLoading ? styles.submitBtn__loading : ""
               }`}
             >
-              Log In
+              Create account
             </button>
           </form>
           <h4>
-            Don't have an account ? <Link to="/register">Register here</Link>
+            Already have an account ? <Link to="/login">Login here</Link>
           </h4>
         </div>
         <div className={styles.right}>
@@ -109,4 +145,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
