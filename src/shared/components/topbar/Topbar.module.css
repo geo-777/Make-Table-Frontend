@@ -1,0 +1,36 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 1.5rem;
+  background-color: #fff;
+  align-items: center;
+  border-bottom: 0.5px solid var(--color-grey-100);
+}
+.left {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.left p {
+  font-weight: 600;
+  font-size: 16.5px;
+}
+.navToggle {
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+.navToggle:hover {
+  color: var(--sidebar-accent-foreground);
+}
+.profileIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: 14px;
+  border-radius: 50%;
+  color: var(--sidebar-accent-foreground);
+  background-color: var(--sidebar-accent);
+  cursor: pointer;
+}

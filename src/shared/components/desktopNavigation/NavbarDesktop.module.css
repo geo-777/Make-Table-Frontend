@@ -1,0 +1,129 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+  border-right: 0.5px solid var(--color-grey-100);
+  background-color: #fff;
+  flex: 0 0 250px;
+}
+.logo,
+.menu h4,
+footer {
+  padding-inline: 1rem;
+}
+.top,
+.bottom {
+  padding-block: 1rem;
+}
+.logo {
+  cursor: pointer;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.logo p {
+  font-size: 19px;
+  font-weight: 600;
+}
+.logo span {
+  color: var(--background);
+  background-image: var(--gradient-primary);
+  width: fit-content;
+  padding: 0.4rem 0.3rem 0.2rem 0.35rem;
+  border-radius: 0.5rem;
+}
+.menu {
+  margin-top: 1.5rem;
+}
+.linkItem,
+.menu {
+  color: var(--sidebar-foreground);
+}
+.menu h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+  font-size: 13px;
+}
+.linkGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-inline: 0.8rem;
+}
+.linkItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 15px;
+  padding: 0.3rem;
+  padding-left: 0.5rem;
+  border-radius: 0.3125rem;
+  font-weight: 450;
+}
+
+.linkItem:hover {
+  background-color: #e9ebef;
+  color: var(--color-grey-900);
+}
+.selected,
+.selected:hover {
+  color: var(--sidebar-accent-foreground);
+  background-color: var(--sidebar-accent);
+}
+
+.bottom {
+  color: var(--sidebar-foreground);
+  font-size: 13px;
+}
+.seperator {
+  background-color: var(--color-grey-100);
+  height: 1px;
+  margin: 1rem;
+}
+.selectedTimetable {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  margin-inline: 0.8rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-grey-100);
+  border-radius: 0.7rem;
+  transition: all 0.2s ease;
+}
+.selectedTimetable:hover {
+  background-color: var(--background);
+}
+.selectedTimeTable__left {
+  display: flex;
+  max-width: 80%;
+  overflow: hidden;
+  gap: 0.7rem;
+}
+.selectedTimeTable__left span {
+  color: var(--sidebar-accent-foreground);
+  background-color: var(--sidebar-accent);
+  height: fit-content;
+  padding: 0.3rem;
+  border-radius: 0.4rem;
+}
+.chevron {
+  color: var(--sidebar-foreground);
+}
+.selectedTimeTable__left p {
+  font-size: 12px;
+  color: var(--color-grey-500);
+}
+.selectedTimeTable__left h4 {
+  font-size: 14.5px;
+  font-weight: 500;
+}
+@media (max-width: 615px) {
+  .navbar {
+    display: none;
+  }
+}
