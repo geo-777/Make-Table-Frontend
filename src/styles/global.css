@@ -15,3 +15,13 @@ body {
 button:disabled {
   cursor: not-allowed;
 }
+.popup_overlay {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  background-color: black;
+  opacity: 0.6;
+  backdrop-filter: blur(10px);
+}

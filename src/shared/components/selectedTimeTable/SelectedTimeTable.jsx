@@ -1,9 +1,12 @@
 import styles from "./SelectedTimeTable.module.css";
 import { Table, ChevronDown } from "lucide-react";
 import useNavStore from "../../zustand/navStore";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 const SelectedTimeTable = () => {
   const { navbarCollapsed } = useNavStore();
-  if (navbarCollapsed)
+  const { width } = useWindowDimensions();
+  // only need to hide info div in desktop.. mobile has it
+  if (navbarCollapsed && width > 615)
     return (
       <div className={styles.selectedTimetable}>
         {" "}
