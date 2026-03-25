@@ -1,0 +1,38 @@
+import styles from "./ProfileDropdown.module.css";
+import { UserRound, Settings, HelpCircle, LogOut } from "lucide-react";
+import { useAuth } from "../../../app/providers/AuthProvider";
+const ProfileDropdown = ({ isOpen }) => {
+  const { logout } = useAuth();
+  const logoutHandler = async () => {
+    await logout();
+  };
+  return (
+    <div
+      className={`${styles.dropdownContainer} ${
+        isOpen ? styles.active : styles.inactive
+      }`}
+    >
+      <div className={styles.listItem}>
+        <UserRound size={16} />
+        My Profile
+      </div>
+      <div className={styles.listItem}>
+        <Settings size={16} />
+        Preferences
+      </div>
+      <div className={styles.listItem}>
+        <HelpCircle size={16} />
+        Help & Support
+      </div>
+      <div
+        className={`${styles.listItem} ${styles.logoutBtn}`}
+        onClick={logoutHandler}
+      >
+        <LogOut size={16} />
+        Logout
+      </div>
+    </div>
+  );
+};
+
+export default ProfileDropdown;

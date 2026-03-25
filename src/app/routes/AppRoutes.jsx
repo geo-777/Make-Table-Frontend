@@ -5,6 +5,11 @@ import Login from "../../features/auth/pages/Login";
 import LandingPage from "../../pages/landingPage/LandingPage";
 import Dashboard from "../../features/dashboard/Dashboard";
 import Register from "../../features/auth/pages/Register";
+import Classes from "../../features/classes/pages/Classes";
+import Subjects from "../../features/subjects/pages/Subjects";
+import Teachers from "../../features/teachers/pages/Teachers";
+import Settings from "../../features/settings/Settings";
+import HelpSupport from "../../pages/help&support/HelpSupport";
 
 const AppRoutes = () => {
   return (
@@ -41,6 +46,48 @@ const AppRoutes = () => {
         element={
           <ProtectedRoutes>
             <Dashboard />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path="/classes"
+        element={
+          <ProtectedRoutes>
+            <Classes />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path="/subjects"
+        element={
+          <ProtectedRoutes>
+            <Subjects />
+          </ProtectedRoutes>
+        }
+      />
+
+      <Route
+        path="/teachers"
+        element={
+          <ProtectedRoutes>
+            <Teachers />
+          </ProtectedRoutes>
+        }
+      />
+
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoutes>
+            <Settings />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path="/helpsupport"
+        element={
+          <ProtectedRoutes>
+            <HelpSupport />
           </ProtectedRoutes>
         }
       />

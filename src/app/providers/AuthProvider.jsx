@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { checkLoggedIn, refresh } from "../../api/auth.api";
+import { checkLoggedIn, refresh, logoutAxiosRequest } from "../../api/auth.api";
 
 const AuthContext = createContext(null);
 
@@ -13,9 +13,14 @@ const AuthProvider = ({ children }) => {
     setIsAuthenticated(true);
   };
 
-  const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
+  const logout = async () => {
+    try {
+      await logoutAxiosRequest();
+      setUser(null);
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const fetchCurrentUser = async () => {

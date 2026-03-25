@@ -85,7 +85,8 @@ const NavbarDesktop = () => {
                   key={i}
                   className={`${styles.linkItem} ${
                     currentPath.startsWith(elm.text.toLowerCase()) ||
-                    currentPath.trim() === ""
+                    currentPath.trim() === "" ||
+                    currentPath.startsWith(elm?.alt)
                       ? styles.selected
                       : ""
                   }`}

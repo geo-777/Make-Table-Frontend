@@ -20,3 +20,6 @@ export const checkLoggedIn = async () => {
 export const refresh = async () => {
   return axiosInstance.post("/refresh", { withCredentials: true });
 };
+export const logoutAxiosRequest = async () => {
+  return axiosInstance.post("/logout");
+};

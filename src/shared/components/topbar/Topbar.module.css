@@ -24,6 +24,7 @@
 }
 .profileIcon {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   width: 36px;
