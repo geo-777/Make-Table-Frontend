@@ -3,12 +3,16 @@ import { PanelLeft } from "lucide-react";
 import { useAuth } from "../../../app/providers/AuthProvider";
 import ProfileDropdown from "../profileDropDown/ProfileDropDown";
 import { useState, useRef, useEffect } from "react";
+import useNavStore from "../../zustand/navStore";
 const Topbar = ({ page }) => {
-  const { user } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
+  const { toggleNavbar } = useNavStore(); //handles navbar collapsing and opening
 
+  const { user } = useAuth();
+  // handles profile icon clicking popup menu
+  const [isOpen, setIsOpen] = useState(false);
   let menuRef = useRef();
 
+  //done to close menu if clicked outside
   useEffect(() => {
     const handler = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -26,7 +30,7 @@ const Topbar = ({ page }) => {
   return (
     <div className={styles.topbar}>
       <div className={styles.left}>
-        <span className={styles.navToggle}>
+        <span className={styles.navToggle} onClick={toggleNavbar}>
           <PanelLeft size={17} />
         </span>
         <p>{page}</p>

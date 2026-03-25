@@ -7,15 +7,17 @@ import {
   LibraryBig,
   Users,
   Settings,
-  Table,
-  ChevronDown,
+  Link2,
 } from "lucide-react";
+import SelectedTimeTable from "../selectedTimeTable/SelectedTimeTable";
+import useNavStore from "../../zustand/navStore";
 
 import { useNavigate, useLocation } from "react-router-dom";
 
 const NavbarDesktop = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const currentPath = location.pathname.replace("/", "");
   const iconSize = 18;
   const mainLinks = [
@@ -23,6 +25,7 @@ const NavbarDesktop = () => {
     { text: "Classes", logo: <GraduationCap size={iconSize} /> },
     { text: "Subjects", logo: <LibraryBig size={iconSize} /> },
     { text: "Teachers", logo: <Users size={iconSize} /> },
+    { text: "Assignments", logo: <Link2 size={iconSize} /> },
   ];
   const extraLinks = [
     { text: "Settings", logo: <Settings size={iconSize} /> },
@@ -32,31 +35,26 @@ const NavbarDesktop = () => {
       alt: "helpsupport",
     },
   ];
+  const { navbarCollapsed } = useNavStore();
+
+  const ifCollapsedStyle = { display: navbarCollapsed ? "none" : "block" };
   return (
-    <div className={styles.navbar}>
+    <div
+      className={styles.navbar}
+      style={{ width: navbarCollapsed ? "60px" : "290px" }}
+    >
       <div className={styles.top}>
         <div className={styles.logo}>
           <span>
             <Calendar size={18} />
           </span>
-          <p>MakeTable</p>
+          <p style={ifCollapsedStyle}>MakeTable</p>
         </div>
 
-        <div className={styles.selectedTimetable}>
-          <div className={styles.selectedTimeTable__left}>
-            <span>
-              <Table size={18} />
-            </span>
-            <div className={styles.selectedTimeTable__Info}>
-              <h4>Timetable 2025</h4>
-              <p>Generated</p>
-            </div>
-          </div>
+        <SelectedTimeTable />
 
-          <ChevronDown className={styles.chevron} size={16} />
-        </div>
         <div className={styles.menu}>
-          <h4>MENU</h4>
+          <h4 style={ifCollapsedStyle}>MENU</h4>
           <div className={styles.linkGroup}>
             {mainLinks.map((elm, i) => {
               return (
@@ -72,7 +70,7 @@ const NavbarDesktop = () => {
                     navigate(`/${elm?.alt || elm.text.toLowerCase()}`);
                   }}
                 >
-                  {elm.logo} <p>{elm.text}</p>
+                  {elm.logo} <p style={ifCollapsedStyle}>{elm.text}</p>
                 </div>
               );
             })}
@@ -94,14 +92,14 @@ const NavbarDesktop = () => {
                     navigate(`/${elm?.alt || elm.text.toLowerCase()}`);
                   }}
                 >
-                  {elm.logo} <p>{elm.text}</p>
+                  {elm.logo} <p style={ifCollapsedStyle}>{elm.text}</p>
                 </div>
               );
             })}
           </div>
         </div>
       </div>
-      <footer className={styles.bottom}>
+      <footer className={styles.bottom} style={ifCollapsedStyle}>
         <p>&copy; {new Date().getFullYear()} MakeTable</p>
       </footer>
     </div>
