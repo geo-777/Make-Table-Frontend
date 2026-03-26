@@ -3,7 +3,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import PublicRoutes from "./PublicRoutes";
 import Login from "../../features/auth/pages/Login";
 import LandingPage from "../../pages/landingPage/LandingPage";
-import Dashboard from "../../features/dashboard/Dashboard";
+import Dashboard from "../../features/dashboard/pages/Dashboard";
 import Register from "../../features/auth/pages/Register";
 import Classes from "../../features/classes/pages/Classes";
 import Subjects from "../../features/subjects/pages/Subjects";

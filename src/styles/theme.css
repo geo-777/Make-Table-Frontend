@@ -30,7 +30,7 @@
 
   --radius: 0.75rem;
 
-  --sidebar-background: hsl(0 0% 100%);
+  --sidebar-background: #ffffff;
   --sidebar-foreground: hsl(225 10% 40%);
   --sidebar-primary: hsl(255 65% 54%);
   --sidebar-primary-foreground: hsl(0 0% 100%);
@@ -58,7 +58,16 @@
   --subject-art: hsl(160 60% 45%);
   --subject-pe: hsl(15 80% 55%);
   --subject-music: hsl(280 60% 55%);
+
   --subject-cs: hsl(210 70% 50%);
+
+  --accent-blue-fg: #2563eb;
+  --accent-blue-bg: #dbeafe;
+
+  --accent-green-bg: #eaf7f3;
+  --accent-green-fg: #2eb88a;
+  --accent-yellow-bg: #fdf5e6;
+  --accent-yellow-fg: #f59f0a;
 
   --color-grey-900: #2b2b2b;
   --color-grey-700: #4a4a4a;

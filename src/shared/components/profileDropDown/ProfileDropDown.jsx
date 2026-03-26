@@ -18,7 +18,7 @@ const ProfileDropdown = ({ isOpen }) => {
         <UserRound size={14} />
         My Profile
       </div>
-      <div className={styles.listItem}>
+      <div className={styles.listItem} onClick={() => navigate("/settings")}>
         <Settings size={14} />
         Preferences
       </div>

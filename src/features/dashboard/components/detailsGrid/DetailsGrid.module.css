@@ -1,0 +1,49 @@
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.gridItem {
+  display: flex;
+  gap: 1rem;
+  background-color: var(--sidebar-background);
+  border: 1px solid var(--color-grey-100);
+  border-radius: 0.4rem;
+  padding: 1rem 1.2rem;
+  cursor: auto;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--shadow-card);
+}
+.gridItem:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-card-hover);
+}
+.detailsGrid__info {
+  line-height: 1.6rem;
+}
+.detailsGrid__info p {
+  color: var(--sidebar-foreground);
+  font-size: 15px;
+}
+.detailsGrid__info h4 {
+  color: var(--foreground);
+  font-size: 20px;
+}
+.detailsGrid__icon {
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
+  border-radius: 0.7rem;
+  background-color: var(--accent-blue-bg);
+  color: var(--accent-blue-fg);
+}
+.publishedTb {
+  background-color: var(--accent-green-bg);
+  color: var(--accent-green-fg);
+}
+.draftTb {
+  background-color: var(--accent-yellow-bg);
+  color: var(--accent-yellow-fg);
+}

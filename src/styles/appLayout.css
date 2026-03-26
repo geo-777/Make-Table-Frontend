@@ -1,3 +1,6 @@
+body {
+  background-color: var(--background);
+}
 .App {
   background-color: var(--background);
   display: flex;
@@ -9,4 +12,58 @@
   width: 100%;
   max-height: 100vh;
   overflow: auto;
+}
+.main {
+  margin-top: 1rem;
+  min-height: 70vh;
+  padding-inline: 2rem;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 2rem;
+  padding-inline: 2rem;
+  height: max-content;
+}
+.headings {
+  line-height: 2rem;
+}
+.headings h4 {
+  font-size: 24px;
+  color: var(--foreground);
+}
+.headings p {
+  font-size: 16px;
+  color: var(--sidebar-foreground);
+}
+
+.primary {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  color: var(--sidebar-background);
+  background-image: var(--gradient-primary);
+  border-radius: 0.5rem;
+  justify-content: center;
+  cursor: pointer;
+}
+.primary p {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@media (max-width: 750px) {
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .headings {
+    line-height: unset;
+  }
+  .primary {
+    width: 100%;
+  }
 }
