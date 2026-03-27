@@ -1,0 +1,11 @@
+.mainPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.popupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}

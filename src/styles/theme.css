@@ -1,5 +1,5 @@
 :root {
-  --background: hsl(225 25% 97%);
+  --background: #f9fafb;
   --foreground: hsl(230 25% 10%);
 
   --card: hsl(0 0% 100%);
@@ -69,9 +69,17 @@
   --accent-yellow-bg: #fdf5e6;
   --accent-yellow-fg: #f59f0a;
 
+  --accent-yellower-bg: #faebd7;
+
+  --accent-greener-fg: #15803d;
+  --accent-greener-bg: #dcfce7;
+
   --color-grey-900: #2b2b2b;
   --color-grey-700: #4a4a4a;
   --color-grey-500: #7a7a7a;
   --color-grey-300: #c7c7c7;
   --color-grey-100: #eaeaea;
+  --color-grey-50: #f3f4f6;
+
+  --green-btn: #16a34a;
 }

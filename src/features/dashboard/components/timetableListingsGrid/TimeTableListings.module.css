@@ -1,0 +1,33 @@
+.timetableListings__header {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+}
+.timetableListings__header > p {
+  font-size: 16.5px;
+  font-weight: 500;
+  color: var(--foreground);
+}
+.draftCount,
+.publishedCount {
+  display: inline-block;
+  border-radius: 50%;
+  padding: 0.3rem 0.5rem;
+}
+.draftCount {
+  color: var(--sidebar-foreground);
+  background-color: var(--color-grey-50);
+}
+.publishedCount {
+  color: var(--accent-greener-fg);
+  background-color: var(--accent-greener-bg);
+}
+.published {
+  color: var(--accent-green-fg);
+}
+.listingsGrid {
+  padding-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}

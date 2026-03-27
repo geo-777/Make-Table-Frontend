@@ -1,0 +1,58 @@
+.popupBox {
+  min-width: clamp(330px, 30vw, 450px);
+  padding: 1rem 1.5rem;
+
+  background-color: var(--sidebar-background);
+  border-radius: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.2s ease,
+    opacity 0.1s ease;
+  transform: scale(0.6);
+  color: var(--foreground);
+  z-index: 100;
+}
+.open {
+  transform: scale(1);
+  pointer-events: auto;
+  opacity: 1;
+}
+.headingContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.headingContainer h4 {
+  font-size: 20px;
+}
+.headingContainer button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.actionBtns {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.btnItem {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid var(--color-grey-300);
+  color: var(--);
+  border-radius: 0.3125rem;
+  cursor: pointer;
+}
+
+.saveBtn {
+  border-color: var(--primary);
+  color: var(--sidebar-background);
+  background-color: var(--primary);
+}
