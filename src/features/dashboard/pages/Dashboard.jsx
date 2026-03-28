@@ -6,34 +6,17 @@ import { Plus } from "lucide-react";
 import DetailsGrid from "../components/detailsGrid/DetailsGrid";
 import styles from "../styles/Dashboard.module.css";
 import TimeTableListings from "../components/timetableListingsGrid/TimeTableListings";
-import PopupBox from "../../../shared/components/popupBox/PopupBox";
-import RequiredInputField from "../../../shared/components/inputfields/RequiredInputField";
+import TimeTableCreatePopup from "../components/timetableCreatePopup/TimeTableCreatePopup";
+
 const Dashboard = () => {
   const [isCreateTableOpen, setIsCreateTableOpen] = useState(false);
   return (
     <div className="App">
       <NavbarDesktop />
-      <PopupBox
+      <TimeTableCreatePopup
+        closePopup={() => setIsCreateTableOpen(false)}
         visible={isCreateTableOpen}
-        closeFunction={() => setIsCreateTableOpen(false)}
-        title={"Create Timetable"}
-        primaryBtnText={"Create"}
-      >
-        <form className={styles.popupForm}>
-          <RequiredInputField
-            id={"timetable-name"}
-            type={"text"}
-            label={"Name"}
-            placeholder={"e.g. Timetable-2026"}
-          />
-          <RequiredInputField
-            id={"timetable-slots"}
-            type={"number"}
-            label={"Slots"}
-            placeholder={"Number of slots"}
-          />
-        </form>
-      </PopupBox>
+      />
       <div className="mainPlaceholder">
         <Topbar page={"Dashboard"} />
 

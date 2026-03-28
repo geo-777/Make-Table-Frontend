@@ -1,0 +1,49 @@
+.popupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formGroup label {
+  font-size: 14px;
+}
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.day,
+.dayActive:focus {
+  outline-color: var(--primary);
+}
+.day,
+.dayActive {
+  padding: 0.45rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-grey-300);
+  background: var(--sidebar-background);
+  cursor: pointer;
+}
+
+.dayActive {
+  background-image: var(--gradient-primary);
+  color: var(--sidebar-background);
+  border-color: var(--primary);
+}
+.label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.errorLabel {
+  color: var(--color-danger);
+  font-size: 12.5px;
+}
+.hidden {
+  display: none;
+}

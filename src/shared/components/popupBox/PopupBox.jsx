@@ -5,6 +5,7 @@ const PopupBox = ({
   closeFunction,
   title,
   primaryBtnText,
+  handleSubmit,
   children,
 }) => {
   return (
@@ -18,7 +19,7 @@ const PopupBox = ({
       <div
         style={{
           pointerEvents: visible ? "auto" : "none",
-          opacity: visible ? 0.7 : 0,
+          opacity: visible ? 0.6 : 0,
         }}
         onClick={closeFunction}
         className="popup_overlay"
@@ -45,6 +46,7 @@ const PopupBox = ({
           <button
             type="submit"
             className={`${styles.btnItem} ${styles.saveBtn}`}
+            onClick={handleSubmit}
           >
             {primaryBtnText}
           </button>

@@ -1,5 +1,5 @@
 import styles from "../styles/Auth.module.css";
-import RequiredInputField from "../../../shared/components/inputfields/RequiredInputField";
+import RequiredInputField from "../components/inputFieldAuth/RequiredInputField";
 import { useState } from "react";
 import sideBar from "../../../assets/side.png";
 import { Calendar } from "lucide-react";
