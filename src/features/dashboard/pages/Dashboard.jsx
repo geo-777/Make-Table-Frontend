@@ -7,9 +7,21 @@ import DetailsGrid from "../components/detailsGrid/DetailsGrid";
 import styles from "../styles/Dashboard.module.css";
 import TimeTableListings from "../components/timetableListingsGrid/TimeTableListings";
 import TimeTableCreatePopup from "../components/timetableCreatePopup/TimeTableCreatePopup";
+import useTimetableListing from "../hooks/useTimetableListing";
 
 const Dashboard = () => {
   const [isCreateTableOpen, setIsCreateTableOpen] = useState(false);
+  const {
+    data: timetableListings,
+    isPending: isFetchPending,
+    error: listingFetchError,
+  } = useTimetableListing();
+  console.log(
+    "data",
+    timetableListings?.data,
+    "error",
+    listingFetchError?.status,
+  );
   return (
     <div className="App">
       <NavbarDesktop />

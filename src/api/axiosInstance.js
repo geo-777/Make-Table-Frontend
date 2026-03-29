@@ -5,4 +5,14 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+//acts as middleware to refreshToken
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    console.log("hey");
+    console.log("config", error.config);
+    return Promise.reject(error);
+  },
+);
+
 export default axiosInstance;
