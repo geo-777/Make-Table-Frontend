@@ -1,0 +1,14 @@
+.CircularCheckBox {
+  aspect-ratio: 1/1;
+  padding: 0.05rem;
+  min-width: 19px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--primary);
+}
+.circularcb__checked {
+  color: white;
+  background-color: var(--primary);
+}

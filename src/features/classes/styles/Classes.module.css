@@ -79,7 +79,7 @@
 .listview__Container {
   overflow: auto;
   display: grid;
-  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  grid-template-columns: repeat(3, minmax(150px, 1fr)) minmax(50px, 0.2fr);
   grid-template-rows: 50px repeat(auto-fill, 70px);
   background-color: var(--sidebar-background);
   border: 1px solid var(--color-grey-100);

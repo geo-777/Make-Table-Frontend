@@ -4,10 +4,12 @@ import "../../../styles/appLayout.css";
 import { Plus, Download, List, Grid2x2 } from "lucide-react";
 import styles from "../styles/Classes.module.css";
 import { useClassesView } from "../../../shared/zustand/listingsViewStore";
-import GridView from "../components/GridView";
-import ListView from "../components/ListView";
-
+import GridView from "../components/views/GridView";
+import ListView from "../components/views/ListView";
+import { useState } from "react";
+import CreateClassPopup from "../components/popups/CreateClassPopup";
 const Classes = () => {
+  const [isCreateClassOpen, setCreateClassOpen] = useState(false);
   let mockData = [
     {
       id: 0,
@@ -28,10 +30,10 @@ const Classes = () => {
   return (
     <div className="App">
       <NavbarDesktop />
-      {/* <TimeTableCreatePopup
-        closePopup={() => setIsCreateTableOpen(false)}
-        visible={isCreateTableOpen}
-      /> */}
+      <CreateClassPopup
+        closePopup={() => setCreateClassOpen(false)}
+        visible={isCreateClassOpen}
+      />
       <div className="mainPlaceholder">
         <Topbar page={"Classes"} />
 
@@ -64,7 +66,7 @@ const Classes = () => {
 
             <button
               className="primary add-btn"
-              // onClick={() => setIsCreateTableOpen(true)}
+              onClick={() => setCreateClassOpen(true)}
             >
               <Plus strokeWidth={2} /> <p>Add Class</p>{" "}
             </button>

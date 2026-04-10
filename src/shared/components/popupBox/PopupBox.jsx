@@ -19,7 +19,7 @@ const PopupBox = ({
       <div
         style={{
           pointerEvents: visible ? "auto" : "none",
-          opacity: visible ? 0.6 : 0,
+          opacity: visible ? 0.8 : 0,
         }}
         onClick={closeFunction}
         className="popup_overlay"

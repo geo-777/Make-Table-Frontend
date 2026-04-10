@@ -7,14 +7,14 @@
 .inputField {
   margin-top: 0.3rem;
   width: 100%;
-  border: 1px solid var(--color-grey-300);
+  border: 1px solid var(--color-grey-200);
   padding: 0.7rem 1rem;
   cursor: text;
   border-radius: 0.54rem;
 }
 
 .inputField:focus {
-  box-shadow: 0 0 0 3.5px rgba(174, 184, 194, 0.2);
+  box-shadow: 0 0 1px 1.5px var(--primary);
   /* outline-color: var(--primary); */
   outline: none;
 }

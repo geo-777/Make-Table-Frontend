@@ -1,4 +1,4 @@
-import styles from "../styles/Classes.module.css";
+import styles from "../../styles/Classes.module.css";
 import { Pencil, Trash2 } from "lucide-react";
 
 // individual grid items.

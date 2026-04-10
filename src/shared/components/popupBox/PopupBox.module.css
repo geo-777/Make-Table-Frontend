@@ -45,7 +45,7 @@
 .btnItem {
   padding: 0.5rem 1rem;
   background-color: transparent;
-  border: 1px solid var(--color-grey-300);
+  border: 1px solid var(--color-grey-200);
   color: var(--color-grey-900);
   border-radius: 0.3125rem;
   cursor: pointer;
@@ -58,7 +58,7 @@
   background-color: var(--primary);
 }
 .btnItem:hover {
-  border-color: var(--color-grey-500);
+  border-color: var(--color-grey-300);
 }
 .saveBtn:hover {
   background-color: var(--sidebar-accent-foreground);

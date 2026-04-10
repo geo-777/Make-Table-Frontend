@@ -1,0 +1,16 @@
+.popupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.formGroup {
+  margin-top: 0.4rem;
+  display: flex;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.formGroup label {
+  font-size: 15px;
+  cursor: pointer;
+}
