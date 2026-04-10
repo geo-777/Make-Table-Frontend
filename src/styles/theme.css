@@ -64,6 +64,9 @@
   --accent-blue-fg: #2563eb;
   --accent-blue-bg: #dbeafe;
 
+  --accent-violet-bg: #efebfa;
+  --accent-violet-fg: #6841d7;
+
   --accent-green-bg: #eaf7f3;
   --accent-green-fg: #2eb88a;
   --accent-yellow-bg: #fdf5e6;
@@ -74,10 +77,14 @@
   --accent-greener-fg: #15803d;
   --accent-greener-bg: #dcfce7;
 
+  --accent-red-bg: #fbebee;
+  --accent-red-fg: #dd405a;
+
   --color-grey-900: #2b2b2b;
   --color-grey-700: #4a4a4a;
   --color-grey-500: #7a7a7a;
-  --color-grey-300: #c7c7c7;
+  --color-grey-300: #afafaf;
+  --color-grey-200: #e7e5e5;
   --color-grey-100: #eaeaea;
   --color-grey-50: #f3f4f6;
 
