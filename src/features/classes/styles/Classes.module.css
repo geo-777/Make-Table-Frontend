@@ -121,3 +121,12 @@
 .actionBtn__delete:hover {
   color: var(--accent-red-fg);
 }
+
+.actionBtn__tick:hover {
+  color: var(--accent-green-fg);
+}
+.isLabChecker {
+  display: flex;
+  gap: 0.3rem;
+  cursor: pointer;
+}
