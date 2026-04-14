@@ -1,7 +1,7 @@
 :root {
   --background: #f9fafb;
   --foreground: hsl(230 25% 10%);
-
+  --secondary-bg: #fff;
   --card: hsl(0 0% 100%);
   --card-foreground: hsl(230 25% 10%);
 

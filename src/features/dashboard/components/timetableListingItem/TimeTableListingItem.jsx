@@ -5,7 +5,13 @@ import {
   EllipsisVertical,
   Check,
   RefreshCcw,
+  Pencil,
+  Trash2,
+  Eye,
 } from "lucide-react";
+import { useState } from "react";
+import DropDownMenu from "../../../../shared/components/dropDownMenu/DropDownMenu";
+import { useEffect, useRef } from "react";
 
 /*
 listingData of the format {
@@ -16,6 +22,24 @@ listingData of the format {
 }
 */
 const TimeTableListingItem = ({ listingData }) => {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const menuIconSize = 14.5;
+  const menuIconStrokeWidth = 2;
+
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuVisible(false);
+      }
+    };
+    document.addEventListener("click", handler);
+    return () => {
+      document.removeEventListener("click", handler);
+    };
+  }, []);
+
   return (
     <div className={styles.listing}>
       <div className={styles.mainLeft}>
@@ -54,9 +78,32 @@ const TimeTableListingItem = ({ listingData }) => {
             </>
           )}
         </button>
-        <button className={styles.threeDots}>
-          <EllipsisVertical size={18} />
-        </button>
+        <div className={styles.extraMenu} ref={menuRef}>
+          <button
+            className={styles.threeDots}
+            onClick={() => setMenuVisible((prev) => !prev)}
+          >
+            <EllipsisVertical size={18} />
+          </button>
+          <DropDownMenu visible={menuVisible} top={"2.6rem"} right={"1rem"}>
+            <div className={styles.dropDownItem}>
+              <Eye size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
+              <p>Open</p>
+            </div>
+            <div className={styles.dropDownItem}>
+              <Pencil size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
+              <p>Edit</p>
+            </div>
+            <div className={styles.seperator}></div>
+            <div
+              className={`${styles.dropDownItem} ${styles.deleteBtn}`}
+              onClick={() => console.log("Delet")}
+            >
+              <Trash2 size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
+              <p>Delete</p>
+            </div>
+          </DropDownMenu>
+        </div>
       </div>
     </div>
   );

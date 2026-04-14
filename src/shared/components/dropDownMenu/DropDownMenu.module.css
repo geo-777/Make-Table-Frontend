@@ -1,0 +1,13 @@
+.container {
+  background-color: var(--secondary-bg);
+  border: 0.2px solid var(--color-grey-100);
+  border-radius: 0.5rem;
+  transition: opacity 0.15s ease;
+  position: absolute;
+  display: flex;
+  padding: 0.25rem;
+  flex-direction: column;
+  gap: 0.1rem;
+  width: max-content;
+  z-index: 200;
+}

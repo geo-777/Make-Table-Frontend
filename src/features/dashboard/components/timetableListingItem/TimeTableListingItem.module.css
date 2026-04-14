@@ -100,7 +100,11 @@
   background-color: transparent;
   color: var(--sidebar-foreground);
   padding: 0.7rem;
+
   transition: all 0.2s ease-in-out;
+}
+.extraMenu {
+  position: relative;
 }
 .threeDots:hover {
   background-color: var(--sidebar-accent);
@@ -114,4 +118,35 @@
     width: 100%;
     padding-block: 0.7rem;
   }
+}
+
+.dropDownItem {
+  display: flex;
+  padding: 0.4rem;
+  gap: 0.7rem;
+  transition: 0.2s ease;
+  color: var(--color-grey-700);
+  width: 100px;
+  border-radius: 0.25rem;
+}
+
+.dropDownItem:hover {
+  cursor: pointer;
+  color: var(--foreground);
+  background-color: #e9ebef;
+}
+.seperator {
+  background-color: var(--color-grey-100);
+  height: 1px;
+  margin-block: 0.1rem;
+}
+.dropDownItem p {
+  font-size: 13px;
+}
+.deleteBtn {
+  color: var(--accent-red-fg);
+}
+.deleteBtn:hover {
+  color: var(--accent-red-fg);
+  background-color: var(--accent-red-bg);
 }
