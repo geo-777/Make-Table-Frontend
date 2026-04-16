@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { checkLoggedIn, refresh, logoutAxiosRequest } from "../../api/auth.api";
+import axiosInstance from "../../api/axiosInstance";
 
 const AuthContext = createContext(null);
 
@@ -16,10 +17,11 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await logoutAxiosRequest();
-      setUser(null);
-      setIsAuthenticated(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setUser(null);
+      setIsAuthenticated(false);
     }
   };
 
@@ -33,25 +35,46 @@ const AuthProvider = ({ children }) => {
     await refresh();
     return fetchCurrentUser();
   };
-
+  const initAuth = async () => {
+    try {
+      const username = await fetchCurrentUser();
+      confirmLogin(username);
+    } catch (error) {
+      await logout();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  // handling intercepting and initing
   useEffect(() => {
-    const initAuth = async () => {
-      try {
-        const username = await fetchCurrentUser();
-        confirmLogin(username);
-      } catch (error) {
-        try {
-          const username = await refreshToken();
-          confirmLogin(username);
-        } catch (refreshError) {
-          logout();
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    const interceptor = axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
 
+        if (originalRequest.url.includes("/refresh")) {
+          await logout();
+          return Promise.reject(error);
+        }
+
+        if (error?.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+
+          try {
+            await refresh();
+            return axiosInstance(originalRequest);
+          } catch (refreshError) {
+            await logout();
+            return Promise.reject(refreshError);
+          }
+        }
+
+        return Promise.reject(error);
+      },
+    );
     initAuth();
+
+    return () => axiosInstance.interceptors.response.eject(interceptor);
   }, []);
 
   const value = {

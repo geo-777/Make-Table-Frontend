@@ -1,27 +1,35 @@
 import NavbarDesktop from "../../../shared/components/desktopNavigation/NavbarDesktop";
 import "../../../styles/appLayout.css";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import DetailsGrid from "../components/detailsGrid/DetailsGrid";
 import styles from "../styles/Dashboard.module.css";
 import TimeTableListings from "../components/timetableListingsGrid/TimeTableListings";
 import TimeTableCreatePopup from "../components/timetableCreatePopup/TimeTableCreatePopup";
 import useTimetableListing from "../hooks/useTimetableListing";
-
+import axiosInstance from "../../../api/axiosInstance";
 const Dashboard = () => {
   const [isCreateTableOpen, setIsCreateTableOpen] = useState(false);
-  const {
-    data: timetableListings,
-    isPending: isFetchPending,
-    error: listingFetchError,
-  } = useTimetableListing();
-  console.log(
-    "data",
-    timetableListings?.data,
-    "error",
-    listingFetchError?.status,
-  );
+  // const {
+  //   data: timetableListings,
+  //   isPending: isFetchPending,
+  //   error: listingFetchError,
+  // } = useTimetableListing();
+  // console.log(
+  //   "data",
+  //   timetableListings?.data,
+  //   "error",
+  //   listingFetchError?.status,
+  // );
+  useEffect(() => {
+    const init = async () => {
+      const { data } = await axiosInstance.get("/timetables");
+      console.log(data);
+    };
+
+    init();
+  }, []);
   return (
     <div className="App">
       <NavbarDesktop />
