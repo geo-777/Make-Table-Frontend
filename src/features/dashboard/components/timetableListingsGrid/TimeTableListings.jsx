@@ -1,7 +1,7 @@
 import styles from "./TimeTableListings.module.css";
 import { Pencil, CircleCheck } from "lucide-react";
 import TimeTableListingItem from "../timetableListingItem/TimeTableListingItem";
-const TimeTableListings = ({ type }) => {
+const TimeTableListings = ({ type, data }) => {
   return (
     <div className={styles.timetableListings}>
       <div className={styles.timetableListings__header}>
@@ -25,23 +25,18 @@ const TimeTableListings = ({ type }) => {
       </div>
 
       <div className={styles.listingsGrid}>
-        <TimeTableListingItem
-          listingData={{
-            name: "Timetable-205",
-            slots: 6,
-            days: 3,
-            type: "Draft",
-          }}
-        />
-
-        <TimeTableListingItem
-          listingData={{
-            name: "Academic-year-2026",
-            slots: 6,
-            days: 3,
-            type: "Published",
-          }}
-        />
+        {data.map((e, i) => (
+          <TimeTableListingItem
+            key={i}
+            listingData={{
+              id: e.id,
+              name: e.name,
+              slots: e.slots,
+              days: e.days.length,
+              type: e.view_status == "Private" ? "Draft" : "Published",
+            }}
+          />
+        ))}
       </div>
     </div>
   );

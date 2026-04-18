@@ -2,6 +2,7 @@ import styles from "./DetailsGrid.module.css";
 import { Table, CircleCheck, Pencil } from "lucide-react";
 
 const DetailsGrid = ({ data }) => {
+  console.log(data);
   const iconSize = 20;
   const iconStrokeWidth = 2;
   return (
@@ -12,7 +13,7 @@ const DetailsGrid = ({ data }) => {
         </div>
         <div className={styles.detailsGrid__info}>
           <p>Total Timetables</p>
-          <h4>{data?.total || "—"}</h4>
+          <h4>{data?.total ?? "—"}</h4>
         </div>
       </div>
       <div className={styles.gridItem}>
@@ -21,7 +22,7 @@ const DetailsGrid = ({ data }) => {
         </div>
         <div className={styles.detailsGrid__info}>
           <p>Published</p>
-          <h4>{data?.published || "—"}</h4>{" "}
+          <h4>{data?.published ?? "—"}</h4>{" "}
         </div>
       </div>
       <div className={styles.gridItem}>
@@ -30,7 +31,7 @@ const DetailsGrid = ({ data }) => {
         </div>
         <div className={styles.detailsGrid__info}>
           <p>Drafts</p>
-          <h4>{data?.drafts || "—"}</h4>
+          <h4>{data?.drafts ?? "—"}</h4>
         </div>
       </div>
     </div>
