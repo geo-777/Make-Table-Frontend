@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styles from "./PopupBox.module.css";
 import { X } from "lucide-react";
 const PopupBox = ({
@@ -8,6 +9,14 @@ const PopupBox = ({
   handleSubmit,
   children,
 }) => {
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const handleSubmitClicked = async (e) => {
+    if (submitLoading) return;
+    setSubmitLoading(true);
+    await handleSubmit(e);
+    setSubmitLoading(false);
+    closeFunction();
+  };
   return (
     <div
       className="popupCentered"
@@ -45,8 +54,9 @@ const PopupBox = ({
           </button>
           <button
             type="submit"
-            className={`${styles.btnItem} ${styles.saveBtn}`}
-            onClick={handleSubmit}
+            className={`${styles.btnItem} ${styles.saveBtn} `}
+            onClick={handleSubmitClicked}
+            disabled={submitLoading}
           >
             {primaryBtnText}
           </button>

@@ -51,15 +51,15 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-
-.saveBtn {
+.saveBtn:hover {
+  background-color: var(--sidebar-accent-foreground);
+}
+.saveBtn,
+.saveBtn:disabled:hover {
   border-color: var(--primary);
   color: var(--sidebar-background);
   background-color: var(--primary);
 }
 .btnItem:hover {
   border-color: var(--color-grey-300);
-}
-.saveBtn:hover {
-  background-color: var(--sidebar-accent-foreground);
 }

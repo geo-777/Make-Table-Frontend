@@ -25,18 +25,20 @@ const TimeTableListings = ({ type, data }) => {
       </div>
 
       <div className={styles.listingsGrid}>
-        {data.map((e, i) => (
-          <TimeTableListingItem
-            key={`${e.id}-listing`}
-            listingData={{
-              id: e.id,
-              name: e.name,
-              slots: e.slots,
-              days: e.days.length,
-              type: e.view_status == "Private" ? "Draft" : "Published",
-            }}
-          />
-        ))}
+        {data
+          .sort((a, b) => b.id - a.id)
+          .map((e, i) => (
+            <TimeTableListingItem
+              key={`${e.id}-listing-${i}`}
+              listingData={{
+                id: e.id,
+                name: e.name,
+                slots: e.slots,
+                days: e.days.length,
+                type: e.view_status == "Private" ? "Draft" : "Published",
+              }}
+            />
+          ))}
       </div>
     </div>
   );
