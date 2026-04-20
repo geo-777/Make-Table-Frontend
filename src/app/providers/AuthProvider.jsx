@@ -69,12 +69,12 @@ const AuthProvider = ({ children }) => {
 
           try {
             await refresh();
+            isRefreshing.current = false;
             return axiosInstance(originalRequest);
           } catch (refreshError) {
             await logout();
-            return Promise.reject(refreshError);
-          } finally {
             isRefreshing.current = false;
+            return Promise.reject(refreshError);
           }
         }
 

@@ -2,10 +2,14 @@ import styles from "./TimeTableCreatePopup.module.css";
 import RequiredInputField from "../../../../shared/components/inputfields/RequiredInputField";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
 import { useState } from "react";
+import useTimetableListing from "../../hooks/useTimetableListing";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const TimeTableCreatePopup = ({ visible, closePopup }) => {
+  //create table mutation
+  const { createListing } = useTimetableListing();
+
   const [selectedDays, setSelectedDays] = useState(["Mon"]);
   const [form, setForm] = useState({
     name: "",
@@ -71,6 +75,14 @@ const TimeTableCreatePopup = ({ visible, closePopup }) => {
     const { hasError, newErrors } = validateTableCreate(form);
     setErrorStates(newErrors);
     if (hasError) return;
+
+    //create table
+    createListing.mutate({
+      ...form,
+      view_status: "Private",
+      days: selectedDays,
+    }); //default private table
+    console.log(createListing.error);
   };
 
   return (

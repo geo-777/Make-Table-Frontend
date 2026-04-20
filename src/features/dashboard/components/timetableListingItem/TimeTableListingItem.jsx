@@ -12,7 +12,8 @@ import {
 import { useState } from "react";
 import DropDownMenu from "../../../../shared/components/dropDownMenu/DropDownMenu";
 import { useEffect, useRef } from "react";
-
+import useTimetableListing from "../../hooks/useTimetableListing";
+import { toast } from "react-toastify";
 /*
 listingData of the format {
     name : "Timetable name"
@@ -22,6 +23,7 @@ listingData of the format {
 }
 */
 const TimeTableListingItem = ({ listingData }) => {
+  const { deleteListing } = useTimetableListing();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuIconSize = 14.5;
   const menuIconStrokeWidth = 2;
@@ -39,7 +41,12 @@ const TimeTableListingItem = ({ listingData }) => {
       document.removeEventListener("click", handler);
     };
   }, []);
-
+  const handleDeletion = (id) => {
+    handleDeletion = deleteListing.mutate(id);
+    if (deleteListing.isError) {
+      toast.error(deleteListing.error);
+    }
+  };
   return (
     <div className={styles.listing}>
       <div className={styles.mainLeft}>
@@ -85,7 +92,12 @@ const TimeTableListingItem = ({ listingData }) => {
           >
             <EllipsisVertical size={18} />
           </button>
-          <DropDownMenu visible={menuVisible} top={"2.6rem"} right={"1rem"}>
+          <DropDownMenu
+            key={`${listingData.id}-dropdown`}
+            visible={menuVisible}
+            top={"2.6rem"}
+            right={"1rem"}
+          >
             <div className={styles.dropDownItem}>
               <Eye size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
               <p>Open</p>
@@ -97,7 +109,7 @@ const TimeTableListingItem = ({ listingData }) => {
             <div className={styles.seperator}></div>
             <div
               className={`${styles.dropDownItem} ${styles.deleteBtn}`}
-              onClick={() => console.log("Delet")}
+              onClick={() => handleDeletion(listingData.id)}
             >
               <Trash2 size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
               <p>Delete</p>

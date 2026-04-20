@@ -11,6 +11,7 @@ import useTimetableListing from "../hooks/useTimetableListing";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 const Dashboard = () => {
   const [isCreateTableOpen, setIsCreateTableOpen] = useState(false);
+  const { readListings } = useTimetableListing();
 
   const {
     data: timetableListings,
@@ -18,7 +19,7 @@ const Dashboard = () => {
     error: listingFetchError,
     isError: isFetchError,
     isSuccess: isFetchSuccess,
-  } = useTimetableListing();
+  } = readListings();
 
   const draftTimeTables = useMemo(() => {
     return timetableListings?.data.filter((e) => e.view_status == "Private");

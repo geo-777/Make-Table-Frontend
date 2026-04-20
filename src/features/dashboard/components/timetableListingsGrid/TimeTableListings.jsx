@@ -27,7 +27,7 @@ const TimeTableListings = ({ type, data }) => {
       <div className={styles.listingsGrid}>
         {data.map((e, i) => (
           <TimeTableListingItem
-            key={i}
+            key={`${e.id}-listing`}
             listingData={{
               id: e.id,
               name: e.name,
