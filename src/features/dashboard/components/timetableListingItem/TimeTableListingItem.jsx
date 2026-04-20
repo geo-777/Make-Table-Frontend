@@ -29,7 +29,9 @@ const TimeTableListingItem = ({ listingData }) => {
   const menuIconStrokeWidth = 2;
 
   const menuRef = useRef(null);
+  const deletingItem = useRef(false);
 
+  //handling clicking out of menu to close menu
   useEffect(() => {
     const handler = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -41,11 +43,20 @@ const TimeTableListingItem = ({ listingData }) => {
       document.removeEventListener("click", handler);
     };
   }, []);
-  const handleDeletion = (id) => {
-    handleDeletion = deleteListing.mutate(id);
-    if (deleteListing.isError) {
-      toast.error(deleteListing.error);
+
+  const handleDeletion = async (id) => {
+    //guard obviously
+    if (deletingItem.current)
+      return console.log("Dont spam the delete u piece of shi");
+
+    deletingItem.current = true;
+
+    try {
+      await deleteListing.mutateAsync(id);
+    } catch (error) {
+      deletingItem.current = false;
     }
+    setMenuVisible(false);
   };
   return (
     <div className={styles.listing}>

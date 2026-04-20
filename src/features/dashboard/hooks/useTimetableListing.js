@@ -16,25 +16,40 @@ const useTimetableListing = () => {
   });
   //mutation for creation
   const createListing = useMutation({
-    mutationFn: (newTable) => createTimetable(newTable),
-    onSuccess: (newTable) => {
-      // queryClient.invalidateQueries({
-      //   queryKey: ["timetableListings"],
-      // });
-      const existingData = queryClient.getQueryData(["timetableListings"]);
+    mutationFn: createTimetable,
+    onSuccess: (response) => {
+      const newTimetable = response.data;
 
-      queryClient.setQueryData(
-        ["timetableListings"],
-        [...existingData, newTable.data],
-      );
+      queryClient.setQueryData(["timetableListings"], (oldData) => {
+        if (!oldData?.data) {
+          return queryClient.invalidateQueries({
+            queryKey: ["timetableListings"],
+          });
+        } // safety check to handle 404 empty data edge case.
+
+        return {
+          ...oldData,
+          data: [...oldData.data, newTimetable],
+        };
+      });
     },
   });
   //mutation for deletion
   const deleteListing = useMutation({
     mutationFn: (id) => deleteTimeTable(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["timetableListings"],
+    onSuccess: (_, id) => {
+      //console.log(response, data);
+
+      queryClient.setQueryData(["timetableListings"], (oldData) => {
+        if (!oldData?.data) {
+          return queryClient.invalidateQueries({
+            queryKey: ["timetableListings"],
+          });
+        } // safety check
+        return {
+          ...oldData,
+          data: oldData.data.filter((e) => e.id != id),
+        };
       });
     },
   });

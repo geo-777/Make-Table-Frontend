@@ -10,6 +10,8 @@ const TimeTableCreatePopup = ({ visible, closePopup }) => {
   //create table mutation
   const { createListing } = useTimetableListing();
 
+  const [submitLoading, setSubmitLoading] = useState(false);
+
   const [selectedDays, setSelectedDays] = useState(["Mon"]);
   const [form, setForm] = useState({
     name: "",
@@ -75,14 +77,15 @@ const TimeTableCreatePopup = ({ visible, closePopup }) => {
     const { hasError, newErrors } = validateTableCreate(form);
     setErrorStates(newErrors);
     if (hasError) return;
-
+    setSubmitLoading(true);
     //create table
-    createListing.mutate({
+    await createListing.mutateAsync({
       ...form,
       view_status: "Private",
       days: selectedDays,
     }); //default private table
-    console.log(createListing.error);
+
+    setSubmitLoading(false);
   };
 
   return (

@@ -1,5 +1,5 @@
 import styles from "./DropDownMenu.module.css";
-const DropDownMenu = ({ visible, top, right, children, closeMenu }) => {
+const DropDownMenu = ({ visible, top, right, children }) => {
   return (
     <div
       onClick={(e) => e.stopPropagation()}
@@ -8,6 +8,7 @@ const DropDownMenu = ({ visible, top, right, children, closeMenu }) => {
         top: top || 0,
         right: right || 0,
         opacity: visible ? 1 : 0,
+        pointerEvents: visible ? "auto" : "none",
       }}
     >
       {children}
