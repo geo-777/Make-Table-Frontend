@@ -13,8 +13,12 @@ const PopupBox = ({
   const handleSubmitClicked = async (e) => {
     if (submitLoading) return;
     setSubmitLoading(true);
-    await handleSubmit(e);
-    setSubmitLoading(false);
+    try {
+      await handleSubmit(e);
+    } finally {
+      setSubmitLoading(false);
+    }
+
     closeFunction();
   };
   return (

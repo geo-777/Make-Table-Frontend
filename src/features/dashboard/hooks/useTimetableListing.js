@@ -2,8 +2,10 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchAllTimetables,
   createTimetable,
+  patchTimeTable,
   deleteTimeTable,
 } from "../../../api/timetables.api";
+import { toast } from "react-toastify";
 const useTimetableListing = () => {
   const queryClient = useQueryClient();
   //querying read operation
@@ -33,6 +35,20 @@ const useTimetableListing = () => {
         };
       });
     },
+    onError: (error) => {
+      //console.log(error);
+      const status = error?.response?.status;
+
+      if (!status) toast.error("Unknown error occured.");
+
+      if (status >= 500 && status < 600) {
+        toast.error("Internal Server error. Please try again later.");
+      } else if (status === 429) {
+        toast.error("Too many attempts. Try again in a few minutes.");
+      } else {
+        toast.error("Unknown error occured.");
+      }
+    },
   });
   //mutation for deletion
   const deleteListing = useMutation({
@@ -52,6 +68,12 @@ const useTimetableListing = () => {
         };
       });
     },
+  });
+
+  //patching mutation
+  const patchListing = useMutation({
+    mutationFn: (id, data) => patchTimeTable(id, data),
+    onSuccess: (data, newData) => {},
   });
 
   //helper function that returns query data like data,error,isPending,isError etc:

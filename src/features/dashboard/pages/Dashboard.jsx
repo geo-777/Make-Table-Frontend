@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 import DetailsGrid from "../components/detailsGrid/DetailsGrid";
 import styles from "../styles/Dashboard.module.css";
 import TimeTableListings from "../components/timetableListingsGrid/TimeTableListings";
-import TimeTableCreatePopup from "../components/timetableCreatePopup/TimeTableCreatePopup";
+import TimeTableCreatePopup from "../components/timetablePopups/TimeTableCreatePopup";
 import useTimetableListing from "../hooks/useTimetableListing";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 const Dashboard = () => {
@@ -22,10 +22,10 @@ const Dashboard = () => {
   } = readListings();
 
   const draftTimeTables = useMemo(() => {
-    return timetableListings?.data.filter((e) => e.view_status == "Private");
+    return timetableListings?.data?.filter((e) => e.view_status == "Private");
   }, [timetableListings]);
   const publisedTimeTables = useMemo(() => {
-    return timetableListings?.data.filter((e) => e.view_status == "Public");
+    return timetableListings?.data?.filter((e) => e.view_status == "Public");
   }, [timetableListings]);
 
   return (
