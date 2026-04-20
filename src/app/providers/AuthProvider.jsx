@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { checkLoggedIn, refresh, logoutAxiosRequest } from "../../api/auth.api";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -8,7 +8,8 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const isRefreshing = useRef(false);
+  const isInitialized = useRef(false);
   const confirmLogin = (username) => {
     setUser(username);
     setIsAuthenticated(true);
@@ -36,11 +37,14 @@ const AuthProvider = ({ children }) => {
     return fetchCurrentUser();
   };
   const initAuth = async () => {
+    if (isInitialized.current) return;
     try {
+      isInitialized.current = true;
       const username = await fetchCurrentUser();
       confirmLogin(username);
     } catch (error) {
       await logout();
+      isInitialized.current = false;
     } finally {
       setIsLoading(false);
     }
@@ -52,12 +56,15 @@ const AuthProvider = ({ children }) => {
       async (error) => {
         const originalRequest = error.config;
 
+        if (isRefreshing.current) return Promise.reject(error);
+
         if (originalRequest.url.includes("/refresh")) {
           await logout();
           return Promise.reject(error);
         }
 
         if (error?.response?.status === 401 && !originalRequest._retry) {
+          isRefreshing.current = true;
           originalRequest._retry = true;
 
           try {
@@ -66,6 +73,8 @@ const AuthProvider = ({ children }) => {
           } catch (refreshError) {
             await logout();
             return Promise.reject(refreshError);
+          } finally {
+            isRefreshing.current = false;
           }
         }
 

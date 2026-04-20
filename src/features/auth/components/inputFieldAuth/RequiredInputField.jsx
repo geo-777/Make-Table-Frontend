@@ -69,6 +69,7 @@ const RequiredInputField = ({
           placeholder={placeholder}
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          autoComplete="off"
         />
         {showPassIcon && (
           <span

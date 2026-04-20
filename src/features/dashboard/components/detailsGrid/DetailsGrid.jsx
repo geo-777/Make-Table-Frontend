@@ -2,7 +2,6 @@ import styles from "./DetailsGrid.module.css";
 import { Table, CircleCheck, Pencil } from "lucide-react";
 
 const DetailsGrid = ({ data }) => {
-  console.log(data);
   const iconSize = 20;
   const iconStrokeWidth = 2;
   return (
