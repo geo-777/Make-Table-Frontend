@@ -1,7 +1,7 @@
 import NavbarDesktop from "../../../shared/components/desktopNavigation/NavbarDesktop";
 import "../../../styles/appLayout.css";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Plus } from "lucide-react";
 import DetailsGrid from "../components/detailsGrid/DetailsGrid";
 import styles from "../styles/Dashboard.module.css";
@@ -11,6 +11,7 @@ import useTimetableListing from "../hooks/useTimetableListing";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 const Dashboard = () => {
   const [isCreateTableOpen, setIsCreateTableOpen] = useState(false);
+
   const { readListings } = useTimetableListing();
 
   const {
@@ -31,6 +32,7 @@ const Dashboard = () => {
   return (
     <div className="App">
       <NavbarDesktop />
+
       <TimeTableCreatePopup
         closePopup={() => setIsCreateTableOpen(false)}
         visible={isCreateTableOpen}

@@ -68,12 +68,58 @@ const useTimetableListing = () => {
         };
       });
     },
+    onError: (error) => {
+      //console.log(error);
+      const status = error?.response?.status;
+
+      if (!status) toast.error("Unknown error occured.");
+
+      if (status >= 500 && status < 600) {
+        toast.error("Internal Server error. Please try again later.");
+      } else if (status === 429) {
+        toast.error("Too many attempts. Try again in a few minutes.");
+      } else {
+        toast.error("Unknown error occured.");
+      }
+    },
   });
 
   //patching mutation
   const patchListing = useMutation({
-    mutationFn: (id, data) => patchTimeTable(id, data),
-    onSuccess: (data, newData) => {},
+    mutationFn: ({ id, data }) => patchTimeTable(id, data),
+    onSuccess: (response, { id, data }) => {
+      const editedTimetable = response.data;
+
+      queryClient.setQueryData(["timetableListings"], (oldData) => {
+        if (!oldData?.data) {
+          return queryClient.invalidateQueries({
+            queryKey: ["timetableListings"],
+          });
+        } // safety check
+
+        return {
+          ...oldData,
+          data: oldData.data.map((elm) =>
+            id === elm.id ? editedTimetable : elm,
+          ),
+        };
+      });
+    },
+
+    onError: (error) => {
+      //console.log(error);
+      const status = error?.response?.status;
+
+      if (!status) toast.error("Unknown error occured.");
+
+      if (status >= 500 && status < 600) {
+        toast.error("Internal Server error. Please try again later.");
+      } else if (status === 429) {
+        toast.error("Too many attempts. Try again in a few minutes.");
+      } else {
+        toast.error("Unknown error occured.");
+      }
+    },
   });
 
   //helper function that returns query data like data,error,isPending,isError etc:
@@ -81,7 +127,7 @@ const useTimetableListing = () => {
     return { ...query };
   };
 
-  return { readListings, createListing, deleteListing };
+  return { readListings, createListing, deleteListing, patchListing };
 };
 
 export default useTimetableListing;

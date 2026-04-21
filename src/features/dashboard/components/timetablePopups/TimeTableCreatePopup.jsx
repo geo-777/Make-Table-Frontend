@@ -74,13 +74,15 @@ const TimeTableCreatePopup = ({ visible, closePopup }) => {
 
     const { hasError, newErrors } = validateTableCreate(form);
     setErrorStates(newErrors);
-    if (hasError) return;
+    if (hasError) return false;
     //create table
     await createListing.mutateAsync({
       ...form,
       view_status: "Private",
       days: selectedDays,
     }); //default private table
+
+    return true;
   };
 
   return (

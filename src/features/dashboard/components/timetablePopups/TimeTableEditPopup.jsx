@@ -1,25 +1,40 @@
 import styles from "./TimeTableCreatePopup.module.css";
 import RequiredInputField from "../../../../shared/components/inputfields/RequiredInputField";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useTimetableListing from "../../hooks/useTimetableListing";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
   //create table mutation
-  const { createListing } = useTimetableListing();
-
-  const [selectedDays, setSelectedDays] = useState(["Mon"]);
+  const { patchListing } = useTimetableListing();
+  // to disable the button if no change was made
+  const [isPatched, setIsPatched] = useState(false);
+  const [selectedDays, setSelectedDays] = useState(
+    existingData?.days ?? ["Mon"],
+  );
   const [form, setForm] = useState({
-    name: "",
-    slots: 6,
+    name: existingData?.name ?? "",
+    slots: existingData?.slots ?? 6,
   });
   const [errorStates, setErrorStates] = useState({
     name: null,
     slots: null,
     days: null,
   });
+
+  //these two (initialized Ref and useEffect) handles setting up of existing data into form.
+  //it should happen only once. so the ref act as a guard.
+  useEffect(() => {
+    if (visible && existingData) {
+      setSelectedDays(existingData.days ?? ["Mon"]);
+      setForm({
+        name: existingData.name ?? "",
+        slots: existingData.slots ?? 6,
+      });
+    }
+  }, [visible, existingData]);
   //handles day selection by adding/removing
   const toggleDay = (day) => {
     setSelectedDays((prev) =>
@@ -27,10 +42,22 @@ const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
     );
   };
 
+  //handling change
+  useEffect(() => {
+    let changes = false;
+
+    if (
+      form.name?.trim() != existingData.name?.trim() ||
+      form.slots != existingData.slots ||
+      selectedDays != existingData.days
+    ) {
+      changes = true;
+    }
+    setIsPatched(changes);
+  }, [form, selectedDays]);
+
   const handleCloseClicked = () => {
     //clears value
-    setSelectedDays(["Mon"]);
-    setForm({ name: "", slots: 6 });
     setErrorStates({ name: null, slots: null, days: null });
     closePopup();
   };
@@ -74,13 +101,18 @@ const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
 
     const { hasError, newErrors } = validateTableCreate(form);
     setErrorStates(newErrors);
-    if (hasError) return;
-    //create table
-    // await createListing.mutateAsync({
-    //   ...form,
-    //   view_status: "Private",
-    //   days: selectedDays,
-    // }); //default private table
+    if (hasError) return false;
+
+    const payload = {
+      ...form,
+      days: selectedDays,
+    };
+
+    await patchListing.mutateAsync({
+      id: existingData.id,
+      data: payload,
+    });
+    return true;
   };
 
   return (
@@ -90,6 +122,7 @@ const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
       closeFunction={handleCloseClicked}
       title={"Edit Timetable"}
       primaryBtnText={"Edit"}
+      disabled={!isPatched}
     >
       <form className={styles.popupForm}>
         <RequiredInputField

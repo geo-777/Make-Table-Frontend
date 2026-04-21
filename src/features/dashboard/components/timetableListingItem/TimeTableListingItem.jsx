@@ -22,7 +22,7 @@ listingData of the format {
     Type : published or draft
 }
 */
-const TimeTableListingItem = ({ listingData }) => {
+const TimeTableListingItem = ({ listingData, editFunction }) => {
   const { deleteListing } = useTimetableListing();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuIconSize = 14.5;
@@ -113,7 +113,13 @@ const TimeTableListingItem = ({ listingData }) => {
               <Eye size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
               <p>Open</p>
             </div>
-            <div className={styles.dropDownItem}>
+            <div
+              className={styles.dropDownItem}
+              onClick={() => {
+                editFunction(listingData.id);
+                setMenuVisible(false);
+              }}
+            >
               <Pencil size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
               <p>Edit</p>
             </div>

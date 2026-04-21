@@ -8,18 +8,20 @@ const PopupBox = ({
   primaryBtnText,
   handleSubmit,
   children,
+  disabled = false,
 }) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const handleSubmitClicked = async (e) => {
     if (submitLoading) return;
     setSubmitLoading(true);
+    let invokeCloseFunction = true;
     try {
-      await handleSubmit(e);
+      invokeCloseFunction = await handleSubmit(e);
     } finally {
       setSubmitLoading(false);
     }
 
-    closeFunction();
+    if (invokeCloseFunction) closeFunction();
   };
   return (
     <div
@@ -60,7 +62,7 @@ const PopupBox = ({
             type="submit"
             className={`${styles.btnItem} ${styles.saveBtn} `}
             onClick={handleSubmitClicked}
-            disabled={submitLoading}
+            disabled={submitLoading || disabled}
           >
             {primaryBtnText}
           </button>

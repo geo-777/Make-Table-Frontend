@@ -1,9 +1,31 @@
 import styles from "./TimeTableListings.module.css";
 import { Pencil, CircleCheck } from "lucide-react";
+import TimeTableEditPopup from "../timetablePopups/TimeTableEditPopup";
 import TimeTableListingItem from "../timetableListingItem/TimeTableListingItem";
+import { useState } from "react";
 const TimeTableListings = ({ type, data }) => {
+  const [isEditTableOpen, setIsEditTableOpen] = useState(false);
+  const [existingData, setExistingData] = useState({});
+
+  //helper function that sets data up for popup and opens it
+  const openEditPopup = (id) => {
+    const itemToEdit = data.find((e) => e.id === id);
+    if (!itemToEdit) return;
+
+    setExistingData(itemToEdit);
+    setIsEditTableOpen(true);
+  };
+
   return (
     <div className={styles.timetableListings}>
+      <TimeTableEditPopup
+        closePopup={() => {
+          setIsEditTableOpen(false);
+          setExistingData({});
+        }}
+        visible={isEditTableOpen}
+        existingData={existingData}
+      />
       <div className={styles.timetableListings__header}>
         <span className={styles.icon}>
           {type.startsWith("Draft") && <Pencil size={18} strokeWidth={1.5} />}
@@ -37,6 +59,7 @@ const TimeTableListings = ({ type, data }) => {
                 days: e.days.length,
                 type: e.view_status == "Private" ? "Draft" : "Published",
               }}
+              editFunction={openEditPopup}
             />
           ))}
       </div>
