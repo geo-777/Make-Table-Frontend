@@ -34,6 +34,8 @@ const useTimetableListing = () => {
           data: [...oldData.data, newTimetable],
         };
       });
+
+      toast.success("Timetable created successfully.");
     },
     onError: (error) => {
       //console.log(error);
@@ -104,6 +106,8 @@ const useTimetableListing = () => {
           ),
         };
       });
+
+      toast.success("Timetable edited successfully.");
     },
 
     onError: (error) => {
