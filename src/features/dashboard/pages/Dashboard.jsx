@@ -55,13 +55,10 @@ const Dashboard = () => {
           </div>
         </header>
         {isFetchError && (
-          <StatusWrapper error={listingFetchError} isError={isFetchError}>
-            {listingFetchError?.response?.status === 404 && (
-              <div className={styles.error404}>
-                <h4>No timetables created yet.</h4>
-              </div>
-            )}
-          </StatusWrapper>
+          <StatusWrapper
+            error={listingFetchError}
+            isError={isFetchError}
+          ></StatusWrapper>
         )}
         {isFetchPending && <StatusWrapper loader={true} />}
         {isFetchSuccess && (
@@ -73,6 +70,17 @@ const Dashboard = () => {
                 drafts: draftTimeTables.length,
               }}
             />
+            {timetableListings.data.length === 0 && (
+              <StatusWrapper isError={true}>
+                <div className={styles.error404}>
+                  <h4>No timetables created yet</h4>
+                  <p>
+                    Start by creating your first timetable to organize your
+                    schedule.
+                  </p>
+                </div>
+              </StatusWrapper>
+            )}
             {publisedTimeTables.length != 0 && (
               <TimeTableListings
                 type={"Published Timetables"}

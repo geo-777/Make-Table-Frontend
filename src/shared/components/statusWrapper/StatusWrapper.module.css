@@ -2,5 +2,5 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(80vh - 10rem);
+  min-height: calc(60vh - 10rem);
 }
