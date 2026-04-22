@@ -23,6 +23,8 @@
 }
 .inputField input:focus {
   outline: none;
+  background-color: transparent;
+  background: none;
 }
 .inputField:focus-within {
   box-shadow: 0 0 0 3.5px rgba(174, 184, 194, 0.2);
