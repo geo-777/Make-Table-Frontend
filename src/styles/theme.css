@@ -77,6 +77,8 @@
   --accent-greener-fg: #15803d;
   --accent-greener-bg: #dcfce7;
 
+  --accent-light-blue-bg: #e8f5fc;
+  --accent-light-blue-fg: #19a2e6;
   --accent-red-bg: #fbebee;
   --accent-red-fg: #dd405a;
 
@@ -86,6 +88,7 @@
   --color-grey-300: #afafaf;
   --color-grey-200: #e7e5e5;
   --color-grey-100: #eaeaea;
+  --color-grey-80: #edeff2;
   --color-grey-50: #f3f4f6;
 
   --green-btn: #16a34a;

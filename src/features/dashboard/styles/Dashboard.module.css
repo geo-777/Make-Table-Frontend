@@ -65,3 +65,55 @@
 .draftLabel .statusDot {
   background-color: var(--sidebar-foreground);
 }
+.modeSelect {
+  margin-top: 2rem;
+  background-color: var(--color-grey-80);
+  padding: 0.3rem;
+  display: inline-flex;
+  gap: 0.3rem;
+  border-radius: 0.3125rem;
+  width: fit-content;
+  color: var(--color-grey-700);
+  cursor: pointer;
+}
+.modeSelect span {
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0.3rem 0.7rem;
+  transition: 0.1s ease-out;
+}
+.modeSelect .activeMode {
+  border-radius: 0.3125rem;
+  background-color: var(--secondary-bg);
+  color: var(--foreground);
+}
+
+.violationsContainer {
+  margin-top: 2rem;
+
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--color-grey-100);
+  border-radius: 0.5rem;
+}
+.violationsContainer h4 {
+  padding: 0.8rem 1rem;
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--foreground);
+}
+.violations {
+  border-top: 1px solid var(--color-grey-100);
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  padding: 0.6rem;
+}
+.violationItem {
+  font-size: 15px;
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.5rem;
+  background-color: var(--accent-red-bg);
+  border-radius: 0.5rem;
+  color: var(--accent-red-fg);
+}

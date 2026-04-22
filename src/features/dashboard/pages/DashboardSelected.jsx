@@ -1,16 +1,21 @@
 import NavbarDesktop from "../../../shared/components/desktopNavigation/NavbarDesktop";
 import "../../../styles/appLayout.css";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import { useEffect, useState } from "react";
-import { Play, Zap, Dot, CircleCheck } from "lucide-react";
+import { Play, Zap, TriangleAlert } from "lucide-react";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import styles from "../styles/Dashboard.module.css";
+import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
+import ClassTimetable from "../components/timeTables/ClassTimetable";
+import TeacherTimetable from "../components/timeTables/TeacherTimetable";
+import { useState } from "react";
 const VIEW_STATUS = {
   Public: "Published",
   Private: "Private",
 };
 const DashboardSelected = () => {
   const { selectedTimetableData } = useTimeTableSelect();
+
+  const [timeTableMode, setTimeTableMode] = useState("classes");
 
   return (
     <div className="App">
@@ -49,6 +54,41 @@ const DashboardSelected = () => {
             </button>
           </div>
         </header>
+        <div className={`main`}>
+          <DetailsGridTimetable />
+          <div className={styles.modeSelect}>
+            <span
+              onClick={() => setTimeTableMode("classes")}
+              className={timeTableMode === "classes" ? styles.activeMode : ""}
+            >
+              Class Timetables
+            </span>
+            <span
+              onClick={() => setTimeTableMode("teachers")}
+              className={timeTableMode === "teachers" ? styles.activeMode : ""}
+            >
+              Teacher Timetables
+            </span>
+          </div>
+          {timeTableMode === "classes" ? (
+            <ClassTimetable />
+          ) : (
+            <TeacherTimetable />
+          )}
+          <div className={styles.violationsContainer}>
+            <h4>Violations</h4>
+            <div className={styles.violations}>
+              <div className={styles.violationItem}>
+                <TriangleAlert size={16} />
+                <p>Dr. Smith: Dr. Smith has 3 consecutive classes on Monday</p>
+              </div>
+              <div className={styles.violationItem}>
+                <TriangleAlert size={16} />
+                <p>Physics: Physics exceeds max 2 classes/day on Thursday</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ import DetailsGrid from "../components/detailsGrid/DetailsGrid";
 import styles from "../styles/Dashboard.module.css";
 import TimeTableListings from "../components/timetableListingsGrid/TimeTableListings";
 import TimeTableCreatePopup from "../components/timetablePopups/TimeTableCreatePopup";
-
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import { useTimetableData } from "../hooks/useTimetableData";
 const DashboardOveriew = () => {

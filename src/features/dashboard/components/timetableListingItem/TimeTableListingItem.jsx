@@ -13,7 +13,7 @@ import { useState } from "react";
 import DropDownMenu from "../../../../shared/components/dropDownMenu/DropDownMenu";
 import { useEffect, useRef } from "react";
 import useTimetableListing from "../../hooks/useTimetableListing";
-import { toast } from "react-toastify";
+import useTimeTableSelect from "../../../../shared/zustand/timetableSelectStore.js";
 /*
 listingData of the format {
     name : "Timetable name"
@@ -22,7 +22,9 @@ listingData of the format {
     Type : published or draft
 }
 */
-const TimeTableListingItem = ({ listingData, editFunction }) => {
+const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
+  const { selectTimeTableData } = useTimeTableSelect();
+
   const { deleteListing, setViewStatus } = useTimetableListing();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuIconSize = 14.5;
@@ -132,7 +134,10 @@ const TimeTableListingItem = ({ listingData, editFunction }) => {
             top={"2.6rem"}
             right={"1rem"}
           >
-            <div className={styles.dropDownItem}>
+            <div
+              className={styles.dropDownItem}
+              onClick={() => selectTimeTableData(fullData)}
+            >
               <Eye size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
               <p>Open</p>
             </div>

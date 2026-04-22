@@ -59,6 +59,7 @@ const TimeTableListings = ({ type, data }) => {
                 days: e.days.length,
                 type: e.view_status == "Private" ? "Draft" : "Published",
               }}
+              fullData={e}
               editFunction={openEditPopup}
             />
           ))}

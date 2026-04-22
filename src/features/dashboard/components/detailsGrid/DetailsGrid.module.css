@@ -15,7 +15,7 @@
   box-shadow: var(--shadow-card);
 }
 .gridItem:hover {
-  transform: scale(1.02);
+  transform: scale(1.002);
   box-shadow: var(--shadow-card-hover);
 }
 .detailsGrid__info {
@@ -46,4 +46,12 @@
 .draftTb {
   background-color: var(--accent-yellow-bg);
   color: var(--accent-yellow-fg);
+}
+.teachersTb {
+  background-color: var(--accent-red-bg);
+  color: var(--accent-red-fg);
+}
+.classesTb {
+  background-color: var(--accent-light-blue-bg);
+  color: var(--accent-light-blue-fg);
 }
