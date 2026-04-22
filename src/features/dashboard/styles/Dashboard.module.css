@@ -16,3 +16,52 @@
   font-size: 17px;
   color: var(--color-grey-700);
 }
+.header_extraInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header_extraInfo p {
+  font-size: 14px;
+  margin: 0;
+  color: var(--color-grey-500);
+}
+
+.typeIcon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  height: 28px;
+  white-space: nowrap;
+}
+
+.publishedLabel {
+  background-color: var(--accent-greener-bg);
+  color: var(--accent-greener-fg);
+}
+
+.draftLabel {
+  background-color: var(--color-grey-50);
+  color: var(--sidebar-foreground);
+}
+
+.statusDot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.publishedLabel .statusDot {
+  background-color: var(--accent-greener-fg);
+}
+
+.draftLabel .statusDot {
+  background-color: var(--sidebar-foreground);
+}

@@ -3,15 +3,18 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import PublicRoutes from "./PublicRoutes";
 import Login from "../../features/auth/pages/Login";
 import LandingPage from "../../pages/landingPage/LandingPage";
-import Dashboard from "../../features/dashboard/pages/Dashboard";
+import DashboardOveriew from "../../features/dashboard/pages/DashboardOveriew";
+import DashboardSelected from "../../features/dashboard/pages/DashboardSelected";
 import Register from "../../features/auth/pages/Register";
 import Classes from "../../features/classes/pages/Classes";
 import Subjects from "../../features/subjects/pages/Subjects";
 import Teachers from "../../features/teachers/pages/Teachers";
 import Settings from "../../features/settings/Settings";
 import HelpSupport from "../../pages/help&support/HelpSupport";
-
+import useTimeTableSelect from "../../shared/zustand/timetableSelectStore";
 const AppRoutes = () => {
+  const { selectedTimetableData } = useTimeTableSelect();
+
   return (
     <Routes>
       {/*Public Routes*/}
@@ -45,10 +48,15 @@ const AppRoutes = () => {
         path="/dashboard"
         element={
           <ProtectedRoutes>
-            <Dashboard />
+            {selectedTimetableData ? (
+              <DashboardSelected />
+            ) : (
+              <DashboardOveriew />
+            )}
           </ProtectedRoutes>
         }
       />
+
       <Route
         path="/classes"
         element={

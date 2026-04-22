@@ -16,7 +16,7 @@ const SelectedTimeTable = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
 
-  const [uiData, setUiData] = useState(UI_RESET);
+  const [uiData, setUiData] = useState({});
 
   const { selectedTimetableData, selectTimeTableData } = useTimeTableSelect();
 

@@ -1,7 +1,7 @@
 import NavbarDesktop from "../../../shared/components/desktopNavigation/NavbarDesktop";
 import "../../../styles/appLayout.css";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Plus } from "lucide-react";
 import DetailsGrid from "../components/detailsGrid/DetailsGrid";
 import styles from "../styles/Dashboard.module.css";
@@ -10,7 +10,7 @@ import TimeTableCreatePopup from "../components/timetablePopups/TimeTableCreateP
 
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import { useTimetableData } from "../hooks/useTimetableData";
-const Dashboard = () => {
+const DashboardOveriew = () => {
   const [isCreateTableOpen, setIsCreateTableOpen] = useState(false);
 
   const {
@@ -94,4 +94,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardOveriew;
