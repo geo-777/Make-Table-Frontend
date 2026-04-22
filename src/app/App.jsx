@@ -20,12 +20,11 @@ function App() {
     <>
       <AppRoutes />
       <ToastContainer
-        position="top-center"
-        autoClose={4000}
+        position="bottom-right"
+        autoClose={2000}
         hideProgressBar={true}
         closeOnClick
         pauseOnHover
-        draggable
         theme="light"
       />
     </>

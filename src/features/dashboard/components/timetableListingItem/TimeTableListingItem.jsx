@@ -23,12 +23,13 @@ listingData of the format {
 }
 */
 const TimeTableListingItem = ({ listingData, editFunction }) => {
-  const { deleteListing } = useTimetableListing();
+  const { deleteListing, setViewStatus } = useTimetableListing();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuIconSize = 14.5;
   const menuIconStrokeWidth = 2;
 
   const menuRef = useRef(null);
+  const changingViewStatus = useRef(false);
   const deletingItem = useRef(false);
 
   //handling clicking out of menu to close menu
@@ -58,6 +59,22 @@ const TimeTableListingItem = ({ listingData, editFunction }) => {
     }
     setMenuVisible(false);
   };
+  // to publish and unpublish stuff
+  const handleViewStatus = async (id, status) => {
+    //guard obviously
+    if (changingViewStatus.current)
+      return console.log("Dont spam the publish u piece of shi");
+
+    changingViewStatus.current = true;
+
+    try {
+      await setViewStatus.mutateAsync({ id: id, data: status });
+    } finally {
+      changingViewStatus.current = false;
+    }
+    setMenuVisible(false);
+  };
+
   return (
     <div className={styles.listing}>
       <div className={styles.mainLeft}>
@@ -84,6 +101,12 @@ const TimeTableListingItem = ({ listingData, editFunction }) => {
       </div>
       <div className={styles.actionBtns}>
         <button
+          onClick={async () =>
+            await handleViewStatus(
+              listingData.id,
+              listingData.type === "Draft" ? "Public" : "Private",
+            )
+          }
           className={`${styles.primaryBtn} ${listingData.type === "Published" ? styles.unpublishBtn : styles.publishedBtn}`}
         >
           {listingData.type === "Draft" ? (

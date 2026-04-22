@@ -42,7 +42,7 @@ const TimeTableListings = ({ type, data }) => {
         <span
           className={`${type.startsWith("Published") ? styles.publishedCount : styles.draftCount}`}
         >
-          <p>1</p>
+          <p>{data.length || 0}</p>
         </span>
       </div>
 

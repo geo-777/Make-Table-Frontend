@@ -4,9 +4,23 @@ import {
   createTimetable,
   patchTimeTable,
   deleteTimeTable,
+  viewStatusTable,
 } from "../../../api/timetables.api";
 import { toast } from "react-toastify";
+
 const useTimetableListing = () => {
+  const handleError = (status) => {
+    if (!status) toast.error("Unknown error occured.");
+
+    if (status >= 500 && status < 600) {
+      toast.error("Internal Server error. Please try again later.");
+    } else if (status === 429) {
+      toast.error("Too many attempts. Try again in a few minutes.");
+    } else {
+      toast.error("Unknown error occured.");
+    }
+  };
+
   const queryClient = useQueryClient();
   //querying read operation
   const query = useQuery({
@@ -16,6 +30,7 @@ const useTimetableListing = () => {
     refetchOnWindowFocus: false,
     retry: 1,
   });
+
   //mutation for creation
   const createListing = useMutation({
     mutationFn: createTimetable,
@@ -40,16 +55,7 @@ const useTimetableListing = () => {
     onError: (error) => {
       //console.log(error);
       const status = error?.response?.status;
-
-      if (!status) toast.error("Unknown error occured.");
-
-      if (status >= 500 && status < 600) {
-        toast.error("Internal Server error. Please try again later.");
-      } else if (status === 429) {
-        toast.error("Too many attempts. Try again in a few minutes.");
-      } else {
-        toast.error("Unknown error occured.");
-      }
+      handleError(status);
     },
   });
   //mutation for deletion
@@ -74,22 +80,14 @@ const useTimetableListing = () => {
       //console.log(error);
       const status = error?.response?.status;
 
-      if (!status) toast.error("Unknown error occured.");
-
-      if (status >= 500 && status < 600) {
-        toast.error("Internal Server error. Please try again later.");
-      } else if (status === 429) {
-        toast.error("Too many attempts. Try again in a few minutes.");
-      } else {
-        toast.error("Unknown error occured.");
-      }
+      handleError(status);
     },
   });
 
   //patching mutation
   const patchListing = useMutation({
     mutationFn: ({ id, data }) => patchTimeTable(id, data),
-    onSuccess: (response, { id, data }) => {
+    onSuccess: (response, { id }) => {
       const editedTimetable = response.data;
 
       queryClient.setQueryData(["timetableListings"], (oldData) => {
@@ -111,18 +109,41 @@ const useTimetableListing = () => {
     },
 
     onError: (error) => {
-      //console.log(error);
       const status = error?.response?.status;
+      handleError(status);
+    },
+  });
 
-      if (!status) toast.error("Unknown error occured.");
+  //publish, unpublish basically
+  const setViewStatus = useMutation({
+    mutationFn: ({ id, data }) => viewStatusTable(id, data),
+    onSuccess: (response, { id }) => {
+      const editedTimetable = response.data;
 
-      if (status >= 500 && status < 600) {
-        toast.error("Internal Server error. Please try again later.");
-      } else if (status === 429) {
-        toast.error("Too many attempts. Try again in a few minutes.");
+      queryClient.setQueryData(["timetableListings"], (oldData) => {
+        if (!oldData?.data) {
+          return queryClient.invalidateQueries({
+            queryKey: ["timetableListings"],
+          });
+        } // safety check
+
+        return {
+          ...oldData,
+          data: oldData.data.map((elm) =>
+            id === elm.id ? editedTimetable : elm,
+          ),
+        };
+      });
+      if (editedTimetable.view_status === "Public") {
+        toast.success("Timetable is now public.");
       } else {
-        toast.error("Unknown error occured.");
+        toast.success("Timetable is now private.");
       }
+    },
+
+    onError: (error) => {
+      const status = error?.response?.status;
+      handleError(status);
     },
   });
 
@@ -131,7 +152,13 @@ const useTimetableListing = () => {
     return { ...query };
   };
 
-  return { readListings, createListing, deleteListing, patchListing };
+  return {
+    readListings,
+    createListing,
+    deleteListing,
+    patchListing,
+    setViewStatus,
+  };
 };
 
 export default useTimetableListing;

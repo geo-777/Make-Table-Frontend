@@ -14,3 +14,7 @@ export const deleteTimeTable = async (id) => {
 export const patchTimeTable = async (id, data) => {
   return axiosInstance.patch(`/timetables/${id}`, data);
 };
+
+export const viewStatusTable = async (id, status) => {
+  return axiosInstance.patch(`/timetables/${id}`, { view_status: status });
+};
