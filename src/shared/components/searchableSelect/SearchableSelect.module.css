@@ -26,15 +26,18 @@
 .selectContainer p {
   font-size: 0.875rem;
   color: var(--color-grey-500);
+  margin: 0;
 }
 
 .chevron {
   transition: transform 0.2s ease;
+  color: var(--color-grey-500);
 }
 
 .chevronOpen {
   transition: transform 0.2s ease;
   transform: rotate(180deg);
+  color: var(--color-grey-500);
 }
 
 .dropdown {
@@ -78,9 +81,14 @@
   max-height: 220px;
   overflow-y: auto;
   padding: 0.25rem 0;
+  margin: 0;
+  list-style: none;
 }
 
 .option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0.5rem 0.75rem;
   margin: 0 0.25rem;
   border-radius: 6px;
@@ -92,6 +100,15 @@
 
 .option:hover {
   background: var(--color-grey-100);
+}
+
+.option span {
+  flex: 1;
+}
+
+.checkIcon {
+  color: var(--color-grey-700);
+  margin-left: 0.5rem;
 }
 
 .empty {

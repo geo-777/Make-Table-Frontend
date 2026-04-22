@@ -3,7 +3,7 @@ import SearchableSelect from "../../../../shared/components/searchableSelect/Sea
 const ClassTimetable = () => {
   const MOCK_DATA = [
     { label: "S! CSE", value: 1 },
-    { label: "S2 CSE", value: 1 },
+    { label: "S2 CSE", value: 2 },
   ];
   return (
     <div className={styles.main}>
@@ -12,6 +12,7 @@ const ClassTimetable = () => {
           options={MOCK_DATA}
           initialPlaceholder={"Select class"}
           setValue={() => {}}
+          value={MOCK_DATA[0].value}
         />
       </div>
     </div>
