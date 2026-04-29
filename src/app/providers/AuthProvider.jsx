@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState, useCallback } from "react";
 import { checkLoggedIn, refresh, logoutAxiosRequest } from "../../api/auth.api";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -6,25 +6,33 @@ const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
   const isRefreshing = useRef(false);
   const isInitialized = useRef(false);
-  const confirmLogin = (username) => {
-    setUser(username);
-    setIsAuthenticated(true);
+  const refreshQueue = useRef([]);
+
+  const processQueue = (error) => {
+    refreshQueue.current.forEach(({ resolve, reject }) => {
+      if (error) reject(error);
+      else resolve();
+    });
+    refreshQueue.current = [];
   };
 
-  const logout = async () => {
+  const confirmLogin = useCallback((username) => {
+    setUser(username);
+  }, []);
+
+  const logout = useCallback(async () => {
     try {
       await logoutAxiosRequest();
     } catch (error) {
-      console.log(error);
+      console.error("Logout request failed:", error);
     } finally {
       setUser(null);
-      setIsAuthenticated(false);
     }
-  };
+  }, []);
 
   const fetchCurrentUser = async () => {
     const response = await checkLoggedIn();
@@ -32,48 +40,65 @@ const AuthProvider = ({ children }) => {
   };
 
   const refreshToken = async () => {
-    console.log("REFRESHING TOKEN!!");
     await refresh();
     return fetchCurrentUser();
   };
+
   const initAuth = async () => {
     if (isInitialized.current) return;
+    isInitialized.current = true;
     try {
-      isInitialized.current = true;
       const username = await fetchCurrentUser();
       confirmLogin(username);
-    } catch (error) {
-      await logout();
-      isInitialized.current = false;
+    } catch {
+      try {
+        const username = await refreshToken();
+        confirmLogin(username);
+      } catch {
+        await logout();
+        isInitialized.current = false;
+      }
     } finally {
       setIsLoading(false);
     }
   };
-  // handling intercepting and initing
+
   useEffect(() => {
+    const logoutRef = { current: logout };
+    const confirmLoginRef = { current: confirmLogin };
+
     const interceptor = axiosInstance.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
 
-        if (isRefreshing.current) return Promise.reject(error);
-
-        if (originalRequest.url.includes("/refresh")) {
-          await logout();
+        if (originalRequest.url?.includes("/refresh")) {
+          await logoutRef.current();
           return Promise.reject(error);
         }
 
         if (error?.response?.status === 401 && !originalRequest._retry) {
-          isRefreshing.current = true;
           originalRequest._retry = true;
+
+          if (isRefreshing.current) {
+            return new Promise((resolve, reject) => {
+              refreshQueue.current.push({ resolve, reject });
+            })
+              .then(() => axiosInstance(originalRequest))
+              .catch((queueError) => Promise.reject(queueError));
+          }
+
+          isRefreshing.current = true;
 
           try {
             await refresh();
+            processQueue(null);
             isRefreshing.current = false;
             return axiosInstance(originalRequest);
           } catch (refreshError) {
-            await logout();
+            processQueue(refreshError);
             isRefreshing.current = false;
+            await logoutRef.current();
             return Promise.reject(refreshError);
           }
         }
@@ -81,6 +106,10 @@ const AuthProvider = ({ children }) => {
         return Promise.reject(error);
       },
     );
+
+    logoutRef.current = logout;
+    confirmLoginRef.current = confirmLogin;
+
     initAuth();
 
     return () => axiosInstance.interceptors.response.eject(interceptor);
@@ -88,14 +117,18 @@ const AuthProvider = ({ children }) => {
 
   const value = {
     user,
-    isAuthenticated,
+    isAuthenticated: !!user,
     isLoading,
     confirmLogin,
     logout,
     refreshToken,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
