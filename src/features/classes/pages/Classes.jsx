@@ -1,4 +1,3 @@
-import NavbarDesktop from "../../../shared/components/desktopNavigation/NavbarDesktop";
 import Topbar from "../../../shared/components/topbar/Topbar";
 import "../../../styles/appLayout.css";
 import { Plus, Download, List, Grid2x2 } from "lucide-react";
@@ -29,7 +28,6 @@ const Classes = () => {
   const { activeView, setActiveView } = useClassesView();
   return (
     <div className="App">
-      <NavbarDesktop />
       <CreateClassPopup
         closePopup={() => setCreateClassOpen(false)}
         visible={isCreateClassOpen}
