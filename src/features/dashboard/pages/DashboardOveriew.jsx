@@ -9,6 +9,9 @@ import TimeTableListings from "../components/timetableListingsGrid/TimeTableList
 import TimeTableCreatePopup from "../components/timetablePopups/TimeTableCreatePopup";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import { useTimetableData } from "../hooks/useTimetableData";
+import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
+import DashboardSelected from "./DashboardSelected";
+
 const DashboardOveriew = () => {
   const [isCreateTableOpen, setIsCreateTableOpen] = useState(false);
 
@@ -21,6 +24,9 @@ const DashboardOveriew = () => {
     isFetchSuccess,
     listingFetchError,
   } = useTimetableData();
+  const { selectedTimetableData } = useTimeTableSelect();
+
+  if (selectedTimetableData) return <DashboardSelected />;
 
   return (
     <div className="App">

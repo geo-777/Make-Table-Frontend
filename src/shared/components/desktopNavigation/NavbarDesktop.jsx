@@ -12,7 +12,7 @@ import {
 import SelectedTimeTable from "../selectedTimeTable/SelectedTimeTable";
 import useNavStore from "../../zustand/navStore";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
 
 const NavbarDesktop = () => {
   const navigate = useNavigate();
@@ -39,69 +39,75 @@ const NavbarDesktop = () => {
 
   const ifCollapsedStyle = { display: navbarCollapsed ? "none" : "block" };
   return (
-    <div
-      className={styles.navbar}
-      style={{ width: navbarCollapsed ? "60px" : "290px" }}
-    >
-      <div className={styles.top}>
-        <div className={styles.logo}>
-          <span>
-            <Calendar size={18} />
-          </span>
-          <p style={ifCollapsedStyle}>MakeTable</p>
-        </div>
-
-        <SelectedTimeTable />
-
-        <div className={styles.menu}>
-          <h4 style={ifCollapsedStyle}>MENU</h4>
-          <div className={styles.linkGroup}>
-            {mainLinks.map((elm, i) => {
-              return (
-                <div
-                  key={i}
-                  className={`${styles.linkItem} ${
-                    currentPath.startsWith(elm.text.toLowerCase()) ||
-                    currentPath.trim() === ""
-                      ? styles.selected
-                      : ""
-                  }`}
-                  onClick={() => {
-                    navigate(`/${elm?.alt || elm.text.toLowerCase()}`);
-                  }}
-                >
-                  {elm.logo} <p style={ifCollapsedStyle}>{elm.text}</p>
-                </div>
-              );
-            })}
+    <div style={{ display: "flex", height: "100vh" }}>
+      <div
+        className={styles.navbar}
+        style={{ width: navbarCollapsed ? "60px" : "290px" }}
+      >
+        <div className={styles.top}>
+          <div className={styles.logo}>
+            <span>
+              <Calendar size={18} />
+            </span>
+            <p style={ifCollapsedStyle}>MakeTable</p>
           </div>
-          <div className={styles.seperator}></div>
-          <div className={styles.linkGroup}>
-            {extraLinks.map((elm, i) => {
-              return (
-                <div
-                  key={i}
-                  className={`${styles.linkItem} ${
-                    currentPath.startsWith(elm.text.toLowerCase()) ||
-                    currentPath.trim() === "" ||
-                    currentPath.startsWith(elm?.alt)
-                      ? styles.selected
-                      : ""
-                  }`}
-                  onClick={() => {
-                    navigate(`/${elm?.alt || elm.text.toLowerCase()}`);
-                  }}
-                >
-                  {elm.logo} <p style={ifCollapsedStyle}>{elm.text}</p>
-                </div>
-              );
-            })}
+
+          <SelectedTimeTable />
+
+          <div className={styles.menu}>
+            <h4 style={ifCollapsedStyle}>MENU</h4>
+            <div className={styles.linkGroup}>
+              {mainLinks.map((elm, i) => {
+                return (
+                  <div
+                    key={i}
+                    className={`${styles.linkItem} ${
+                      currentPath.startsWith(elm.text.toLowerCase()) ||
+                      currentPath.trim() === ""
+                        ? styles.selected
+                        : ""
+                    }`}
+                    onClick={() => {
+                      navigate(`/${elm?.alt || elm.text.toLowerCase()}`);
+                    }}
+                  >
+                    {elm.logo} <p style={ifCollapsedStyle}>{elm.text}</p>
+                  </div>
+                );
+              })}
+            </div>
+            <div className={styles.seperator}></div>
+            <div className={styles.linkGroup}>
+              {extraLinks.map((elm, i) => {
+                return (
+                  <div
+                    key={i}
+                    className={`${styles.linkItem} ${
+                      currentPath.startsWith(elm.text.toLowerCase()) ||
+                      currentPath.trim() === "" ||
+                      currentPath.startsWith(elm?.alt)
+                        ? styles.selected
+                        : ""
+                    }`}
+                    onClick={() => {
+                      navigate(`/${elm?.alt || elm.text.toLowerCase()}`);
+                    }}
+                  >
+                    {elm.logo} <p style={ifCollapsedStyle}>{elm.text}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
+        <footer className={styles.bottom} style={ifCollapsedStyle}>
+          <p>&copy; {new Date().getFullYear()} MakeTable</p>
+        </footer>
       </div>
-      <footer className={styles.bottom} style={ifCollapsedStyle}>
-        <p>&copy; {new Date().getFullYear()} MakeTable</p>
-      </footer>
+
+      <main style={{ flex: 1, overflowY: "auto" }}>
+        <Outlet />
+      </main>
     </div>
   );
 };
