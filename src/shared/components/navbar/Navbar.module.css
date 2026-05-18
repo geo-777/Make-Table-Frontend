@@ -19,7 +19,6 @@
   background-color: #fff;
   width: 290px;
   transition: width 0.25s ease-in-out;
-  overflow: hidden;
   flex-shrink: 0;
 }
 
