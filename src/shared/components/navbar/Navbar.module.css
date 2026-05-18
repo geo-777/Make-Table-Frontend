@@ -1,0 +1,192 @@
+/* ─── Layout wrapper ─────────────────────────── */
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ─── Navbar shell ────────────────────────────────────── */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+  border-right: 0.5px solid var(--color-grey-100);
+  background-color: #fff;
+  width: 290px;
+  transition: width 0.25s ease-in-out;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* ─── Sections ───────────────────────────────────────────────── */
+.top {
+  padding-block: 1rem;
+}
+
+.bottom {
+  padding: 1rem;
+  color: var(--sidebar-foreground);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* ─── Logo ─────────────────────────────────────────────── */
+.logo {
+  cursor: pointer;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding-inline: 1rem;
+  white-space: nowrap;
+}
+
+.logo p {
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.logoIcon {
+  color: var(--background);
+  background-image: var(--gradient-primary);
+  flex-shrink: 0;
+  padding: 0.35rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Menu ────────────────────────────────────────── */
+.menu {
+  margin-top: 1.5rem;
+  color: var(--sidebar-foreground);
+}
+
+.menuHeading {
+  padding-inline: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.linkGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-inline: 0.8rem;
+}
+
+.linkItem {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: 15px;
+  padding: 0.5rem 0.3rem 0.5rem 0.5rem;
+  border-radius: 0.3125rem;
+  font-weight: 450;
+  white-space: nowrap;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.linkItem svg {
+  flex-shrink: 0;
+}
+
+.linkItem p {
+  margin: 0;
+}
+
+.linkItem:hover {
+  background-color: #e9ebef;
+  color: var(--color-grey-900);
+}
+
+.selected,
+.selected:hover {
+  color: var(--sidebar-accent-foreground);
+  background-color: var(--sidebar-accent);
+}
+
+/* ─── Separator ──────────────────────────────────────────────── */
+.separator {
+  background-color: var(--color-grey-100);
+  height: 1px;
+  margin: 1rem;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE  (≤ 615px)
+════════════════════════════════════════════════════════════════ */
+@media (max-width: 615px) {
+  .navbar {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    width: 100% !important;
+    background-color: transparent;
+    border-right: none;
+    pointer-events: none;
+    transition: none;
+  }
+
+  .navbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .navbar.open {
+    pointer-events: auto;
+  }
+
+  .navbar.open::before {
+    opacity: 1;
+  }
+  .top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 290px;
+    background-color: #fff;
+    border-right: 0.5px solid var(--color-grey-100);
+    transform: translateX(-100%);
+    transition: transform 0.25s ease-in-out;
+    overflow-y: auto;
+    padding-block: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .navbar.open .top {
+    transform: translateX(0);
+  }
+
+  .bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 290px;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease-in-out;
+    background-color: #fff;
+    border-top: 0.5px solid var(--color-grey-100);
+  }
+
+  .navbar.open .bottom {
+    transform: translateX(0);
+  }
+}
