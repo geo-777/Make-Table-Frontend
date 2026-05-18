@@ -7,6 +7,7 @@ body {
   flex-direction: row;
   gap: 0rem;
   width: 100%;
+  height: 100%;
 }
 .mainPlaceholder {
   width: 100%;

@@ -1,4 +1,5 @@
 import styles from "./Navbar.module.css";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 import {
   Calendar,
   LayoutDashboard,
@@ -32,14 +33,16 @@ const EXTRA_LINKS = [
   },
 ];
 
-const Navbar = ({ variant = "desktop" }) => {
+const Navbar = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const currentPath = pathname.replace("/", "");
 
+  const { width } = useWindowDimensions();
+  const isMobile = width <= 615;
+
   const { navbarCollapsed, mobileNavOpen, setMobNav } = useNavStore();
 
-  const isMobile = variant === "mobile";
   const isCollapsed = !isMobile && navbarCollapsed;
   const hideText = isMobile ? false : isCollapsed;
 
@@ -65,39 +68,43 @@ const Navbar = ({ variant = "desktop" }) => {
     ));
 
   const nav = (
-    <div
-      className={[styles.navbar, isMobile && mobileNavOpen ? styles.open : ""]
-        .join(" ")
-        .trim()}
-      style={!isMobile ? { width: isCollapsed ? "60px" : "290px" } : undefined}
-      onClick={isMobile ? () => setMobNav(false) : undefined}
-    >
-      <div className={styles.top}>
-        <div className={styles.logo}>
-          <span className={styles.logoIcon}>
-            <Calendar size={ICON_SIZE} />
-          </span>
-          {!hideText && <p>MakeTable</p>}
+    <>
+      <div
+        className={[styles.navbar, isMobile && mobileNavOpen ? styles.open : ""]
+          .join(" ")
+          .trim()}
+        style={!isMobile ? { width: isCollapsed ? "60px" : "290px" } : undefined}
+        onClick={isMobile ? () => setMobNav(false) : undefined}
+      >
+        <div className={styles.top}>
+          <div className={styles.logo}>
+            <span className={styles.logoIcon}>
+              <Calendar size={ICON_SIZE} />
+            </span>
+            {!hideText && <p>MakeTable</p>}
+          </div>
+
+          <div onClick={isMobile ? (e) => e.stopPropagation() : undefined}>
+            <SelectedTimeTable />
+          </div>
+
+          <div className={styles.menu}>
+            {!hideText && <h4 className={styles.menuHeading}>MENU</h4>}
+            <div className={styles.linkGroup}>{renderLinks(MAIN_LINKS)}</div>
+            <div className={styles.separator} />
+            <div className={styles.linkGroup}>{renderLinks(EXTRA_LINKS)}</div>
+          </div>
         </div>
 
-        <div onClick={isMobile ? (e) => e.stopPropagation() : undefined}>
-          <SelectedTimeTable />
-        </div>
-
-        <div className={styles.menu}>
-          {!hideText && <h4 className={styles.menuHeading}>MENU</h4>}
-          <div className={styles.linkGroup}>{renderLinks(MAIN_LINKS)}</div>
-          <div className={styles.separator} />
-          <div className={styles.linkGroup}>{renderLinks(EXTRA_LINKS)}</div>
-        </div>
+        {!hideText && (
+          <footer className={styles.bottom}>
+            <p>&copy; {new Date().getFullYear()} MakeTable</p>
+          </footer>
+        )}
       </div>
 
-      {!hideText && (
-        <footer className={styles.bottom}>
-          <p>&copy; {new Date().getFullYear()} MakeTable</p>
-        </footer>
-      )}
-    </div>
+      <Outlet />
+    </>
   );
 
   if (isMobile) return nav;

@@ -4,7 +4,6 @@ import { useAuth } from "../../../app/providers/AuthProvider";
 import ProfileDropdown from "../profileDropDown/ProfileDropDown";
 import { useState, useRef, useEffect } from "react";
 import useNavStore from "../../zustand/navStore";
-import NavbarMobile from "../mobileNavigation/NavbarMobile";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 const Topbar = ({ page }) => {
   const { toggleNavbar, toggleMobileNav, mobileNavOpen, setMobNav } =
@@ -43,7 +42,6 @@ const Topbar = ({ page }) => {
         className="popup_overlay"
         onClick={() => setMobNav(false)}
       ></div>
-      <NavbarMobile />
       <div className={styles.left}>
         <span className={styles.navToggle} onClick={toggleNavHandler}>
           <PanelLeft size={17} />
