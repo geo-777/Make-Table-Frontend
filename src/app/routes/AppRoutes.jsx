@@ -4,9 +4,8 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import PublicRoutes from "./PublicRoutes";
 import Navbar from "../../shared/components/navbar/Navbar";
 
-// Placeholders
+// Placeholder
 const PageLoader = () => ( <div> Loading... </div> );
-const NotFound = () => <div> Error 404 </div>;
 
 const Login              = lazy(() => import("../../features/auth/pages/Login"));
 const LandingPage        = lazy(() => import("../../pages/landingPage/LandingPage"));
@@ -17,6 +16,7 @@ const Subjects           = lazy(() => import("../../features/subjects/pages/Subj
 const Teachers           = lazy(() => import("../../features/teachers/pages/Teachers"));
 const Settings           = lazy(() => import("../../features/settings/Settings"));
 const HelpSupport        = lazy(() => import("../../pages/help&support/HelpSupport"));
+const Error404           = lazy(() => import("../../pages/error/Error404"));
 
 export default function AppRoutes() {
   return (
@@ -37,7 +37,7 @@ export default function AppRoutes() {
           <Route path="/helpsupport" element={<ProtectedRoutes><HelpSupport /></ProtectedRoutes>} />
         </Route>
 
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </Suspense>
   );
