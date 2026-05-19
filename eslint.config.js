@@ -6,16 +6,39 @@ import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
   globalIgnores(["dist"]),
+
   {
-    files: ["**/*.{js,jsx}"], // changed from ts,tsx
+    files: ["**/*.{js,jsx}"],
+
     extends: [
       js.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
+
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      ecmaVersion: "latest",
+      sourceType: "module",
+
+      globals: {
+        ...globals.browser,
+      },
+    },
+
+    rules: {
+      "no-undef": "error",
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-use-before-define": "error",
+
+      "no-implicit-coercion": "error",
+
+      "no-var": "error",
+      "prefer-const": "error",
+
+      "require-await": "error",
+
+      "no-return-await": "error",
+      "no-implied-eval": "error",
     },
   },
 ]);
