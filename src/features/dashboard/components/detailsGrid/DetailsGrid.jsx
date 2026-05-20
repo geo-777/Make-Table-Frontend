@@ -1,5 +1,5 @@
 import styles from "./DetailsGrid.module.css";
-import { Table, CircleCheck, Pencil } from "lucide-react";
+import { Table2, CircleCheck, Pencil } from "lucide-react";
 
 const DetailsGrid = ({ data }) => {
   const iconSize = 20;
@@ -8,7 +8,7 @@ const DetailsGrid = ({ data }) => {
     <div className={styles.detailsGrid}>
       <div className={styles.gridItem}>
         <div className={styles.detailsGrid__icon}>
-          <Table size={iconSize} strokeWidth={iconStrokeWidth} />
+          <Table2 size={iconSize} strokeWidth={iconStrokeWidth} />
         </div>
         <div className={styles.detailsGrid__info}>
           <p>Total Timetables</p>

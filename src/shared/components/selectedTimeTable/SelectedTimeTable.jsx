@@ -1,5 +1,5 @@
 import styles from "./SelectedTimeTable.module.css";
-import { Table, ChevronDown, Check } from "lucide-react";
+import { Table2, ChevronDown, Check } from "lucide-react";
 import useNavStore from "../../zustand/navStore";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { useTimetableData } from "../../../features/dashboard/hooks/useTimetableData";
@@ -105,7 +105,7 @@ const SelectedTimeTable = () => {
         {" "}
         <Menu />
         <div className={styles.collapsedIcon}>
-          <Table size={18} />
+          <Table2 size={18} />
         </div>
       </div>
     );
@@ -118,8 +118,8 @@ const SelectedTimeTable = () => {
       <Menu />
 
       <div className={styles.selectedTimeTable__left}>
-        <span>
-          <Table size={18} />
+        <span className={styles.iconWrapper}>
+          <Table2 size={18} />
         </span>
         <div className={styles.selectedTimeTable__Info}>
           <h4>{uiData.header}</h4>
