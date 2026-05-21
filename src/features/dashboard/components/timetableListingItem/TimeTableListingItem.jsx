@@ -14,6 +14,7 @@ import DropDownMenu from "../../../../shared/components/dropDownMenu/DropDownMen
 import { useEffect, useRef } from "react";
 import useTimetableListing from "../../hooks/useTimetableListing";
 import useTimeTableSelect from "../../../../shared/zustand/timetableSelectStore.js";
+import { motion, AnimatePresence } from "framer-motion";
 /*
 listingData of the format {
     name : "Timetable name"
@@ -78,91 +79,93 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
   };
 
   return (
-    <div className={styles.listing}>
-      <div className={styles.mainLeft}>
-        <div className={styles.icon}>{listingData.name[0].toUpperCase()}</div>
-        <div className={styles.listingInfo}>
-          <h4>
-            {listingData.name}
-            <span
-              className={`${styles.typeIcon} ${listingData.type === "Published" ? styles.publishedLabel : styles.draftLabel}`}
-            >
-              {listingData.type === "Published" && (
-                <CircleCheck size={12} strokeWidth={2} />
-              )}
-              {listingData.type === "Draft" && (
-                <ClockFading size={12} strokeWidth={1.75} />
-              )}
-              {listingData.type}
-            </span>
-          </h4>
-          <p>
-            {listingData.days} days · {listingData.slots} slots
-          </p>
+    <>
+      <motion.div className={styles.listing}>
+        <div className={styles.mainLeft}>
+          <div className={styles.icon}>{listingData.name[0].toUpperCase()}</div>
+          <div className={styles.listingInfo}>
+            <h4>
+              {listingData.name}
+              <span
+                className={`${styles.typeIcon} ${listingData.type === "Published" ? styles.publishedLabel : styles.draftLabel}`}
+              >
+                {listingData.type === "Published" && (
+                  <CircleCheck size={12} strokeWidth={2} />
+                )}
+                {listingData.type === "Draft" && (
+                  <ClockFading size={12} strokeWidth={1.75} />
+                )}
+                {listingData.type}
+              </span>
+            </h4>
+            <p>
+              {listingData.days} days · {listingData.slots} slots
+            </p>
+          </div>
         </div>
-      </div>
-      <div className={styles.actionBtns}>
-        <button
-          onClick={async () =>
-            await handleViewStatus(
-              listingData.id,
-              listingData.type === "Draft" ? "Public" : "Private",
-            )
-          }
-          className={`${styles.primaryBtn} ${listingData.type === "Published" ? styles.unpublishBtn : styles.publishedBtn}`}
-        >
-          {listingData.type === "Draft" ? (
-            <>
-              <Check size={16} /> <p>Publish </p>
-            </>
-          ) : (
-            <>
-              <RefreshCcw size={16} /> <p>Unpublish </p>
-            </>
-          )}
-        </button>
-        <div className={styles.extraMenu} ref={menuRef}>
+        <div className={styles.actionBtns}>
           <button
-            className={styles.threeDots}
-            onClick={() => setMenuVisible((prev) => !prev)}
+            onClick={async () =>
+              await handleViewStatus(
+                listingData.id,
+                listingData.type === "Draft" ? "Public" : "Private",
+              )
+            }
+            className={`${styles.primaryBtn} ${listingData.type === "Published" ? styles.unpublishBtn : styles.publishedBtn}`}
           >
-            <EllipsisVertical size={18} />
+            {listingData.type === "Draft" ? (
+              <>
+                <Check size={16} /> <p>Publish </p>
+              </>
+            ) : (
+              <>
+                <RefreshCcw size={16} /> <p>Unpublish </p>
+              </>
+            )}
           </button>
-          <DropDownMenu
-            key={`${listingData.id}-dropdown`}
-            visible={menuVisible}
-            top={"2.6rem"}
-            right={"1rem"}
-          >
-            <div
-              className={styles.dropDownItem}
-              onClick={() => selectTimeTableData(fullData)}
+          <div className={styles.extraMenu} ref={menuRef}>
+            <button
+              className={styles.threeDots}
+              onClick={() => setMenuVisible((prev) => !prev)}
             >
-              <Eye size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
-              <p>Open</p>
-            </div>
-            <div
-              className={styles.dropDownItem}
-              onClick={() => {
-                editFunction(listingData.id);
-                setMenuVisible(false);
-              }}
+              <EllipsisVertical size={18} />
+            </button>
+            <DropDownMenu
+              key={`${listingData.id}-dropdown`}
+              visible={menuVisible}
+              top={"2.6rem"}
+              right={"1rem"}
             >
-              <Pencil size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
-              <p>Edit</p>
-            </div>
-            <div className={styles.seperator}></div>
-            <div
-              className={`${styles.dropDownItem} ${styles.deleteBtn}`}
-              onClick={() => handleDeletion(listingData.id)}
-            >
-              <Trash2 size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
-              <p>Delete</p>
-            </div>
-          </DropDownMenu>
+              <div
+                className={styles.dropDownItem}
+                onClick={() => selectTimeTableData(fullData)}
+              >
+                <Eye size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
+                <p>Open</p>
+              </div>
+              <div
+                className={styles.dropDownItem}
+                onClick={() => {
+                  editFunction(listingData.id);
+                  setMenuVisible(false);
+                }}
+              >
+                <Pencil size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
+                <p>Edit</p>
+              </div>
+              <div className={styles.seperator}></div>
+              <div
+                className={`${styles.dropDownItem} ${styles.deleteBtn}`}
+                onClick={() => handleDeletion(listingData.id)}
+              >
+                <Trash2 size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
+                <p>Delete</p>
+              </div>
+            </DropDownMenu>
+          </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import styles from "./SelectedTimeTable.module.css";
-import { Table2, ChevronDown, Check } from "lucide-react";
+import { Table2, ChevronDown, Check, Table } from "lucide-react";
 import useNavStore from "../../zustand/navStore";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { useTimetableData } from "../../../features/dashboard/hooks/useTimetableData";

@@ -7,6 +7,7 @@ import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable
 import ClassTimetable from "../components/timeTables/ClassTimetable";
 import TeacherTimetable from "../components/timeTables/TeacherTimetable";
 import { useState } from "react";
+
 const VIEW_STATUS = {
   Public: "Published",
   Private: "Private",
@@ -18,7 +19,6 @@ const DashboardSelected = () => {
 
   return (
     <div className="App">
-
       <div className="mainPlaceholder">
         <Topbar page={"Dashboard"} />
 
