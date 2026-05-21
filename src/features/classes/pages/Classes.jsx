@@ -7,6 +7,8 @@ import GridView from "../components/views/GridView";
 import ListView from "../components/views/ListView";
 import { useState } from "react";
 import CreateClassPopup from "../components/popups/CreateClassPopup";
+import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
+import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 const Classes = () => {
   const [isCreateClassOpen, setCreateClassOpen] = useState(false);
   let mockData = [
@@ -26,6 +28,8 @@ const Classes = () => {
     },
   ];
   const { activeView, setActiveView } = useClassesView();
+
+  const { selectedTimetableData } = useTimeTableSelect();
   return (
     <div className="App">
       <CreateClassPopup
@@ -72,8 +76,21 @@ const Classes = () => {
         </header>
 
         <div className={`main `}>
-          {activeView === "list" && <ListView data={mockData} />}
-          {activeView === "grid" && <GridView data={mockData} />}
+          {activeView === "list" && selectedTimetableData && (
+            <ListView data={mockData} />
+          )}
+          {activeView === "grid" && selectedTimetableData && (
+            <GridView data={mockData} />
+          )}
+
+          {!selectedTimetableData && (
+            <StatusWrapper isError={true}>
+              <div className={styles.error404}>
+                <h4>No timetable selected yet</h4>
+                <p>Select a timetable from the workspace selector above.</p>
+              </div>
+            </StatusWrapper>
+          )}
         </div>
       </div>
     </div>

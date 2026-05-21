@@ -1,13 +1,9 @@
-ANIMATION (MUST)
+Phase 1 :
+Classes
+Animations
+Refactoring
 
-REFACTOR
-
-Then classes..
-refactor again
-
-subjects..
-refactor again.
-
-repeat
-
-shit is gonna take a while :/
+Phase 2 :
+Subjects
+Teachers
+Assignments
