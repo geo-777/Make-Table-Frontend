@@ -73,7 +73,9 @@ const Navbar = () => {
         className={[styles.navbar, isMobile && mobileNavOpen ? styles.open : ""]
           .join(" ")
           .trim()}
-        style={!isMobile ? { width: isCollapsed ? "60px" : "290px" } : undefined}
+        style={
+          !isMobile ? { width: isCollapsed ? "60px" : "290px" } : undefined
+        }
         onClick={isMobile ? () => setMobNav(false) : undefined}
       >
         <div className={styles.top}>
@@ -102,8 +104,6 @@ const Navbar = () => {
           </footer>
         )}
       </div>
-
-      <Outlet />
     </>
   );
 

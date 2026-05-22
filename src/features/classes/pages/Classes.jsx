@@ -30,6 +30,16 @@ const Classes = () => {
   const { activeView, setActiveView } = useClassesView();
 
   const { selectedTimetableData } = useTimeTableSelect();
+
+  if (!selectedTimetableData) {
+    return (
+      <div className={styles.error404}>
+        <h4>No timetable selected yet</h4>
+        <p>Select a timetable from the workspace selector above.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <CreateClassPopup
@@ -42,7 +52,10 @@ const Classes = () => {
         <header className="header">
           <div className="headings">
             <h4>Classes</h4>
-            <p>Define class entities for S1 CSE 2025</p>
+            <p>
+              Define class entities for{" "}
+              {selectedTimetableData?.name || "unknown"}
+            </p>
           </div>
           <div className="right-panel">
             <div className="secondary-btns-container">
