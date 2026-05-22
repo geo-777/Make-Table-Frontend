@@ -8,6 +8,7 @@ import ListView from "../components/views/ListView";
 import { useState } from "react";
 import CreateClassPopup from "../components/popups/CreateClassPopup";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
+import useClasses from "../hooks/useClasses";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 const Classes = () => {
   const [isCreateClassOpen, setCreateClassOpen] = useState(false);
@@ -31,9 +32,16 @@ const Classes = () => {
 
   const { selectedTimetableData } = useTimeTableSelect();
 
+  const {
+    data: listings,
+    isPending,
+    isError,
+    isSuccess,
+    error,
+  } = useClasses(selectedTimetableData?.id || undefined);
   if (!selectedTimetableData) {
     return (
-      <div className={styles.error404}>
+      <div className={styles.inactiveState}>
         <h4>No timetable selected yet</h4>
         <p>Select a timetable from the workspace selector above.</p>
       </div>
@@ -89,20 +97,12 @@ const Classes = () => {
         </header>
 
         <div className={`main `}>
-          {activeView === "list" && selectedTimetableData && (
-            <ListView data={mockData} />
+          {isPending && <StatusWrapper loader={true} />}
+          {activeView === "list" && isSuccess && (
+            <ListView data={listings?.data || []} />
           )}
-          {activeView === "grid" && selectedTimetableData && (
-            <GridView data={mockData} />
-          )}
-
-          {!selectedTimetableData && (
-            <StatusWrapper isError={true}>
-              <div className={styles.error404}>
-                <h4>No timetable selected yet</h4>
-                <p>Select a timetable from the workspace selector above.</p>
-              </div>
-            </StatusWrapper>
+          {activeView === "grid" && isSuccess && (
+            <GridView data={listings?.data || []} />
           )}
         </div>
       </div>
