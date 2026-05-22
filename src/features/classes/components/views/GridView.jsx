@@ -1,10 +1,14 @@
 import styles from "../../styles/Classes.module.css";
 import { Pencil, Trash2 } from "lucide-react";
-
+import useClasses from "../../hooks/useClasses";
+import EditClassPopup from "../popups/EditClassPopup";
+import { useState } from "react";
 // individual grid items.
-const GridItem = ({ data }) => {
+const GridItem = ({ data, openEditPopup }) => {
   const actionbtnSize = 16;
   const actionbtnStroke = 1.75;
+  const { deleteListing } = useClasses();
+
   return (
     <div className={styles.gridItem}>
       <div className={styles.gridItem__header}>
@@ -20,11 +24,17 @@ const GridItem = ({ data }) => {
       </div>
 
       <div className={styles.gridItem__actionbtns}>
-        <button className={styles.actionBtn}>
+        <button
+          className={styles.actionBtn}
+          onClick={() => openEditPopup(data.id)}
+        >
           <Pencil size={actionbtnSize} strokeWidth={actionbtnStroke} />
           <p>Edit</p>
         </button>
-        <button className={`${styles.actionBtn} ${styles.deleteBtn}`}>
+        <button
+          className={`${styles.actionBtn} ${styles.deleteBtn}`}
+          onClick={async () => deleteListing.mutateAsync(data.id)}
+        >
           <Trash2 size={actionbtnSize} strokeWidth={actionbtnStroke} />
           <p>Delete</p>
         </button>
@@ -42,12 +52,31 @@ data object structure :
       created_at: "2026-04-10T10:44:53.876Z",
 */
 const GridView = ({ data }) => {
+  const [existingData, setExistingData] = useState({});
+  const [editPopupOpen, setEditPopupOpen] = useState(false);
+  const openEditPopup = (id) => {
+    const itemToEdit = data.find((e) => e.id === id);
+    if (!itemToEdit) return;
+
+    setExistingData(itemToEdit);
+    setEditPopupOpen(true);
+  };
   return (
-    <div className={styles.gridContainer}>
-      {data.map((e, i) => (
-        <GridItem data={e} key={i} />
-      ))}
-    </div>
+    <>
+      <EditClassPopup
+        visible={editPopupOpen}
+        existingData={existingData}
+        closePopup={() => {
+          setEditPopupOpen(false);
+          setExistingData({});
+        }}
+      />
+      <div className={styles.gridContainer}>
+        {data.map((e, i) => (
+          <GridItem openEditPopup={openEditPopup} data={e} key={i} />
+        ))}
+      </div>
+    </>
   );
 };
 

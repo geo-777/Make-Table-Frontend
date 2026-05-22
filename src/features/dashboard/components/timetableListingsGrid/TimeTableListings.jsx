@@ -17,7 +17,7 @@ const TimeTableListings = ({ type, data }) => {
   };
 
   return (
-    <div className={`${styles.timetableListings} stagger-children`}>
+    <div className={`${styles.timetableListings} `}>
       <TimeTableEditPopup
         closePopup={() => {
           setIsEditTableOpen(false);

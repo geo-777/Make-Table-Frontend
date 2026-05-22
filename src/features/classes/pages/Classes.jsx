@@ -12,22 +12,7 @@ import useClasses from "../hooks/useClasses";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 const Classes = () => {
   const [isCreateClassOpen, setCreateClassOpen] = useState(false);
-  let mockData = [
-    {
-      id: 0,
-      class_name: "S1 CSE",
-      room_name: "string",
-      isLab: false,
-      created_at: "2026-04-10T10:44:53.876Z",
-    },
-    {
-      id: 0,
-      class_name: "S3 CSE",
-      room_name: "string",
-      isLab: true,
-      created_at: "2026-04-10T10:44:53.876Z",
-    },
-  ];
+
   const { activeView, setActiveView } = useClassesView();
 
   const { selectedTimetableData } = useTimeTableSelect();
@@ -39,6 +24,7 @@ const Classes = () => {
     isSuccess,
     error,
   } = useClasses(selectedTimetableData?.id || undefined);
+
   if (!selectedTimetableData) {
     return (
       <div className={styles.inactiveState}>
@@ -53,6 +39,7 @@ const Classes = () => {
       <CreateClassPopup
         closePopup={() => setCreateClassOpen(false)}
         visible={isCreateClassOpen}
+        timetableId={selectedTimetableData?.id}
       />
       <div className="mainPlaceholder">
         <Topbar page={"Classes"} />

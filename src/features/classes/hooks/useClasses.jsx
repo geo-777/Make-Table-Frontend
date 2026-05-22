@@ -32,7 +32,38 @@ const useClasses = (timetableId) => {
     enabled: !!timetableId,
   });
 
-  return { ...query };
+  const createListing = useMutation({
+    mutationFn: ({ id, data }) => postClass(id, data),
+
+    onSuccess: (newClass, { id }) => {
+      queryClient.setQueryData(["classesListings", id], (old) => ({
+        ...old,
+        data: [...(old?.data || []), newClass.data],
+      }));
+    },
+
+    onError: (error) => {
+      const status = error?.response?.status;
+      handleError(status);
+    },
+  });
+
+  const deleteListing = useMutation({
+    mutationFn: (classId) => deleteClass(classId), // classId only
+
+    onSuccess: (_, classId) => {
+      queryClient.setQueryData(["classesListings", timetableId], (old) => ({
+        ...old,
+        data: old?.data?.filter((e) => e.id !== classId) || [],
+      }));
+    },
+
+    onError: (error) => {
+      const status = error?.response?.status;
+      handleError(status);
+    },
+  });
+  return { ...query, createListing, deleteListing };
 };
 
 export default useClasses;

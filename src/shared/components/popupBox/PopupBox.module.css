@@ -14,7 +14,7 @@
     opacity 0.1s ease;
   transform: scale(0.6);
   color: var(--foreground);
-  z-index: 100;
+  z-index: 1000;
 }
 .open {
   transform: scale(1);

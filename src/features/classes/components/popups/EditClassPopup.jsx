@@ -4,9 +4,9 @@ import PopupBox from "../../../../shared/components/popupBox/PopupBox";
 import { useState } from "react";
 import CircularCheckBox from "../../../../shared/components/specialButtons/CircularCheckBox";
 import useClasses from "../../hooks/useClasses";
-const CreateClassPopup = ({ visible, closePopup, timetableId }) => {
-  const { createListing } = useClasses();
 
+const EditClassPopup = ({ visible, closePopup, existingData }) => {
+  const { createListing } = useClasses();
   const [form, setForm] = useState({
     class_name: "",
     room_name: "",
@@ -64,19 +64,14 @@ const CreateClassPopup = ({ visible, closePopup, timetableId }) => {
     if (!payload.room_name.trim()) {
       payload.room_name = form.class_name;
     }
-
-    await createListing.mutateAsync({
-      id: timetableId,
-      data: payload,
-    });
   };
   return (
     <PopupBox
       visible={visible}
       handleSubmit={handleSubmit}
       closeFunction={handleCloseClicked}
-      title={"Add Class"}
-      primaryBtnText={"Create"}
+      title={"Edit Class"}
+      primaryBtnText={"Edit"}
     >
       <form className={styles.popupForm}>
         <RequiredInputField
@@ -117,4 +112,4 @@ const CreateClassPopup = ({ visible, closePopup, timetableId }) => {
   );
 };
 
-export default CreateClassPopup;
+export default EditClassPopup;
