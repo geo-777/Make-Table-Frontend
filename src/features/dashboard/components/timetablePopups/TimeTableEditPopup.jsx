@@ -46,15 +46,21 @@ const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
   useEffect(() => {
     let changes = false;
 
+    //js compares arrays by reference, so we cant use === directly on arrays.
+    // therefor im making it a string and comparing it : '['Mon','Tue']' == '['Mon','Tue']'
+    const daysChanged =
+      JSON.stringify(selectedDays.sort()) !==
+      JSON.stringify(existingData.days?.sort());
+
     if (
-      form.name?.trim() != existingData.name?.trim() ||
-      form.slots != existingData.slots ||
-      selectedDays != existingData.days
+      form.name?.trim() !== existingData.name?.trim() ||
+      form.slots !== existingData.slots ||
+      daysChanged
     ) {
       changes = true;
     }
     setIsPatched(changes);
-  }, [form, selectedDays]);
+  }, [form, selectedDays, existingData]);
 
   const handleCloseClicked = () => {
     //clears value
@@ -80,7 +86,7 @@ const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
       newErrors.slots = "Required";
       hasError = true;
     } else if (Number(form.slots) <= 0) {
-      newErrors.slots = "Can't be negative";
+      newErrors.slots = "Must be greater than 0";
       hasError = true;
     } else {
       newErrors.slots = null;

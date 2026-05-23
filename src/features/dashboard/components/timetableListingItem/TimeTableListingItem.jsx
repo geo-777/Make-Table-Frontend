@@ -32,8 +32,6 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
   const menuIconStrokeWidth = 2;
 
   const menuRef = useRef(null);
-  const changingViewStatus = useRef(false);
-  const deletingItem = useRef(false);
 
   //handling clicking out of menu to close menu
   useEffect(() => {
@@ -48,41 +46,32 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
     };
   }, []);
 
-  const handleDeletion = async (id) => {
-    //guard obviously
-    if (deletingItem.current)
-      return console.log("Dont spam the delete u piece of shi");
-
-    deletingItem.current = true;
-
-    try {
-      await deleteListing.mutateAsync(id);
-    } catch (error) {
-      deletingItem.current = false;
-    }
-    setMenuVisible(false);
-  };
-  // to publish and unpublish stuff
   const handleViewStatus = async (id, status) => {
-    //guard obviously
-    if (changingViewStatus.current)
-      return console.log("Dont spam the publish u piece of shi");
+    //guard that prevents duplicate requests
+    if (setViewStatus.isPending) return;
 
-    changingViewStatus.current = true;
-
-    try {
-      await setViewStatus.mutateAsync({ id: id, data: status });
-    } finally {
-      changingViewStatus.current = false;
-    }
-    setMenuVisible(false);
+    await setViewStatus.mutateAsync({
+      id,
+      data: status,
+    });
   };
 
+  const handleDeletion = async (id) => {
+    if (deleteListing.isPending) return;
+
+    await deleteListing.mutateAsync(id);
+    setMenuVisible(false);
+  };
   return (
     <>
-      <motion.div className={styles.listing}>
+      <motion.div
+        className={styles.listing}
+        onClick={() => selectTimeTableData(fullData)}
+      >
         <div className={styles.mainLeft}>
-          <div className={styles.icon}>{listingData.name[0].toUpperCase()}</div>
+          <div className={styles.icon}>
+            {listingData.name?.[0]?.toUpperCase() ?? "?"}
+          </div>
           <div className={styles.listingInfo}>
             <h4>
               {listingData.name}
@@ -105,12 +94,13 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
         </div>
         <div className={styles.actionBtns}>
           <button
-            onClick={async () =>
+            onClick={async (e) => {
+              e.stopPropagation();
               await handleViewStatus(
                 listingData.id,
                 listingData.type === "Draft" ? "Public" : "Private",
-              )
-            }
+              );
+            }}
             className={`${styles.primaryBtn} ${listingData.type === "Published" ? styles.unpublishBtn : styles.publishedBtn}`}
           >
             {listingData.type === "Draft" ? (
@@ -126,7 +116,10 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
           <div className={styles.extraMenu} ref={menuRef}>
             <button
               className={styles.threeDots}
-              onClick={() => setMenuVisible((prev) => !prev)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuVisible((prev) => !prev);
+              }}
             >
               <EllipsisVertical size={18} />
             </button>
@@ -138,14 +131,18 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
             >
               <div
                 className={styles.dropDownItem}
-                onClick={() => selectTimeTableData(fullData)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  selectTimeTableData(fullData);
+                }}
               >
                 <Eye size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
                 <p>Open</p>
               </div>
               <div
                 className={styles.dropDownItem}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   editFunction(listingData.id);
                   setMenuVisible(false);
                 }}
@@ -156,7 +153,10 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
               <div className={styles.seperator}></div>
               <div
                 className={`${styles.dropDownItem} ${styles.deleteBtn}`}
-                onClick={() => handleDeletion(listingData.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeletion(listingData.id);
+                }}
               >
                 <Trash2 size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
                 <p>Delete</p>

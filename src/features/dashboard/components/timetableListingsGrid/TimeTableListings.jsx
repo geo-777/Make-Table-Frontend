@@ -2,7 +2,7 @@ import styles from "./TimeTableListings.module.css";
 import { Pencil, CircleCheck } from "lucide-react";
 import TimeTableEditPopup from "../timetablePopups/TimeTableEditPopup";
 import TimeTableListingItem from "../timetableListingItem/TimeTableListingItem";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 const TimeTableListings = ({ type, data }) => {
   const [isEditTableOpen, setIsEditTableOpen] = useState(false);
   const [existingData, setExistingData] = useState({});
@@ -15,7 +15,10 @@ const TimeTableListings = ({ type, data }) => {
     setExistingData(itemToEdit);
     setIsEditTableOpen(true);
   };
-
+  // sorting based on id.. decreasing order
+  const sortedData = useMemo(() => {
+    return [...(data ?? [])].sort((a, b) => b.id - a.id);
+  }, [data]);
   return (
     <div className={`${styles.timetableListings} `}>
       <TimeTableEditPopup
@@ -47,22 +50,20 @@ const TimeTableListings = ({ type, data }) => {
       </div>
 
       <div className={styles.listingsGrid}>
-        {data
-          .sort((a, b) => b.id - a.id)
-          .map((e, i) => (
-            <TimeTableListingItem
-              key={`${e.id}-listing-${i}`}
-              listingData={{
-                id: e.id,
-                name: e.name,
-                slots: e.slots,
-                days: e.days.length,
-                type: e.view_status == "Private" ? "Draft" : "Published",
-              }}
-              fullData={e}
-              editFunction={openEditPopup}
-            />
-          ))}
+        {sortedData.map((e, i) => (
+          <TimeTableListingItem
+            key={`${e.id}`}
+            listingData={{
+              id: e.id,
+              name: e.name,
+              slots: e.slots,
+              days: e.days.length,
+              type: e.view_status == "Private" ? "Draft" : "Published",
+            }}
+            fullData={e}
+            editFunction={openEditPopup}
+          />
+        ))}
       </div>
     </div>
   );

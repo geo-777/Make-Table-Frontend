@@ -70,7 +70,7 @@ const SelectedTimeTable = () => {
             const selected = selectedTimetableData?.id === e?.id;
             return (
               <div
-                key={i}
+                key={e?.id}
                 className={styles.dropDownItem}
                 onClick={() => handleSelect(e)}
               >

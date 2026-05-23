@@ -53,7 +53,7 @@ const TimeTableCreatePopup = ({ visible, closePopup }) => {
       newErrors.slots = "Required";
       hasError = true;
     } else if (Number(form.slots) <= 0) {
-      newErrors.slots = "Can't be negative";
+      newErrors.slots = "Must be greater than 0";
       hasError = true;
     } else {
       newErrors.slots = null;
