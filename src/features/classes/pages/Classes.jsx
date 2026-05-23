@@ -17,13 +17,7 @@ const Classes = () => {
 
   const { selectedTimetableData } = useTimeTableSelect();
 
-  const {
-    data: listings,
-    isPending,
-    isError,
-    isSuccess,
-    error,
-  } = useClasses(selectedTimetableData?.id || undefined);
+  const { data: listings, isPending, isError, isSuccess, error } = useClasses();
 
   if (!selectedTimetableData) {
     return (

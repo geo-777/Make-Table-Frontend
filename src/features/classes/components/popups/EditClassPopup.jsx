@@ -1,17 +1,25 @@
 import styles from "./ClassPopup.module.css";
 import RequiredInputField from "../../../../shared/components/inputfields/RequiredInputField";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CircularCheckBox from "../../../../shared/components/specialButtons/CircularCheckBox";
 import useClasses from "../../hooks/useClasses";
 
 const EditClassPopup = ({ visible, closePopup, existingData }) => {
-  const { createListing } = useClasses();
+  const { patchListing } = useClasses();
   const [form, setForm] = useState({
     class_name: "",
     room_name: "",
     isLab: false,
   });
+
+  useEffect(() => {
+    setForm({
+      class_name: existingData?.class_name ?? "",
+      room_name: existingData?.room_name ?? "",
+      isLab: existingData?.isLab ?? false,
+    });
+  }, [existingData]);
   const [errorStates, setErrorStates] = useState({
     class_name: null,
     room_name: null,
@@ -21,6 +29,7 @@ const EditClassPopup = ({ visible, closePopup, existingData }) => {
     setForm({
       class_name: "",
       room_name: "",
+      isLab: false,
     });
     setErrorStates({
       class_name: null,
@@ -64,6 +73,21 @@ const EditClassPopup = ({ visible, closePopup, existingData }) => {
     if (!payload.room_name.trim()) {
       payload.room_name = form.class_name;
     }
+
+    // if no changes were made just close the popup.
+    if (
+      payload?.class_name.trim() == existingData?.class_name?.trim() &&
+      payload?.room_name.trim() == existingData?.room_name?.trim() &&
+      payload?.isLab == existingData?.isLab
+    ) {
+      return handleCloseClicked();
+    }
+
+    await patchListing.mutateAsync({
+      classId: existingData?.id,
+      data: payload,
+    });
+    handleCloseClicked();
   };
   return (
     <PopupBox

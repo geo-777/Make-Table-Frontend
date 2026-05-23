@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "../../styles/Classes.module.css";
 import { Pencil, Trash2, X, Check } from "lucide-react";
 import CircularCheckBox from "../../../../shared/components/specialButtons/CircularCheckBox";
+import useClasses from "../../hooks/useClasses";
 
-const Row = ({ data }) => {
+const Row = ({ data, editClass }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editForm, setEditForm] = useState(data);
   const actionbtnSize = 16;
@@ -12,6 +13,22 @@ const Row = ({ data }) => {
   const closeEditMode = () => {
     setEditForm(data);
     setIsEditMode(false);
+  };
+
+  // this controls the enabling and disabling of the check button
+  const submitEnabled = useMemo(() => {
+    return (
+      (editForm?.class_name.trim() != data?.class_name.trim() ||
+        editForm?.room_name.trim() != data?.room_name.trim() ||
+        editForm?.isLab != data?.isLab) &&
+      editForm?.class_name.trim() &&
+      editForm?.room_name.trim()
+    );
+  }, [editForm]);
+
+  const editClassHandler = async () => {
+    await editClass(data?.id, editForm);
+    closeEditMode();
   };
 
   //edit mode design
@@ -57,6 +74,8 @@ const Row = ({ data }) => {
             <X size={actionbtnSize} strokeWidth={actionbtnStroke} />
           </button>
           <button
+            disabled={!submitEnabled}
+            onClick={editClassHandler}
             className={`${styles.actionBtn__list} ${styles.actionBtn__tick}`}
           >
             <Check size={actionbtnSize} strokeWidth={actionbtnStroke} />
@@ -95,6 +114,14 @@ const Row = ({ data }) => {
 };
 
 const ListView = ({ data }) => {
+  const { patchListing } = useClasses();
+
+  const editClass = async (id, data) => {
+    await patchListing.mutateAsync({
+      classId: id,
+      data: data,
+    });
+  };
   return (
     <div className={styles.listview__Container}>
       <div className={styles.listHeading__item}>Class Name</div>
@@ -102,7 +129,7 @@ const ListView = ({ data }) => {
       <div className={styles.listHeading__item}>Type</div>
       <div className={styles.listHeading__item}>Actions</div>
       {data.map((e, i) => (
-        <Row data={e} key={i} />
+        <Row data={e} key={i} editClass={editClass} />
       ))}
     </div>
   );

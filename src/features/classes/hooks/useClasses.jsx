@@ -5,10 +5,12 @@ import {
   patchClass,
 } from "../../../api/classes.api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
+import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import { toast } from "react-toastify";
 
-const useClasses = (timetableId) => {
+const useClasses = () => {
+  const { selectedTimetableData } = useTimeTableSelect();
+  const timetableId = selectedTimetableData?.id || undefined;
   const handleError = (status) => {
     if (!status) toast.error("Unknown error occured.");
 
@@ -63,7 +65,18 @@ const useClasses = (timetableId) => {
       handleError(status);
     },
   });
-  return { ...query, createListing, deleteListing };
+
+  const patchListing = useMutation({
+    mutationFn: ({ classId, data }) => {
+      console.log(classId, data);
+      return patchClass(timetableId, classId, data);
+    },
+    onError: (error) => {
+      const status = error?.response?.status;
+      handleError(status);
+    },
+  });
+  return { ...query, createListing, deleteListing, patchListing };
 };
 
 export default useClasses;
