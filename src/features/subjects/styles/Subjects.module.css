@@ -1,0 +1,80 @@
+/* Grid container */
+.gridView__Container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+/* Card header */
+.card__Header {
+  margin-bottom: 0.5rem;
+}
+
+.card__Title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0;
+}
+
+/* Badge */
+.card__Meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.card__Badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+
+.card__Badge__theory {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.card__Badge__lab {
+  background-color: var(--accent-violet-bg);
+  color: var(--accent-violet-fg);
+}
+
+.card__Hardness {
+  font-size: 0.82rem;
+  /* color: var(--accent-violet-fg); */
+  color: var(--color-grey-500);
+  font-weight: 500;
+}
+
+/* Stat boxes */
+.card__Stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.card__StatBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background-color: var(--color-grey-50);
+  border-radius: var(--radius);
+  padding: 0.5rem 0;
+}
+
+.card__StatValue {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.card__StatLabel {
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+}
