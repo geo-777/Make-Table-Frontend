@@ -2,44 +2,30 @@ import { useMemo, useState } from "react";
 import { Pencil, Trash2, X, Check } from "lucide-react";
 import styles from "./listView.module.css";
 
-export default function ListView({ data = [], onEdit, onDelete }) {
-  const headings = useMemo(() => {
-    if (!data.length) return [];
-    return data[0].map((cell) => cell.heading);
-  }, [data]);
-
-  const booleanColumns = useMemo(() => {
-    if (!data.length) return new Set();
-    const cols = new Set();
-    headings.forEach((_, colIdx) => {
-      const allBool = data.every(
-        (row) => typeof row[colIdx]?.value === "boolean",
-      );
-      if (allBool) cols.add(colIdx);
-    });
-    return cols;
-  }, [data, headings]);
-
-  const colCount = headings.length + 1;
-
+export default function ListView({
+  data = [],
+  columns = [],
+  onEdit,
+  onDelete,
+}) {
   return (
     <div
       className={styles.listview__Container}
-      style={{ gridTemplateColumns: `repeat(${colCount}, auto)` }}
+      style={{ gridTemplateColumns: `repeat(${columns.length + 1}, auto)` }}
     >
-      {headings.map((h, i) => (
-        <div key={i} className={styles.listHeading__item}>
-          {h}
+      {columns.map((col) => (
+        <div key={col.key} className={styles.listHeading__item}>
+          {col.label}
         </div>
       ))}
       <div className={styles.listHeading__item}>Actions</div>
 
       {data.map((row, rowIdx) => (
         <Row
-          key={rowIdx}
+          key={row.id ?? rowIdx}
           row={row}
           rowIndex={rowIdx}
-          booleanColumns={booleanColumns}
+          columns={columns}
           onEdit={onEdit}
           onDelete={onDelete}
         />
@@ -50,15 +36,15 @@ export default function ListView({ data = [], onEdit, onDelete }) {
 
 /* ─────────────────────────── Row ─────────────────────────── */
 
-function Row({ row, rowIndex, booleanColumns, onEdit, onDelete }) {
+function Row({ row, rowIndex, columns, onEdit, onDelete }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editForm, setEditForm] = useState(row);
   const btnSize = 16;
   const btnStroke = 2;
 
   const submitEnabled = useMemo(() => {
-    return editForm.some((cell, i) => cell.value !== row[i].value);
-  }, [editForm, row]);
+    return columns.some((col) => editForm[col.key] !== row[col.key]);
+  }, [editForm, row, columns]);
 
   const closeEdit = () => {
     setEditForm(row);
@@ -70,43 +56,20 @@ function Row({ row, rowIndex, booleanColumns, onEdit, onDelete }) {
     setIsEditMode(false);
   };
 
-  const updateCell = (colIdx, newValue) => {
-    setEditForm((prev) =>
-      prev.map((cell, i) =>
-        i === colIdx ? { ...cell, value: newValue } : cell,
-      ),
-    );
+  const updateField = (key, newValue) => {
+    setEditForm((prev) => ({ ...prev, [key]: newValue }));
   };
 
   if (isEditMode) {
     return (
       <>
-        {editForm.map((cell, colIdx) => (
-          <div key={colIdx} className={styles.listItem}>
-            {booleanColumns.has(colIdx) ? (
-              <button
-                className={`${styles.badge} ${cell.value ? styles.badge__true : styles.badge__false}`}
-                onClick={() => updateCell(colIdx, !cell.value)}
-              >
-                {cell.value
-                  ? (cell.trueLabel ?? "True")
-                  : (cell.falseLabel ?? "False")}
-              </button>
-            ) : (
-              <input
-                className={styles.inlineInput}
-                type={typeof cell.value === "number" ? "number" : "text"}
-                value={cell.value}
-                onChange={(e) =>
-                  updateCell(
-                    colIdx,
-                    typeof cell.value === "number"
-                      ? Number(e.target.value)
-                      : e.target.value,
-                  )
-                }
-              />
-            )}
+        {columns.map((col) => (
+          <div key={col.key} className={styles.listItem}>
+            <EditCell
+              col={col}
+              value={editForm[col.key]}
+              onChange={(newValue) => updateField(col.key, newValue)}
+            />
           </div>
         ))}
         <div className={`${styles.listItem} ${styles.listItem__actionBtns}`}>
@@ -130,19 +93,9 @@ function Row({ row, rowIndex, booleanColumns, onEdit, onDelete }) {
 
   return (
     <>
-      {row.map((cell, colIdx) => (
-        <div key={colIdx} className={styles.listItem}>
-          {booleanColumns.has(colIdx) ? (
-            <span
-              className={`${styles.badge} ${cell.value ? styles.badge__true : styles.badge__false}`}
-            >
-              {cell.value
-                ? (cell.trueLabel ?? "True")
-                : (cell.falseLabel ?? "False")}
-            </span>
-          ) : (
-            cell.value
-          )}
+      {columns.map((col) => (
+        <div key={col.key} className={styles.listItem}>
+          <CellValue col={col} value={row[col.key]} />
         </div>
       ))}
       <div className={`${styles.listItem} ${styles.listItem__actionBtns}`}>
@@ -160,5 +113,66 @@ function Row({ row, rowIndex, booleanColumns, onEdit, onDelete }) {
         </button>
       </div>
     </>
+  );
+}
+
+/* ─────────────────────────── CellValue ─────────────────────────── */
+
+function CellValue({ col, value }) {
+  if (col.type === "boolean") {
+    return (
+      <span
+        className={`${styles.badge} ${value.toLowerCase() === col.trueLabel.toLowerCase() ? styles.badge__true : styles.badge__false}`}
+      >
+        {value.toLowerCase() === col.trueLabel.toLowerCase() ? col.trueLabel : col.falseLabel}
+      </span>
+    );
+  }
+
+  return col.render ? col.render(value) : value;
+}
+
+/* ─────────────────────────── EditCell ─────────────────────────── */
+
+function EditCell({ col, value, onChange }) {
+  if (col.type === "boolean") {
+    return (
+      <button
+        className={`${styles.badge} ${value ? styles.badge__true : styles.badge__false}`}
+        onClick={() => onChange(!value)}
+      >
+        {value ? (col.trueLabel ?? "True") : (col.falseLabel ?? "False")}
+      </button>
+    );
+  }
+
+  if (Array.isArray(value)) {
+    return (
+      <input
+        className={styles.inlineInput}
+        type="text"
+        value={value.join(",")}
+        onChange={(e) => {
+          const raw = e.target.value.split(",").map((v) => {
+            const n = Number(v.trim());
+            return isNaN(n) ? v.trim() : n;
+          });
+          onChange(raw);
+        }}
+      />
+    );
+  }
+
+  return (
+    <input
+      className={styles.inlineInput}
+      type={typeof value === "number" ? "number" : "text"}
+      value={value}
+      onChange={(e) =>
+        onChange(
+          typeof value === "number" ? Number(e.target.value) : e.target.value,
+        )
+      }
+    />
   );
 }
