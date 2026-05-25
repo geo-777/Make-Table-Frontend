@@ -19,7 +19,7 @@ export default function SubjectDialog({
   const [form, setForm] = useState({
     name: "",
     isLab: false,
-    hardness: 5,
+    hardness: 1,
     minPerDay: 0,
     maxPerDay: 2,
     minPerWeek: 2,
@@ -34,7 +34,7 @@ export default function SubjectDialog({
       setForm({
         name: "",
         isLab: false,
-        hardness: 5,
+        hardness: 1,
         minPerDay: 0,
         maxPerDay: 2,
         minPerWeek: 2,
@@ -117,7 +117,7 @@ export default function SubjectDialog({
 
               <div className={styles.field} style={{ flex: 1 }}>
                 <label className={styles.label} htmlFor="hardness">
-                  Hardness (1-10)
+                  Hardness (1-3)
                 </label>
                 <div className={styles.hardnessWrapper}>
                   <input
@@ -125,14 +125,14 @@ export default function SubjectDialog({
                     type="number"
                     className={styles.input}
                     min={1}
-                    max={10}
+                    max={3}
                     value={form.hardness}
                     onChange={(e) =>
                       handleChange("hardness", Number(e.target.value))
                     }
                   />
                   <div className={styles.hardnessPips}>
-                    {Array.from({ length: 10 }, (_, i) => (
+                    {Array.from({ length: 3 }, (_, i) => (
                       <span
                         key={i}
                         className={`${styles.pip} ${i < form.hardness ? styles.pipActive : ""}`}

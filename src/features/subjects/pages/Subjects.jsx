@@ -8,14 +8,15 @@ import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import { useMemo, useState } from "react";
 import styles from "../styles/Subjects.module.css";
 import useSubjects from "../hooks/useSubjects";
+import Loader from "../../../shared/components/loader/Loader";
+import { AlertTriangle } from "lucide-react";
 
 /*
   Expected Input
 
   {
-    id: number,                   --> i dont actually need the id (ig 😭)
     name: string,
-    hardness: number (btw 1 - 10) --> more flexible approach
+    hardness: number (btw 1 - 3) --> more flexible approach
     isLab: boolean
     maxConsecutive: number,       --> i can change the name no issue
     maxPerday: number,            --> i can change the name no issue
@@ -34,7 +35,7 @@ import useSubjects from "../hooks/useSubjects";
     max_classes_day: number,
     min_classes_week: number,
     max_classes_week: number,
-    min_classes_consecutive: number,
+    min_classes_consecutive: number, --> not neccessarily needed. (for now lets pass in a value of 1 )
     max_classes_consecutive: number,
   }
 */
@@ -56,7 +57,7 @@ const COLUMNS = [
   {
     key: "hardness",
     label: "Hardness",
-    render: (value) => `${value}/10`,
+    render: (value) => `${value}/3`,
   },
   {
     key: "daily",
@@ -77,19 +78,38 @@ const COLUMNS = [
 
 // --- Helpers ------------------------------------------------------------------
 // TODO: remove helpers once backend is configured properly.
-// i have to do this because vishy is busy and wont update the schema. 
+// i have to do this because vishy is busy and wont update the schema.
 
-const transformPayload = (values) => ({
-  id: values.id,
-  name: values.name,
-  type: values.isLab ? "lab" : "theory",
-  hardness: Number(values.hardness),
-  daily: [Number(values.minPerDay), Number(values.maxPerDay)],
-  weekly: [Number(values.minPerWeek), Number(values.maxPerWeek)],
-  consecutive: Number(values.maxConsecutive),
+const HARDNESS_LABEL_TO_NUMBER = { Low: 1, Med: 2, High: 3 };
+
+const normalizeSubject = (subject) => ({
+  id: subject.id,
+  name: subject.name,
+  type: subject.isLab ? "lab" : "theory",
+  hardness: HARDNESS_LABEL_TO_NUMBER[subject.hardness] ?? subject.hardness,
+  daily: [subject.min_classes_day, subject.max_classes_day],
+  weekly: [subject.min_classes_week, subject.max_classes_week],
+  consecutive: subject.max_classes_consecutive,
 });
 
-export default function Subjects () {
+const transformPayload = (values) => {
+  const payload = {
+    name: values.name,
+    type: values.isLab ? "lab" : "theory",
+    hardness: Number(values.hardness),
+    daily: [Number(values.minPerDay), Number(values.maxPerDay)],
+    weekly: [Number(values.minPerWeek), Number(values.maxPerWeek)],
+    consecutive: Number(values.maxConsecutive),
+  };
+
+  if (values.id !== undefined) {
+    payload.id = values.id;
+  }
+
+  return payload;
+};
+
+export default function Subjects() {
   const { selectedTimetableData } = useTimeTableSelect();
   const timetableId = selectedTimetableData?.id;
 
@@ -109,7 +129,7 @@ export default function Subjects () {
   const [selectedSubject, setSelectedSubject] = useState(null);
 
   const subjects = useMemo(() => {
-    return data?.data ?? [];
+    return (data?.data ?? []).map(normalizeSubject);
   }, [data]);
 
   const handleCreateSubject = async (values) => {
@@ -149,14 +169,16 @@ export default function Subjects () {
     setOpenEditSubjectDialog(true);
   };
 
-  // this is a placeholder
   if (isLoading) {
     return (
       <div className="App">
         <div className="mainPlaceholder">
           <Topbar page={"Subjects"} />
 
-          <div className={styles.stateMessage}>Loading subjects...</div>
+          <div className={styles.inactiveState}>
+            <Loader />
+            <p>Fetching subjects...</p>
+          </div>
         </div>
       </div>
     );
@@ -168,7 +190,34 @@ export default function Subjects () {
         <div className="mainPlaceholder">
           <Topbar page={"Subjects"} />
 
-          <div className={styles.stateMessage}>Failed to load subjects.</div>
+          <div className={styles.inactiveState}>
+            <div className={styles.largeIcon}>
+              <AlertTriangle size={24} />
+            </div>
+            <h4>Something went wrong.</h4>
+            <p>
+              We couldn't load your subjects. Check your connection and try
+              refreshing — if it keeps happening, the server might be down.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!selectedTimetableData) {
+    return (
+      <div className="App">
+        <div className="mainPlaceholder">
+          <Topbar page={"Subjects"} />
+
+          <div className={styles.inactiveState}>
+            <h4>No timetable selected.</h4>
+            <p>
+              Pick a timetable from the workspace selector at the top to start
+              managing its subjects.
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -194,7 +243,13 @@ export default function Subjects () {
         />
 
         {!subjects.length && (
-          <div className={styles.emptyState}>No subjects added yet.</div>
+          <div className={styles.inactiveState}>
+            <h4>No subjects yet.</h4>
+            <p>
+              Add your first subject to start defining constraints for this
+              timetable.
+            </p>
+          </div>
         )}
 
         {!!subjects.length && activeView === "list" && (
@@ -236,7 +291,7 @@ export default function Subjects () {
                     </span>
 
                     <span className={styles.card__Hardness}>
-                      {subject.hardness}/10 hardness
+                      {subject.hardness}/3 hardness
                     </span>
                   </div>
 

@@ -78,3 +78,25 @@
   font-size: 0.72rem;
   color: var(--muted-foreground);
 }
+
+/* State */
+
+.inactiveState {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: var(--color-grey-500);
+  font-size: 16px;
+}
+
+.stateMessage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
