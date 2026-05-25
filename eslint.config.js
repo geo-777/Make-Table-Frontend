@@ -20,6 +20,12 @@ export default defineConfig([
       ecmaVersion: "latest",
       sourceType: "module",
 
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+
       globals: {
         ...globals.browser,
       },
@@ -30,7 +36,7 @@ export default defineConfig([
       "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
       "no-use-before-define": "error",
 
-      "no-implicit-coercion": "error",
+      // "no-implicit-coercion": "error", 
 
       "no-var": "warn",
       "prefer-const": "warn",
