@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import globals from "globals";
+import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
@@ -9,6 +10,7 @@ export default defineConfig([
 
   {
     files: ["**/*.{js,jsx}"],
+    plugins: { react },
 
     extends: [
       js.configs.recommended,
@@ -31,12 +33,29 @@ export default defineConfig([
       },
     },
 
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+
     rules: {
+      "react/jsx-uses-vars": "error",
+      "react/react-in-jsx-scope": "off",
+
       "no-undef": "error",
       "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
       "no-use-before-define": "error",
+      "no-const-assign": "error",
 
-      // "no-implicit-coercion": "error", 
+      "no-dupe-args": "error",
+      "no-dupe-class-members": "error",
+      "no-dupe-else-if": "error",
+      "no-dupe-keys": "error",
+      "no-duplicate-case": "error",
+      "no-duplicate-imports": "error",
+
+      "no-invalid-this": "error",
 
       "no-var": "warn",
       "prefer-const": "warn",
