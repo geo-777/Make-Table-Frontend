@@ -6,6 +6,7 @@ import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import { useState } from "react";
 import ItemCard from "../../../shared/components/itemView/itemCard/ItemCard";
 import styles from "../styles/Subjects.module.css";
+import SubjectDialog from "../components/dialog/SubjectDialog";
 
 const MOCK_SUBJECTS = [
   {
@@ -79,6 +80,8 @@ export default function Subjects () {
 
   const { selectedTimetableData } = useTimeTableSelect();
   const [activeView, setActiveView] = useState("grid");
+  const [openAddSubjectDialog, setOpenAddSubjectDialog] = useState(false);
+  const [openEditSubjectDialog, setOpenEditSubjectDialog] = useState(false);
 
   return (
     <div className="App">
@@ -95,7 +98,7 @@ export default function Subjects () {
           addButtonText={"Add Subject"}
           activeView={activeView}
           onChangeActiveView={(view) => setActiveView(view)}
-          onAdd={() => {}}
+          onAdd={() => setOpenAddSubjectDialog(true)}
           onBulkImport={() => {}}
         />
 
@@ -113,7 +116,7 @@ export default function Subjects () {
             {MOCK_SUBJECTS.map((sub) => {
               const isLab = sub.type === "lab";
               return (
-                <ItemCard key={sub.id}>
+                <ItemCard key={sub.id} onEdit={() => {setOpenEditSubjectDialog(true)}}>
                   <div className={styles.card__Header}>
                     <h3 className={styles.card__Title}>{sub.name}</h3>
                   </div>
@@ -124,7 +127,7 @@ export default function Subjects () {
                       {isLab ? "Lab" : "Theory"}
                     </span>
                     <span className={styles.card__Hardness}>
-                      {sub.hardness} hardness
+                      {sub.hardness}/10 hardness
                     </span>
                   </div>
                   <div className={styles.card__Stats}>
@@ -153,6 +156,32 @@ export default function Subjects () {
           </div>
         )}
       </div>
+
+      <SubjectDialog
+        open={openAddSubjectDialog}
+        onClose={() => {
+          setOpenAddSubjectDialog(false);
+        }}
+        onAdd={() => {}}
+      />
+
+      <SubjectDialog
+        open={openEditSubjectDialog}
+        onClose={() => {
+          setOpenEditSubjectDialog(false);
+        }}
+        onUpdate={() => {}}
+        initialData={{
+          name: "",
+          isLab: false,
+          hardness: 5,
+          minPerDay: 0,
+          maxPerDay: 2,
+          minPerWeek: 2,
+          maxPerWeek: 5,
+          maxConsecutive: 2,
+        }}
+      />
     </div>
   );
 };

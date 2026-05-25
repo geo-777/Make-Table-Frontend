@@ -17,7 +17,7 @@ export default function ItemCard({
       <div className={styles.actionBtns}>
         <button
           className={styles.actionBtn}
-          onClick={() => onEdit}
+          onClick={onEdit}
         >
           <Pencil size={16} strokeWidth={1.75} />
           <p>Edit</p>
