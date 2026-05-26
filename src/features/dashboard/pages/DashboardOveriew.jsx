@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 import DetailsGrid from "../components/detailsGrid/DetailsGrid";
 import styles from "../styles/Dashboard.module.css";
 import TimeTableListings from "../components/timetableListingsGrid/TimeTableListings";
-import TimeTableCreatePopup from "../components/timetablePopups/TimeTableCreatePopup";
+import TimeTablePopup from "../components/timetablePopups/TimeTablePopup";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import { useTimetableData } from "../hooks/useTimetableData";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
@@ -29,8 +29,8 @@ const DashboardOveriew = () => {
 
   return (
     <div className="App">
-
-      <TimeTableCreatePopup
+      <TimeTablePopup
+        mode="create"
         closePopup={() => setIsCreateTableOpen(false)}
         visible={isCreateTableOpen}
       />

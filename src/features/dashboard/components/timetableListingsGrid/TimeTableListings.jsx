@@ -1,6 +1,6 @@
 import styles from "./TimeTableListings.module.css";
 import { Pencil, CircleCheck } from "lucide-react";
-import TimeTableEditPopup from "../timetablePopups/TimeTableEditPopup";
+import TimeTablePopup from "../timetablePopups/TimeTablePopup";
 import TimeTableListingItem from "../timetableListingItem/TimeTableListingItem";
 import { useMemo, useState } from "react";
 const TimeTableListings = ({ type, data }) => {
@@ -21,7 +21,8 @@ const TimeTableListings = ({ type, data }) => {
   }, [data]);
   return (
     <div className={`${styles.timetableListings} `}>
-      <TimeTableEditPopup
+      <TimeTablePopup
+        mode="edit"
         closePopup={() => {
           setIsEditTableOpen(false);
           setExistingData({});

@@ -1,102 +1,112 @@
-import styles from "./TimeTableCreatePopup.module.css";
+import styles from "./TimeTablePopup.module.css";
 import RequiredInputField from "../../../../shared/components/inputfields/RequiredInputField";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import useTimetableListing from "../../hooks/useTimetableListing";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
-  //create table mutation
-  const { patchListing } = useTimetableListing();
-  // to disable the button if no change was made
-  const [isPatched, setIsPatched] = useState(false);
-  const [selectedDays, setSelectedDays] = useState(
-    existingData?.days ?? ["Mon"],
-  );
-  const [form, setForm] = useState({
-    name: existingData?.name ?? "",
-    slots: existingData?.slots ?? 6,
-  });
-  const [errorStates, setErrorStates] = useState({
-    name: null,
-    slots: null,
-    days: null,
-  });
+const initialForm = () => ({
+  name: "",
+  slots: 6,
+});
 
-  //these two (initialized Ref and useEffect) handles setting up of existing data into form.
-  //it should happen only once. so the ref act as a guard.
+const initialErrors = () => ({
+  name: null,
+  slots: null,
+  days: null,
+});
+
+const TimeTablePopup = ({
+  visible,
+  closePopup,
+  mode = "create",
+  existingData = null,
+}) => {
+  const isEditMode = mode === "edit";
+  const { createListing, patchListing } = useTimetableListing();
+
+  const [selectedDays, setSelectedDays] = useState(["Mon"]);
+  const [form, setForm] = useState(initialForm);
+  const [errorStates, setErrorStates] = useState(initialErrors);
+  const [isPatched, setIsPatched] = useState(false);
+
+  const resetForm = () => {
+    setSelectedDays(["Mon"]);
+    setForm(initialForm());
+    setErrorStates(initialErrors());
+    setIsPatched(false);
+  };
+
   useEffect(() => {
-    if (visible && existingData) {
+    if (!visible) return;
+
+    if (isEditMode && existingData) {
       setSelectedDays(existingData.days ?? ["Mon"]);
       setForm({
         name: existingData.name ?? "",
         slots: existingData.slots ?? 6,
       });
+      setErrorStates(initialErrors());
+      setIsPatched(false);
+      return;
     }
-  }, [visible, existingData]);
-  //handles day selection by adding/removing
+
+    resetForm();
+  }, [visible, isEditMode, existingData]);
+
+  useEffect(() => {
+    if (!isEditMode || !existingData) {
+      setIsPatched(false);
+      return;
+    }
+
+    const daysChanged =
+      JSON.stringify(selectedDays.slice().sort()) !==
+      JSON.stringify((existingData.days ?? []).slice().sort());
+
+    const hasChanges =
+      form.name?.trim() !== existingData.name?.trim() ||
+      form.slots !== existingData.slots ||
+      daysChanged;
+
+    setIsPatched(hasChanges);
+  }, [form, selectedDays, existingData, isEditMode]);
+
   const toggleDay = (day) => {
     setSelectedDays((prev) =>
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
     );
   };
 
-  //handling change
-  useEffect(() => {
-    let changes = false;
-
-    //js compares arrays by reference, so we cant use === directly on arrays.
-    // therefor im making it a string and comparing it : '['Mon','Tue']' == '['Mon','Tue']'
-    const daysChanged =
-      JSON.stringify(selectedDays.sort()) !==
-      JSON.stringify(existingData.days?.sort());
-
-    if (
-      form.name?.trim() !== existingData.name?.trim() ||
-      form.slots !== existingData.slots ||
-      daysChanged
-    ) {
-      changes = true;
-    }
-    setIsPatched(changes);
-  }, [form, selectedDays, existingData]);
-
   const handleCloseClicked = () => {
-    //clears value
-    setErrorStates({ name: null, slots: null, days: null });
+    resetForm();
     closePopup();
   };
 
-  const validateTableCreate = (form) => {
+  const validateTableCreate = (currentForm) => {
     let hasError = false;
-    const newErrors = { name: null, slots: null, days: null };
+    const newErrors = initialErrors();
 
-    if (!form.name.trim()) {
+    if (!currentForm.name.trim()) {
       newErrors.name = "Required";
       hasError = true;
-    } else if (form.name.length >= 30) {
+    } else if (currentForm.name.length >= 30) {
       newErrors.name = "Name is too long";
       hasError = true;
-    } else {
-      newErrors.name = null;
     }
 
-    if (!form.slots) {
+    if (!currentForm.slots) {
       newErrors.slots = "Required";
       hasError = true;
-    } else if (Number(form.slots) <= 0) {
+    } else if (Number(currentForm.slots) <= 0) {
       newErrors.slots = "Must be greater than 0";
       hasError = true;
-    } else {
-      newErrors.slots = null;
     }
 
     if (selectedDays.length === 0) {
       newErrors.days = "Required";
       hasError = true;
-    } else {
-      newErrors.days = null;
     }
 
     return { hasError, newErrors };
@@ -107,6 +117,7 @@ const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
 
     const { hasError, newErrors } = validateTableCreate(form);
     setErrorStates(newErrors);
+
     if (hasError) return false;
 
     const payload = {
@@ -114,10 +125,19 @@ const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
       days: selectedDays,
     };
 
-    await patchListing.mutateAsync({
-      id: existingData.id,
-      data: payload,
+    if (isEditMode) {
+      await patchListing.mutateAsync({
+        id: existingData.id,
+        data: payload,
+      });
+      return true;
+    }
+
+    await createListing.mutateAsync({
+      ...payload,
+      view_status: "Private",
     });
+
     return true;
   };
 
@@ -126,9 +146,9 @@ const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
       visible={visible}
       handleSubmit={handleSubmit}
       closeFunction={handleCloseClicked}
-      title={"Edit Timetable"}
-      primaryBtnText={"Edit"}
-      disabled={!isPatched}
+      title={isEditMode ? "Edit Timetable" : "Create Timetable"}
+      primaryBtnText={isEditMode ? "Edit" : "Create"}
+      disabled={isEditMode && !isPatched}
     >
       <form className={styles.popupForm}>
         <RequiredInputField
@@ -184,4 +204,4 @@ const TimeTableEditPopup = ({ visible, closePopup, existingData }) => {
   );
 };
 
-export default TimeTableEditPopup;
+export default TimeTablePopup;
