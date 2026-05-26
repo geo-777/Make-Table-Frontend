@@ -37,7 +37,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 12px 16px;
   gap: 0.4rem;
   font-size: 15px;
   font-weight: 500;
@@ -60,12 +60,13 @@
   align-items: center;
   gap: 0.2rem;
   border: none;
-  padding: 0.8rem 1.5rem;
+  padding: 10px 16px;
   color: var(--sidebar-background);
   background-image: var(--gradient-primary);
   border-radius: 0.7rem;
   justify-content: center;
   cursor: pointer;
+  height: 45px;
 }
 .primary p {
   font-size: 16px;
@@ -75,14 +76,14 @@
 /* --- VIEW ---------------------------------------------------- */
 
 .viewChangerContainer {
-  border-radius: 0.6rem;
-  padding: 0.1rem;
+  border-radius: 0.75rem;
+  padding: 2px;
   border: 1px solid var(--color-grey-200);
   display: flex;
   align-items: center;
   justify-content: center;
   height: fit-content;
-  gap: 0.15rem;
+  gap: 2px;
 }
 
 .viewChangeBtn {

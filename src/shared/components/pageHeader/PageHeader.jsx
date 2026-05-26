@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./PageHeader.module.css";
 import { Plus, Download, List, Grid2x2 } from "lucide-react";
 
@@ -36,7 +35,7 @@ export default function PageHeader({
           </div>
           <button className={styles.secondaryBtn} onClick={onBulkImport}>
             {" "}
-            <Download strokeWidth={1.7} size={18} /> <p>Bulk Import</p>{" "}
+            <Download strokeWidth={1.7} size={18} /> <p>Import</p>{" "}
           </button>
         </div>
 
