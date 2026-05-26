@@ -52,6 +52,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
   text-align: center;
+  margin-top: 16px;
 }
 
 .statItem {

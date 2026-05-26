@@ -5,6 +5,7 @@ import "../../../styles/appLayout.css";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import styles from "../styles/Teachers.module.css";
+import TeacherCard from "../components/teacherCard/TeacherCard";
 
 /*
   {
@@ -40,9 +41,32 @@ const COLUMNS = [
   },
 ];
 
-const MOCK_TEACHERS = {
-
-};
+const MOCK_TEACHERS = [
+  {
+    id: 0,
+    name: "Leonardo dica pari",
+    created_at: "2026-05-26T09:30:02.815Z",
+    max_classes_day: 5,
+    max_classes_week: 7,
+    max_classes_consecutive: 2,
+  },
+  {
+    id: 0,
+    name: "Kitler",
+    created_at: "2026-05-26T09:30:02.815Z",
+    max_classes_day: 5,
+    max_classes_week: 7,
+    max_classes_consecutive: 2,
+  },
+  {
+    id: 0,
+    name: "Superman bin Batman",
+    created_at: "2026-05-26T09:30:02.815Z",
+    max_classes_day: 5,
+    max_classes_week: 7,
+    max_classes_consecutive: 2,
+  },
+];
 
 const Teachers = () => {
 
@@ -84,10 +108,26 @@ const Teachers = () => {
           <ListView
             data={teachers}
             columns={COLUMNS}
-            onEdit={(_, data) => {}}
-            onDelete={(id) => {}}
+            onEdit={(_, data) => { console.log(data) }}
+            onDelete={(id) => { console.log(id) }}
           />
         )}
+
+        {
+          activeView === "grid" &&
+          <div className={styles.gridContainer}>
+            {teachers.map((teacher) => (
+              <TeacherCard
+                id={teacher.id}
+                name={teacher.name}
+                maxPerDay={teacher.max_classes_day}
+                maxPerWeek={teacher.max_classes_week}
+                consecutive={teacher.max}
+              />
+            ))}
+          </div>
+        }
+
       </div>
     </div>
   );
