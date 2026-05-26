@@ -52,7 +52,7 @@ const MOCK_TEACHERS = [
     max_classes_consecutive: 2,
   },
   {
-    id: 0,
+    id: 1,
     name: "Kitler",
     created_at: "2026-05-26T09:30:02.815Z",
     max_classes_day: 5,
@@ -60,7 +60,7 @@ const MOCK_TEACHERS = [
     max_classes_consecutive: 2,
   },
   {
-    id: 0,
+    id: 2,
     name: "Superman bin Batman",
     created_at: "2026-05-26T09:30:02.815Z",
     max_classes_day: 5,
@@ -125,6 +125,7 @@ const Teachers = () => {
           <div className={styles.gridContainer}>
             {teachers.map((teacher) => (
               <TeacherCard
+                key={teacher.id}
                 id={teacher.id}
                 name={teacher.name}
                 maxPerDay={teacher.max_classes_day}
@@ -145,6 +146,7 @@ const Teachers = () => {
           }}
           onSubmit={(data) => {
             console.log(data);
+            setOpenAddTeacherDialog(false);
           }}
         />
 
@@ -156,6 +158,7 @@ const Teachers = () => {
           }}
           onSubmit={(data) => {
             console.log(data);
+            setOpenUpdateTeacherDialog(false);
           }}
         />
       </div>
