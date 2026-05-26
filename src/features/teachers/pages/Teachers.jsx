@@ -6,6 +6,7 @@ import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import styles from "../styles/Teachers.module.css";
 import TeacherCard from "../components/teacherCard/TeacherCard";
+import TeacherDialog from "../components/teacherDialog/TeacherDialog";
 
 /*
   {
@@ -75,6 +76,9 @@ const Teachers = () => {
   const [activeView, setActiveView] = useState("grid");
   const teachers = useMemo(() => (MOCK_TEACHERS), []);
 
+  const [openAddTeacherDialog, setOpenAddTeacherDialog] = useState(false);
+  const [openUpdateTeacherDialog, setOpenUpdateTeacherDialog] = useState(false);
+
   return (
     <div className="App">
       <div className="mainPlaceholder">
@@ -90,7 +94,7 @@ const Teachers = () => {
           addButtonText={"Add Teacher"}
           activeView={activeView}
           onChangeActiveView={setActiveView}
-          onAdd={() => {}}
+          onAdd={() => { setOpenAddTeacherDialog(true); }}
           onBulkImport={() => {}}
         />
 
@@ -108,13 +112,16 @@ const Teachers = () => {
           <ListView
             data={teachers}
             columns={COLUMNS}
-            onEdit={(_, data) => { console.log(data) }}
-            onDelete={(id) => { console.log(id) }}
+            onEdit={(_, data) => {
+              console.log(data);
+            }}
+            onDelete={(id) => {
+              console.log(id);
+            }}
           />
         )}
 
-        {
-          activeView === "grid" &&
+        {activeView === "grid" && (
           <div className={styles.gridContainer}>
             {teachers.map((teacher) => (
               <TeacherCard
@@ -123,11 +130,34 @@ const Teachers = () => {
                 maxPerDay={teacher.max_classes_day}
                 maxPerWeek={teacher.max_classes_week}
                 consecutive={teacher.max}
+                onEdit={() => { setOpenUpdateTeacherDialog(true); }}
+                onDelete={() => {}}
               />
             ))}
           </div>
-        }
+        )}
 
+        {/* Add Teacher */}
+        <TeacherDialog
+          open={openAddTeacherDialog}
+          onClose={() => {
+            setOpenAddTeacherDialog(false);
+          }}
+          onSubmit={(data) => {
+            console.log(data);
+          }}
+        />
+
+        {/* Update Teacher */}
+        <TeacherDialog
+          open={openUpdateTeacherDialog}
+          onClose={() => {
+            setOpenUpdateTeacherDialog(false);
+          }}
+          onSubmit={(data) => {
+            console.log(data);
+          }}
+        />
       </div>
     </div>
   );
