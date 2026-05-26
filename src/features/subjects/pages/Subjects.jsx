@@ -37,6 +37,7 @@ import { AlertTriangle } from "lucide-react";
     max_classes_week: number,
     min_classes_consecutive: number, --> not neccessarily needed. (for now lets pass in a value of 1 )
     max_classes_consecutive: number,
+    lab_classes: number[],
   }
 */
 
@@ -81,7 +82,9 @@ const COLUMNS = [
 // i have to do this because vishy is busy and wont update the schema.
 
 const HARDNESS_LABEL_TO_NUMBER = { Low: 1, Med: 2, High: 3 };
+const HARDNESS_NUMBER_TO_LABEL = { 1: "Low", 2: "Med", 3: "High" };
 
+// Converts backend shape → UI shape
 const normalizeSubject = (subject) => ({
   id: subject.id,
   name: subject.name,
@@ -92,14 +95,20 @@ const normalizeSubject = (subject) => ({
   consecutive: subject.max_classes_consecutive,
 });
 
+// Converts UI form values → API payload
 const transformPayload = (values) => {
   const payload = {
     name: values.name,
-    type: values.isLab ? "lab" : "theory",
-    hardness: Number(values.hardness),
-    daily: [Number(values.minPerDay), Number(values.maxPerDay)],
-    weekly: [Number(values.minPerWeek), Number(values.maxPerWeek)],
-    consecutive: Number(values.maxConsecutive),
+    isLab: values.isLab,
+    hardness:
+      HARDNESS_NUMBER_TO_LABEL[Number(values.hardness)] ?? values.hardness,
+    min_classes_day: Number(values.minPerDay),
+    max_classes_day: Number(values.maxPerDay),
+    min_classes_week: Number(values.minPerWeek),
+    max_classes_week: Number(values.maxPerWeek),
+    min_classes_consecutive: 1,
+    max_classes_consecutive: Number(values.maxConsecutive),
+    lab_classes: [],
   };
 
   if (values.id !== undefined) {
