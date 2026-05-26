@@ -17,6 +17,9 @@ const Teachers = lazy(() => import("../../features/teachers/pages/Teachers"));
 const DashboardOverview = lazy(
   () => import("../../features/dashboard/pages/DashboardOveriew"),
 );
+const Assignments = lazy(
+  () => import("../../features/assignments/pages/Assignments"),
+);
 
 const Error404 = lazy(() => import("../../pages/error/Error404"));
 const LandingPage = lazy(() => import("../../pages/landingPage/LandingPage"));
@@ -90,6 +93,15 @@ export default function AppRoutes() {
               <ProtectedRoutes>
                 {" "}
                 <Teachers />{" "}
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/assignments"
+            element={
+              <ProtectedRoutes>
+                {" "}
+                <Assignments />{" "}
               </ProtectedRoutes>
             }
           />

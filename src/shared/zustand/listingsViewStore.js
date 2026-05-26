@@ -1,14 +1,32 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// this is used for changing view
-// persist is used localstorage persistense
-export const useClassesView = create(
-  persist(
-    (set) => ({
-      activeView: "grid",
-      setActiveView: (view) => set({ activeView: view }),
-    }),
-    { name: "classListingsView" }, //unique id in lstorage nigga.. dont repeat this shit
-  ),
+// reusable view store creator
+const createViewStore = (defaultView, storageKey) =>
+  create(
+    persist(
+      (set) => ({
+        activeView: defaultView,
+
+        setActiveView: (view) =>
+          set({
+            activeView: view,
+          }),
+      }),
+      {
+        name: storageKey,
+      },
+    ),
+  );
+
+// stores
+export const useClassesView = createViewStore("grid", "classListingsView");
+
+export const useAssignmentsView = createViewStore(
+  "list",
+  "assignmentsListingView",
 );
+
+export const useTeachersView = createViewStore("grid", "teacherListingsView");
+
+export const useSubjectsView = createViewStore("grid", "subjectListingsView");
