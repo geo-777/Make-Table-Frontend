@@ -1,16 +1,23 @@
+import { useMemo } from "react";
 import useTimetableListing from "./useTimetableListing";
-// seperate hook for using the data only..
+
+// separate hook for using the data only : read operations and calculations
 export const useTimetableData = () => {
   const { readListings } = useTimetableListing();
 
   const query = readListings();
 
-  const timetableListings = query.data; // full response object
-  const timetables = query.data?.data ?? []; // array of timetables
+  const timetableListings = query.data;
+  const timetables = query.data?.data ?? [];
 
-  const draftTimeTables = timetables.filter((e) => e.view_status === "Private");
-  const publishedTimeTables = timetables.filter(
-    (e) => e.view_status === "Public",
+  const draftTimeTables = useMemo(
+    () => timetables.filter((e) => e.view_status === "Private"),
+    [timetables],
+  );
+
+  const publishedTimeTables = useMemo(
+    () => timetables.filter((e) => e.view_status === "Public"),
+    [timetables],
   );
 
   return {

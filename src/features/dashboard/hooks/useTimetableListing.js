@@ -8,149 +8,134 @@ import {
 } from "../../../api/timetables.api";
 import { toast } from "react-toastify";
 
+//this hook handles all backend connection : ALL CRUD
+
+const TIMETABLE_KEY = ["timetableListings"];
+
 const useTimetableListing = () => {
+  const queryClient = useQueryClient();
+
   const handleError = (status) => {
-    if (!status) toast.error("Unknown error occured.");
+    if (!status) return toast.error("Unknown error occurred.");
 
     if (status >= 500 && status < 600) {
       toast.error("Internal Server error. Please try again later.");
     } else if (status === 429) {
       toast.error("Too many attempts. Try again in a few minutes.");
     } else {
-      toast.error("Unknown error occured.");
+      toast.error("Unknown error occurred.");
     }
   };
 
-  const queryClient = useQueryClient();
-  //querying read operation
+  // querying read operation
   const query = useQuery({
-    queryKey: ["timetableListings"],
+    queryKey: TIMETABLE_KEY,
     queryFn: fetchAllTimetables,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     retry: 1,
   });
 
-  //mutation for creation
+  // helper function for updating cache using callbacks
+  const updateTimeTableCache = (updateFn) => {
+    queryClient.setQueryData(TIMETABLE_KEY, (oldData) => {
+      if (!oldData?.data) {
+        queryClient.invalidateQueries({
+          queryKey: TIMETABLE_KEY,
+        });
+
+        return oldData;
+      }
+
+      return updateFn(oldData);
+    });
+  };
+
+  // create
   const createListing = useMutation({
     mutationFn: createTimetable,
+
     onSuccess: (response) => {
       const newTimetable = response.data;
 
-      queryClient.setQueryData(["timetableListings"], (oldData) => {
-        if (!oldData?.data) {
-          return queryClient.invalidateQueries({
-            queryKey: ["timetableListings"],
-          });
-        } // safety check to handle 404 empty data edge case.
-
-        return {
-          ...oldData,
-          data: [...oldData.data, newTimetable],
-        };
-      });
+      updateTimeTableCache((oldData) => ({
+        ...oldData,
+        data: [...oldData.data, newTimetable],
+      }));
 
       toast.success("Timetable created successfully.");
     },
+
     onError: (error) => {
-      //console.log(error);
-      const status = error?.response?.status;
-      handleError(status);
+      handleError(error?.response?.status);
     },
   });
-  //mutation for deletion
+
+  // delete
   const deleteListing = useMutation({
-    mutationFn: (id) => deleteTimeTable(id),
+    mutationFn: deleteTimeTable,
+
     onSuccess: (_, id) => {
-      //console.log(response, data);
-
-      queryClient.setQueryData(["timetableListings"], (oldData) => {
-        if (!oldData?.data) {
-          return queryClient.invalidateQueries({
-            queryKey: ["timetableListings"],
-          });
-        } // safety check
-        return {
-          ...oldData,
-          data: oldData.data.filter((e) => e.id != id),
-        };
-      });
+      updateTimeTableCache((oldData) => ({
+        ...oldData,
+        data: oldData.data.filter((e) => e.id !== id),
+      }));
     },
-    onError: (error) => {
-      //console.log(error);
-      const status = error?.response?.status;
 
-      handleError(status);
+    onError: (error) => {
+      handleError(error?.response?.status);
     },
   });
 
-  //patching mutation
+  // edit
   const patchListing = useMutation({
     mutationFn: ({ id, data }) => patchTimeTable(id, data),
+
     onSuccess: (response, { id }) => {
       const editedTimetable = response.data;
 
-      queryClient.setQueryData(["timetableListings"], (oldData) => {
-        if (!oldData?.data) {
-          return queryClient.invalidateQueries({
-            queryKey: ["timetableListings"],
-          });
-        } // safety check
-
-        return {
-          ...oldData,
-          data: oldData.data.map((elm) =>
-            id === elm.id ? editedTimetable : elm,
-          ),
-        };
-      });
+      updateTimeTableCache((oldData) => ({
+        ...oldData,
+        data: oldData.data.map((elm) =>
+          elm.id === id ? editedTimetable : elm,
+        ),
+      }));
 
       toast.success("Timetable edited successfully.");
     },
 
     onError: (error) => {
-      const status = error?.response?.status;
-      handleError(status);
+      handleError(error?.response?.status);
     },
   });
 
-  //publish, unpublish basically
+  // publish / unpublish
   const setViewStatus = useMutation({
     mutationFn: ({ id, data }) => viewStatusTable(id, data),
+
     onSuccess: (response, { id }) => {
       const editedTimetable = response.data;
 
-      queryClient.setQueryData(["timetableListings"], (oldData) => {
-        if (!oldData?.data) {
-          return queryClient.invalidateQueries({
-            queryKey: ["timetableListings"],
-          });
-        } // safety check
+      updateTimeTableCache((oldData) => ({
+        ...oldData,
+        data: oldData.data.map((elm) =>
+          elm.id === id ? editedTimetable : elm,
+        ),
+      }));
 
-        return {
-          ...oldData,
-          data: oldData.data.map((elm) =>
-            id === elm.id ? editedTimetable : elm,
-          ),
-        };
-      });
-      if (editedTimetable.view_status === "Public") {
-        toast.success("Timetable is now public.");
-      } else {
-        toast.success("Timetable is now private.");
-      }
+      toast.success(
+        editedTimetable.view_status === "Public"
+          ? "Timetable is now public."
+          : "Timetable is now private.",
+      );
     },
 
     onError: (error) => {
-      const status = error?.response?.status;
-      handleError(status);
+      handleError(error?.response?.status);
     },
   });
 
-  //helper function that returns query data like data,error,isPending,isError etc:
-  const readListings = () => {
-    return { ...query };
-  };
+  const readListings = () => ({ ...query });
 
   return {
     readListings,
