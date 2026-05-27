@@ -4,11 +4,11 @@ import { Pencil, Trash2, X, Check } from "lucide-react";
 import CircularCheckBox from "../../../../shared/components/specialButtons/CircularCheckBox";
 import useClasses from "../../hooks/useClasses";
 
-const Row = ({ data, editClass }) => {
+const Row = ({ data, editClass, deleteClass }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editForm, setEditForm] = useState(data);
   const actionbtnSize = 16;
-  const actionbtnStroke = 2;
+  const actionbtnStroke = 1.75;
 
   const closeEditMode = () => {
     setEditForm(data);
@@ -16,18 +16,28 @@ const Row = ({ data, editClass }) => {
   };
 
   // this controls the enabling and disabling of the check button
-  const submitEnabled = useMemo(() => {
-    return (
-      (editForm?.class_name.trim() != data?.class_name.trim() ||
-        editForm?.room_name.trim() != data?.room_name.trim() ||
-        editForm?.isLab != data?.isLab) &&
-      editForm?.class_name.trim() &&
-      editForm?.room_name.trim()
-    );
+  const payload = useMemo(() => {
+    // Build object with only changed fields
+    const changedFields = {};
+
+    if (editForm.class_name.trim() !== data?.class_name?.trim()) {
+      changedFields.class_name = editForm.class_name;
+    }
+
+    if (editForm.room_name.trim() !== data?.room_name?.trim()) {
+      changedFields.room_name = editForm.room_name;
+    }
+
+    if (editForm.isLab !== data?.isLab) {
+      changedFields.isLab = editForm.isLab;
+    }
+
+    return changedFields;
   }, [editForm]);
 
   const editClassHandler = async () => {
-    await editClass(data?.id, editForm);
+    console.log(data?.id, payload);
+    await editClass(data?.id, payload);
     closeEditMode();
   };
 
@@ -74,7 +84,7 @@ const Row = ({ data, editClass }) => {
             <X size={actionbtnSize} strokeWidth={actionbtnStroke} />
           </button>
           <button
-            disabled={!submitEnabled}
+            disabled={Object.keys(payload).length === 0}
             onClick={editClassHandler}
             className={`${styles.actionBtn__list} ${styles.actionBtn__tick}`}
           >
@@ -105,6 +115,7 @@ const Row = ({ data, editClass }) => {
         </button>
         <button
           className={`${styles.actionBtn__list} ${styles.actionBtn__delete}`}
+          onClick={async () => await deleteClass(data?.id)}
         >
           <Trash2 size={actionbtnSize} strokeWidth={actionbtnStroke} />
         </button>
@@ -114,13 +125,16 @@ const Row = ({ data, editClass }) => {
 };
 
 const ListView = ({ data }) => {
-  const { patchListing } = useClasses();
+  const { patchListing, deleteListing } = useClasses();
 
   const editClass = async (id, data) => {
     await patchListing.mutateAsync({
       classId: id,
       data: data,
     });
+  };
+  const deleteClass = async (id) => {
+    deleteListing.mutateAsync(id);
   };
   return (
     <div className={styles.listview__Container}>
@@ -129,7 +143,12 @@ const ListView = ({ data }) => {
       <div className={styles.listHeading__item}>Type</div>
       <div className={styles.listHeading__item}>Actions</div>
       {data.map((e, i) => (
-        <Row data={e} key={i} editClass={editClass} />
+        <Row
+          data={e}
+          key={e?.id ?? i}
+          editClass={editClass}
+          deleteClass={deleteClass}
+        />
       ))}
     </div>
   );

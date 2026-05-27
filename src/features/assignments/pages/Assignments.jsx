@@ -5,6 +5,8 @@ import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import { useState } from "react";
 import { useAssignmentsView } from "../../../shared/zustand/listingsViewStore";
+import AssignCard from "../components/assignCard/AssignCard";
+import AssignPopup from "../components/assignPopup/AssignPopup";
 const COLUMNS = [
   {
     key: "teacher_name",
@@ -39,7 +41,7 @@ const MOCK_DATA = [
     teacher_name: "John Mathew",
     class_name: "10-A",
     subject_name: "Mathematics",
-    role: "Class Teacher",
+    role: "Subject_Teacher",
     morning_class_days: ["Mon", "Tue", "Wed"],
   },
   {
@@ -47,7 +49,7 @@ const MOCK_DATA = [
     teacher_name: "Sarah Joseph",
     class_name: "9-B",
     subject_name: "Physics",
-    role: "Assistant Teacher",
+    role: "Subject_Teacher",
     morning_class_days: ["Thu", "Fri"],
   },
   {
@@ -55,7 +57,7 @@ const MOCK_DATA = [
     teacher_name: "David Thomas",
     class_name: "8-C",
     subject_name: "English",
-    role: "Subject Teacher",
+    role: "Subject_Teacher",
     morning_class_days: ["Mon", "Wed", "Fri"],
   },
   {
@@ -63,7 +65,7 @@ const MOCK_DATA = [
     teacher_name: "Anna George",
     class_name: "12-A",
     subject_name: "Chemistry",
-    role: "Class Teacher",
+    role: "Class_Teacher",
     morning_class_days: ["Tue"],
   },
 ];
@@ -108,6 +110,20 @@ const Assignments = () => {
             }}
           />
         )}
+
+        {activeView === "grid" && (
+          <div className={styles.gridContainer}>
+            {assignData.map((e) => (
+              <AssignCard key={e.id} data={e} />
+            ))}
+          </div>
+        )}
+
+        {/* create popup */}
+        <AssignPopup
+          visible={createDialogOpen}
+          closePopup={() => setCreateDialogOpen(false)}
+        />
       </div>
     </div>
   );
