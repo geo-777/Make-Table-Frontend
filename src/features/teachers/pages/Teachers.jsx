@@ -1,13 +1,19 @@
+import "../../../styles/appLayout.css";
+import styles from "../styles/Teachers.module.css";
+
 import { useMemo, useState } from "react";
+
 import ListView from "../../../shared/components/itemView/listView/listView";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import "../../../styles/appLayout.css";
-import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
-import styles from "../styles/Teachers.module.css";
-import TeacherCard from "../components/teacherCard/TeacherCard";
 import TeacherDialog from "../components/teacherDialog/TeacherDialog";
+import TeacherCard from "../components/teacherCard/TeacherCard";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
+import Loader from "../../../shared/components/loader/Loader";
+
+import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
+import useTeachers from "../hooks/useTeachers";
+
 
 /*
   {
@@ -43,43 +49,135 @@ const COLUMNS = [
   },
 ];
 
-const MOCK_TEACHERS = [
-  {
-    id: 0,
-    name: "Leonardo dica pari",
-    created_at: "2026-05-26T09:30:02.815Z",
-    max_classes_day: 5,
-    max_classes_week: 7,
-    max_classes_consecutive: 2,
-  },
-  {
-    id: 1,
-    name: "Kitler",
-    created_at: "2026-05-26T09:30:02.815Z",
-    max_classes_day: 5,
-    max_classes_week: 7,
-    max_classes_consecutive: 2,
-  },
-  {
-    id: 2,
-    name: "Superman bin Batman",
-    created_at: "2026-05-26T09:30:02.815Z",
-    max_classes_day: 5,
-    max_classes_week: 7,
-    max_classes_consecutive: 2,
-  },
-];
+// const MOCK_TEACHERS = [
+//   {
+//     id: 0,
+//     name: "Leonardo dica pari",
+//     created_at: "2026-05-26T09:30:02.815Z",
+//     max_classes_day: 5,
+//     max_classes_week: 7,
+//     max_classes_consecutive: 2,
+//   },
+//   {
+//     id: 1,
+//     name: "Kitler",
+//     created_at: "2026-05-26T09:30:02.815Z",
+//     max_classes_day: 5,
+//     max_classes_week: 7,
+//     max_classes_consecutive: 2,
+//   },
+//   {
+//     id: 2,
+//     name: "Superman bin Batman",
+//     created_at: "2026-05-26T09:30:02.815Z",
+//     max_classes_day: 5,
+//     max_classes_week: 7,
+//     max_classes_consecutive: 2,
+//   },
+// ];
 
 const Teachers = () => {
 
   const { selectedTimetableData } = useTimeTableSelect();
+
+  const {
+    data,
+    isLoading,
+    isError,
+
+    createTeacher,
+    deleteTeacher,
+    updateTeacher,
+  } = useTeachers();
   
   const [activeView, setActiveView] = useState("grid");
-  const teachers = useMemo(() => (MOCK_TEACHERS), []);
 
   const [openAddTeacherDialog, setOpenAddTeacherDialog] = useState(false);
   const [openUpdateTeacherDialog, setOpenUpdateTeacherDialog] = useState(false);
   const [openImportDialog, setOpenImportDialog] = useState(false);
+
+  const teachers = useMemo(() => (data?.data ?? []), [data]);
+
+  const handleDeleteTeacher = async (id) => {
+    if(!selectedTimetableData?.id) return;
+
+    console.log(id);
+    await deleteTeacher.mutateAsync(id);
+  };
+
+  const handleCreateTeacher = async (data) => {
+    if (!selectedTimetableData?.id) return;
+    
+    await createTeacher.mutateAsync({
+      id: selectedTimetableData.id,
+      data
+    });
+    setOpenAddTeacherDialog(false);
+  };
+
+  const handleUpdateTeacher = async (data) => {
+    if (!selectedTimetableData?.id) return;
+    
+    await updateTeacher.mutateAsync({
+      id: selectedTimetableData.id,
+      data
+    });
+    setOpenUpdateTeacherDialog(false);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="App">
+        <div className="mainPlaceholder">
+          <Topbar page={"Teachers"} />
+
+          <div className={styles.inactiveState}>
+            <Loader />
+            <p>Fetching teachers...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="App">
+        <div className="mainPlaceholder">
+          <Topbar page={"Teachers"} />
+
+          <div className={styles.inactiveState}>
+            <div className={styles.largeIcon}>
+              <AlertTriangle size={24} />
+            </div>
+            <h4>Something went wrong.</h4>
+            <p>
+              We couldn't load teacher details. Check your connection and try
+              refreshing — if it keeps happening, the server might be down.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!selectedTimetableData) {
+    return (
+      <div className="App">
+        <div className="mainPlaceholder">
+          <Topbar page={"Teachers"} />
+
+          <div className={styles.inactiveState}>
+            <h4>No timetable selected.</h4>
+            <p>
+              Pick a timetable from the workspace selector at the top to start
+              managing teacher details.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
@@ -119,11 +217,9 @@ const Teachers = () => {
             data={teachers}
             columns={COLUMNS}
             onEdit={(_, data) => {
-              console.log(data);
+              handleUpdateTeacher(data);
             }}
-            onDelete={(id) => {
-              console.log(id);
-            }}
+            onDelete={handleDeleteTeacher}
           />
         )}
 
@@ -140,7 +236,7 @@ const Teachers = () => {
                 onEdit={() => {
                   setOpenUpdateTeacherDialog(true);
                 }}
-                onDelete={() => {}}
+                onDelete={handleDeleteTeacher}
               />
             ))}
           </div>
@@ -152,10 +248,7 @@ const Teachers = () => {
           onClose={() => {
             setOpenAddTeacherDialog(false);
           }}
-          onSubmit={(data) => {
-            console.log(data);
-            setOpenAddTeacherDialog(false);
-          }}
+          onSubmit={handleCreateTeacher}
         />
 
         {/* Update Teacher */}
@@ -164,10 +257,7 @@ const Teachers = () => {
           onClose={() => {
             setOpenUpdateTeacherDialog(false);
           }}
-          onSubmit={(data) => {
-            console.log(data);
-            setOpenUpdateTeacherDialog(false);
-          }}
+          onSubmit={handleUpdateTeacher}
         />
 
         {/* Import Teacher Details */}

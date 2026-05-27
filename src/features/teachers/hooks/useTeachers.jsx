@@ -162,7 +162,6 @@ const useTeachers = () => {
     onSuccess: (response) => {
       const updatedTeacher = response?.data;
 
-      
       queryClient.setQueryData(
         teacherKeys.single(updatedTeacher.id),
         updatedTeacher,

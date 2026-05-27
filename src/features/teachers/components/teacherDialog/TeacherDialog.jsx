@@ -148,7 +148,11 @@ export default function TeacherDialog({
             </div>
           </div>
 
-          <button type="submit" className={styles.submitBtn}>
+          <button 
+            type="submit" 
+            className={styles.submitBtn} 
+            disabled={form.name.length == 0}
+          >
             {isUpdate ? "Save Changes" : "Create"}
           </button>
         </form>

@@ -19,9 +19,8 @@ export default function TeacherCard({
 
   return (
     <ItemCard
-      id={id}
       onEdit={onEdit}
-      onDelete={onDelete}
+      onDelete={() => onDelete(id)}
     >
        <div className={styles.header}>
         <div className={styles.avatar}>

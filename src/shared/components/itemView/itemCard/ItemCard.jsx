@@ -6,7 +6,6 @@ import {
 
 export default function ItemCard({
   children,
-  id,
   onEdit,
   onDelete,
 }) {
