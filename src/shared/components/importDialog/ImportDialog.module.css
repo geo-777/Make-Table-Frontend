@@ -1,0 +1,254 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow: hidden;
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-elevated);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  text-align: left;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  margin: 0;
+  color: var(--foreground);
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--primary);
+  background-color: var(--accent);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.cardPrimary {
+  border-width: 2px;
+  border-color: var(--light-violet);
+  background-color: var(--accent);
+}
+
+.cardPrimary:hover {
+  border-color: var(--primary);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground);
+  width: 16px;
+  height: 16px;
+}
+
+.cardIconPrimary {
+  color: var(--primary);
+}
+
+.cardLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0 0.375rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.4;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: 1px solid transparent;
+}
+
+.cardDesc {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.cardDescBottom {
+  margin-top: auto;
+}
+
+.infoBox {
+  display: flex;
+  gap: 0.5rem;
+  background-color: var(--muted);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+}
+
+.infoIcon {
+  display: flex;
+  align-items: flex-start;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.infoText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.infoHeading {
+  font-weight: 500;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.infoText p {
+  margin: 0;
+}
+
+.infoStrong {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.footerHint {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin: 0;
+  align-self: center;
+}
+
+.footerActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cancelBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  border-radius: calc(var(--radius) - 0.25rem);
+  font-size: 0.875rem;
+  font-weight: 500;
+  height: 2.5rem;
+  padding: 0 1rem;
+  background-color: var(--secondary-bg);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.cancelBtn:hover {
+  background-color: var(--secondary);
+  border-color: var(--input);
+}
+
+.cancelBtn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  opacity: 0.6;
+  border-radius: calc(var(--radius) - 0.5rem);
+  color: var(--foreground);
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.closeBtn:hover {
+  opacity: 1;
+  background-color: var(--secondary);
+}
+
+.closeBtn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}

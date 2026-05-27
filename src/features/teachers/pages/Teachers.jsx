@@ -7,6 +7,7 @@ import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import styles from "../styles/Teachers.module.css";
 import TeacherCard from "../components/teacherCard/TeacherCard";
 import TeacherDialog from "../components/teacherDialog/TeacherDialog";
+import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 
 /*
   {
@@ -78,6 +79,7 @@ const Teachers = () => {
 
   const [openAddTeacherDialog, setOpenAddTeacherDialog] = useState(false);
   const [openUpdateTeacherDialog, setOpenUpdateTeacherDialog] = useState(false);
+  const [openImportDialog, setOpenImportDialog] = useState(false);
 
   return (
     <div className="App">
@@ -94,8 +96,12 @@ const Teachers = () => {
           addButtonText={"Add Teacher"}
           activeView={activeView}
           onChangeActiveView={setActiveView}
-          onAdd={() => { setOpenAddTeacherDialog(true); }}
-          onBulkImport={() => {}}
+          onAdd={() => {
+            setOpenAddTeacherDialog(true);
+          }}
+          onBulkImport={() => {
+            setOpenImportDialog(true);
+          }}
         />
 
         {!teachers.length && (
@@ -131,7 +137,9 @@ const Teachers = () => {
                 maxPerDay={teacher.max_classes_day}
                 maxPerWeek={teacher.max_classes_week}
                 consecutive={teacher.max}
-                onEdit={() => { setOpenUpdateTeacherDialog(true); }}
+                onEdit={() => {
+                  setOpenUpdateTeacherDialog(true);
+                }}
                 onDelete={() => {}}
               />
             ))}
@@ -160,6 +168,19 @@ const Teachers = () => {
             console.log(data);
             setOpenUpdateTeacherDialog(false);
           }}
+        />
+
+        {/* Import Teacher Details */}
+        <ImportDialog
+          open={openImportDialog}
+          title={"Import Teachers"}
+          description={"Add all teachers that need to be scheduled."}
+          onClose={() => {
+            setOpenImportDialog(false);
+          }}
+          onSelectCSV={() => {}}
+          onSelectText={() => {}}
+          onSelectTimetable={() => {}}
         />
       </div>
     </div>
