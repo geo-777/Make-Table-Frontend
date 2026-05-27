@@ -3,6 +3,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import useClasses from "../../hooks/useClasses";
 import ClassPopup from "../popups/ClassPopup";
 import { useState } from "react";
+import StatusWrapper from "../../../../shared/components/statusWrapper/StatusWrapper";
 // individual grid items.
 const GridItem = ({ data, openEditPopup }) => {
   const actionbtnSize = 16;
@@ -71,6 +72,14 @@ const GridView = ({ data }) => {
           setExistingData({});
         }}
       />
+      {data.length == 0 && (
+        <StatusWrapper isError={true}>
+          <div className={styles.error404}>
+            <h4>No classes created yet</h4>
+            <p>Start by creating your first class to organize your schedule.</p>
+          </div>
+        </StatusWrapper>
+      )}
       <div className={styles.gridContainer}>
         {data.map((e, i) => (
           <GridItem openEditPopup={openEditPopup} data={e} key={i} />

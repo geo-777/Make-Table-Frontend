@@ -3,6 +3,7 @@ import styles from "../../styles/Classes.module.css";
 import { Pencil, Trash2, X, Check } from "lucide-react";
 import CircularCheckBox from "../../../../shared/components/specialButtons/CircularCheckBox";
 import useClasses from "../../hooks/useClasses";
+import StatusWrapper from "../../../../shared/components/statusWrapper/StatusWrapper";
 
 const Row = ({ data, editClass, deleteClass }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -150,6 +151,15 @@ const ListView = ({ data }) => {
           deleteClass={deleteClass}
         />
       ))}
+      {data.length === 0 && (
+        <div className={styles.emptyListings}>
+          <h6>No classes defined</h6>
+          <p>
+            Add your first class to start defining constraints for this
+            timetable.
+          </p>
+        </div>
+      )}
     </div>
   );
 };
