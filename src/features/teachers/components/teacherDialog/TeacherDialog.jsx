@@ -55,7 +55,22 @@ export default function TeacherDialog({
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmit(isUpdate ? { ...form, id: teacher.id } : form);
+
+    if (!isUpdate) {
+      onSubmit(form);
+      return;
+    }
+
+    const changedFields = Object.fromEntries(
+      Object.entries(form).filter(([key, value]) => value !== teacher[key]),
+    );
+
+    if (Object.keys(changedFields).length === 0) {
+      onClose();
+      return;
+    }
+
+    onSubmit({ id: teacher.id, ...changedFields });
   }
 
   // --- render ---
