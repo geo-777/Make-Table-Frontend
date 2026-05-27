@@ -74,8 +74,8 @@ const LandingPage = () => {
         </div>
 
         <nav>
-          <a href="#Features">Features</a>
           <a href="#HowItWorks">How it works</a>
+          <a href="#Features">Features</a>
           <a href="#OpenSource">Open Source</a>
         </nav>
 
@@ -104,9 +104,9 @@ const LandingPage = () => {
             animate="visible"
             transition={{ duration: 0.6 }}
           >
-            Create Perfect Timetables.
+            Perfect Timetables.
             <br />
-            <span className={styles.highlight}>Instantly.</span>
+            <span className={styles.highlight}>Instantly Generated.</span>
           </motion.h1>
 
           <motion.p
@@ -133,7 +133,7 @@ const LandingPage = () => {
               Get Started Free <ArrowUpRight />
             </button>
             <span className={styles.trustText}>
-              Open-source • No credit card
+              Open-source • MIT License
             </span>
           </motion.div>
         </section>
