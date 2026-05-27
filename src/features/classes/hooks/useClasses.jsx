@@ -10,7 +10,7 @@ import apiErrorHandler, {
   Component_Type,
 } from "../../../shared/utils/apiErrorHandler";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
-
+import { updateQueryCache } from "../../../shared/utils/queryCacheHelper";
 import { toast } from "react-toastify";
 
 const useClasses = () => {
@@ -19,22 +19,6 @@ const useClasses = () => {
   const timetableId = selectedTimetableData?.id;
 
   const queryClient = useQueryClient();
-
-  /* CACHE HELPER*/
-
-  const updateClassesCache = (updateFn) => {
-    queryClient.setQueryData(["classesListings", timetableId], (oldData) => {
-      if (!oldData?.data) {
-        queryClient.invalidateQueries({
-          queryKey: ["classesListings", timetableId],
-        });
-
-        return oldData;
-      }
-
-      return updateFn(oldData);
-    });
-  };
 
   /*QUERY*/
 
@@ -63,10 +47,14 @@ const useClasses = () => {
     onSuccess: (response) => {
       const newClass = response.data;
 
-      updateClassesCache((oldData) => ({
-        ...oldData,
-        data: [...oldData.data, newClass],
-      }));
+      updateQueryCache({
+        queryClient,
+        queryKey: ["classesListings", timetableId],
+        updateFn: (oldData) => ({
+          ...oldData,
+          data: [...oldData.data, newClass],
+        }),
+      });
 
       toast.success("Class created successfully.");
     },
@@ -82,11 +70,14 @@ const useClasses = () => {
     mutationFn: (classId) => deleteClass(classId),
 
     onSuccess: (_, classId) => {
-      updateClassesCache((oldData) => ({
-        ...oldData,
-
-        data: oldData.data.filter((e) => e.id !== classId),
-      }));
+      updateQueryCache({
+        queryClient,
+        queryKey: ["classesListings", timetableId],
+        updateFn: (oldData) => ({
+          ...oldData,
+          data: oldData.data.filter((e) => e.id !== classId),
+        }),
+      });
 
       toast.success("Class deleted.");
     },
@@ -102,10 +93,14 @@ const useClasses = () => {
     mutationFn: ({ classId, data }) => patchClass(timetableId, classId, data),
     onSuccess: (response, { classId }) => {
       const updatedClass = response.data;
-      updateClassesCache((oldData) => ({
-        ...oldData,
-        data: oldData.data.map((e) => (e.id === classId ? updatedClass : e)),
-      }));
+      updateQueryCache({
+        queryClient,
+        queryKey: ["classesListings", timetableId],
+        updateFn: (oldData) => ({
+          ...oldData,
+          data: oldData.data.map((e) => (e.id === classId ? updatedClass : e)),
+        }),
+      });
       toast.success("Class updated.");
     },
     onError: (error) => {

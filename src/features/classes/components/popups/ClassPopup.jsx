@@ -80,17 +80,30 @@ const ClassPopup = ({ visible, closePopup, existingData = null }) => {
     }
 
     if (isEditMode) {
-      if (
-        payload?.class_name.trim() == existingData?.class_name?.trim() &&
-        payload?.room_name.trim() == existingData?.room_name?.trim() &&
-        payload?.isLab == existingData?.isLab
-      ) {
+      // Build object with only changed fields
+      const changedFields = {};
+
+      if (payload.class_name.trim() !== existingData?.class_name?.trim()) {
+        changedFields.class_name = payload.class_name;
+      }
+
+      if (payload.room_name.trim() !== existingData?.room_name?.trim()) {
+        changedFields.room_name = payload.room_name;
+      }
+
+      if (payload.isLab !== existingData?.isLab) {
+        changedFields.isLab = payload.isLab;
+      }
+
+      // If no changes, just close the popup
+      if (Object.keys(changedFields).length === 0) {
         return handleCloseClicked();
       }
 
+      // Send only changed fields
       await patchListing.mutateAsync({
         classId: existingData?.id,
-        data: payload,
+        data: changedFields,
       });
     } else {
       await createListing.mutateAsync(payload);

@@ -3,21 +3,17 @@ import { toast } from "react-toastify";
 /* add extra components here if needed */
 
 export const Component_Type = {
-  CLASSES: 1,
-  SUBJECTS: 2,
-  TEACHERS: 3,
-  ASSIGNMENTS: 4,
+  TIMETABLES: "timetable",
+  CLASSES: "class",
+  SUBJECTS: "subject",
+  TEACHERS: "teacher",
+  ASSIGNMENTS: "assignment",
 };
 
-const componentMap = {
-  [Component_Type.CLASSES]: "class",
-  [Component_Type.SUBJECTS]: "subject",
-  [Component_Type.TEACHERS]: "teacher",
-  [Component_Type.ASSIGNMENTS]: "assignment",
-};
+const capitalize = (str) => str[0].toUpperCase() + str.slice(1);
 
 const handleApiError = (status, component) => {
-  const item = componentMap[component] ?? "resource";
+  const item = component ?? "resource";
 
   if (!status) {
     return toast.error(`Unable to process ${item}. Please try again.`);
@@ -34,7 +30,7 @@ const handleApiError = (status, component) => {
       return toast.error(`You don't have permission to modify this ${item}.`);
 
     case 404:
-      return toast.error(`${item[0].toUpperCase() + item.slice(1)} not found.`);
+      return toast.error(`${capitalize(item)} not found.`);
 
     case 409:
       return toast.error(`A similar ${item} already exists.`);
