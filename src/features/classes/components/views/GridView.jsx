@@ -1,7 +1,7 @@
 import styles from "../../styles/Classes.module.css";
 import { Pencil, Trash2 } from "lucide-react";
 import useClasses from "../../hooks/useClasses";
-import EditClassPopup from "../popups/EditClassPopup";
+import ClassPopup from "../popups/ClassPopup";
 import { useState } from "react";
 // individual grid items.
 const GridItem = ({ data, openEditPopup }) => {
@@ -63,7 +63,7 @@ const GridView = ({ data }) => {
   };
   return (
     <>
-      <EditClassPopup
+      <ClassPopup
         visible={editPopupOpen}
         existingData={existingData}
         closePopup={() => {

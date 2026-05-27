@@ -1,26 +1,40 @@
 import styles from "./ClassPopup.module.css";
 import RequiredInputField from "../../../../shared/components/inputfields/RequiredInputField";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CircularCheckBox from "../../../../shared/components/specialButtons/CircularCheckBox";
 import useClasses from "../../hooks/useClasses";
-const CreateClassPopup = ({ visible, closePopup, timetableId }) => {
-  const { createListing } = useClasses();
+
+const ClassPopup = ({ visible, closePopup, existingData = null }) => {
+  const { createListing, patchListing } = useClasses();
+  const isEditMode = !!existingData;
 
   const [form, setForm] = useState({
     class_name: "",
     room_name: "",
     isLab: false,
   });
+
   const [errorStates, setErrorStates] = useState({
     class_name: null,
     room_name: null,
   });
 
+  useEffect(() => {
+    if (isEditMode) {
+      setForm({
+        class_name: existingData?.class_name ?? "",
+        room_name: existingData?.room_name ?? "",
+        isLab: existingData?.isLab ?? false,
+      });
+    }
+  }, [existingData, isEditMode]);
+
   const handleCloseClicked = () => {
     setForm({
       class_name: "",
       room_name: "",
+      isLab: false,
     });
     setErrorStates({
       class_name: null,
@@ -59,24 +73,43 @@ const CreateClassPopup = ({ visible, closePopup, timetableId }) => {
     const { hasError, newErrors } = validate(form);
     setErrorStates(newErrors);
     if (hasError) return;
-    //fill up roomname with classname
+
     const payload = { ...form };
     if (!payload.room_name.trim()) {
       payload.room_name = form.class_name;
     }
 
-    await createListing.mutateAsync({
-      id: timetableId,
-      data: payload,
-    });
+    if (isEditMode) {
+      if (
+        payload?.class_name.trim() == existingData?.class_name?.trim() &&
+        payload?.room_name.trim() == existingData?.room_name?.trim() &&
+        payload?.isLab == existingData?.isLab
+      ) {
+        return handleCloseClicked();
+      }
+
+      await patchListing.mutateAsync({
+        classId: existingData?.id,
+        data: payload,
+      });
+    } else {
+      await createListing.mutateAsync(payload);
+    }
+
+    handleCloseClicked();
   };
+
+  const popupConfig = isEditMode
+    ? { title: "Edit Class", buttonText: "Edit" }
+    : { title: "Add Class", buttonText: "Create" };
+
   return (
     <PopupBox
       visible={visible}
       handleSubmit={handleSubmit}
       closeFunction={handleCloseClicked}
-      title={"Add Class"}
-      primaryBtnText={"Create"}
+      title={popupConfig.title}
+      primaryBtnText={popupConfig.buttonText}
     >
       <form className={styles.popupForm}>
         <RequiredInputField
@@ -117,4 +150,4 @@ const CreateClassPopup = ({ visible, closePopup, timetableId }) => {
   );
 };
 
-export default CreateClassPopup;
+export default ClassPopup;

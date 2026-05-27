@@ -6,7 +6,7 @@ import { useClassesView } from "../../../shared/zustand/listingsViewStore";
 import GridView from "../components/views/GridView";
 import ListView from "../components/views/ListView";
 import { useState } from "react";
-import CreateClassPopup from "../components/popups/CreateClassPopup";
+import ClassPopup from "../components/popups/ClassPopup";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useClasses from "../hooks/useClasses";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
@@ -30,10 +30,9 @@ const Classes = () => {
 
   return (
     <div className="App">
-      <CreateClassPopup
+      <ClassPopup
         closePopup={() => setCreateClassOpen(false)}
         visible={isCreateClassOpen}
-        timetableId={selectedTimetableData?.id}
       />
       <div className="mainPlaceholder">
         <Topbar page={"Classes"} />
