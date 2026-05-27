@@ -31,7 +31,7 @@ const handleError = (error) => {
     toast.error("Too many attempts. Try again in a few minutes.");
     return;
   }
-  toast.error("Something went wrong.");
+  toast.error(error?.response?.data?.message ?? "Something went wrong.");
 };
 
 // --- Hydration helper --------------------------------------------

@@ -24,6 +24,12 @@ import useTeachers from "../hooks/useTeachers";
     "max_classes_week":        number,
     "max_classes_consecutive": number
   }
+
+  TODO: fix the following issues
+
+  Known Issues:
+    #1 cannot update any other attributes of teacher other than name.
+      reason: the backend uses teachers name as identification which prevents any modifications to existing teachers.
 */
 
 const COLUMNS = [
@@ -49,33 +55,6 @@ const COLUMNS = [
   },
 ];
 
-// const MOCK_TEACHERS = [
-//   {
-//     id: 0,
-//     name: "Leonardo dica pari",
-//     created_at: "2026-05-26T09:30:02.815Z",
-//     max_classes_day: 5,
-//     max_classes_week: 7,
-//     max_classes_consecutive: 2,
-//   },
-//   {
-//     id: 1,
-//     name: "Kitler",
-//     created_at: "2026-05-26T09:30:02.815Z",
-//     max_classes_day: 5,
-//     max_classes_week: 7,
-//     max_classes_consecutive: 2,
-//   },
-//   {
-//     id: 2,
-//     name: "Superman bin Batman",
-//     created_at: "2026-05-26T09:30:02.815Z",
-//     max_classes_day: 5,
-//     max_classes_week: 7,
-//     max_classes_consecutive: 2,
-//   },
-// ];
-
 const Teachers = () => {
 
   const { selectedTimetableData } = useTimeTableSelect();
@@ -96,12 +75,13 @@ const Teachers = () => {
   const [openUpdateTeacherDialog, setOpenUpdateTeacherDialog] = useState(false);
   const [openImportDialog, setOpenImportDialog] = useState(false);
 
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+
   const teachers = useMemo(() => (data?.data ?? []), [data]);
 
   const handleDeleteTeacher = async (id) => {
     if(!selectedTimetableData?.id) return;
 
-    console.log(id);
     await deleteTeacher.mutateAsync(id);
   };
 
@@ -117,10 +97,11 @@ const Teachers = () => {
 
   const handleUpdateTeacher = async (data) => {
     if (!selectedTimetableData?.id) return;
+    const {id, ...payload} = data;
     
     await updateTeacher.mutateAsync({
-      id: selectedTimetableData.id,
-      data
+      id,
+      data: payload
     });
     setOpenUpdateTeacherDialog(false);
   };
@@ -234,6 +215,7 @@ const Teachers = () => {
                 maxPerWeek={teacher.max_classes_week}
                 consecutive={teacher.max}
                 onEdit={() => {
+                  setSelectedTeacher(teacher);
                   setOpenUpdateTeacherDialog(true);
                 }}
                 onDelete={handleDeleteTeacher}
@@ -254,6 +236,7 @@ const Teachers = () => {
         {/* Update Teacher */}
         <TeacherDialog
           open={openUpdateTeacherDialog}
+          teacher={selectedTeacher}
           onClose={() => {
             setOpenUpdateTeacherDialog(false);
           }}
