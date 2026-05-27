@@ -1,0 +1,136 @@
+.tableWrapper {
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  margin: 2rem 2rem 0 2rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+.table thead tr {
+  border-bottom: 1px solid var(--border);
+}
+
+.table thead th {
+  padding: 0.875rem 1.25rem;
+  text-align: center;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.15s ease;
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody tr:not(.editingRow):hover {
+  background-color: var(--accent);
+}
+
+.table tbody td {
+  padding: 0.875rem 1.25rem;
+  text-align: center;
+}
+
+.nameCell {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.editingRow {
+  background-color: var(--secondary-bg);
+}
+
+.nameInput {
+  width: 100%;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 0.25rem);
+  font-size: 0.875rem;
+  color: var(--foreground);
+  background-color: var(--secondary-bg);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nameInput:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--light-violet);
+}
+
+.numberInput {
+  width: 5rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 0.25rem);
+  font-size: 0.875rem;
+  color: var(--foreground);
+  background-color: var(--secondary-bg);
+  outline: none;
+  text-align: center;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.numberInput:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--light-violet);
+}
+
+.actionsCell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: calc(var(--radius) - 0.25rem);
+  background: transparent;
+  cursor: pointer;
+  color: var(--muted-foreground);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.editBtn:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.deleteBtn:hover {
+  background-color: var(--danger-bg);
+  color: var(--color-danger);
+}
+
+.saveBtn {
+  color: var(--green-btn);
+}
+
+.saveBtn:hover {
+  background-color: var(--accent-green-bg);
+  color: var(--green-btn);
+}
+
+.cancelBtn {
+  color: var(--muted-foreground);
+}
+
+.cancelBtn:hover {
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-700);
+}

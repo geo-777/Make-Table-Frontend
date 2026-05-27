@@ -3,13 +3,13 @@ import styles from "../styles/Teachers.module.css";
 
 import { useMemo, useState } from "react";
 
-import ListView from "../../../shared/components/itemView/listView/listView";
 import Topbar from "../../../shared/components/topbar/Topbar";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import TeacherDialog from "../components/teacherDialog/TeacherDialog";
 import TeacherCard from "../components/teacherCard/TeacherCard";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import Loader from "../../../shared/components/loader/Loader";
+import TeacherList from "../components/teacherList/TeacherList";
 
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useTeachers from "../hooks/useTeachers";
@@ -24,36 +24,7 @@ import useTeachers from "../hooks/useTeachers";
     "max_classes_week":        number,
     "max_classes_consecutive": number
   }
-
-  TODO: fix the following issues
-
-  Known Issues:
-    #1 cannot update any other attributes of teacher other than name.
-      reason: the backend uses teachers name as identification which prevents any modifications to existing teachers.
 */
-
-const COLUMNS = [
-  {
-    key: "name",
-    label: "Name",
-    render: (value) => value,
-  },
-  {
-    key: "max_classes_day",
-    label: "Max/Day",
-    render: (value) => value,
-  },
-  {
-    key: "max_classes_week",
-    label: "Max/Week",
-    render: (value) => value,
-  },
-  {
-    key: "max_classes_consecutive",
-    label: "Max Consecutive",
-    render: (value) => value,
-  },
-];
 
 const Teachers = () => {
 
@@ -194,12 +165,9 @@ const Teachers = () => {
         )}
 
         {!!teachers.length && activeView == "list" && (
-          <ListView
-            data={teachers}
-            columns={COLUMNS}
-            onEdit={(_, data) => {
-              handleUpdateTeacher(data);
-            }}
+          <TeacherList
+            teachers={teachers}
+            onEdit={handleUpdateTeacher}
             onDelete={handleDeleteTeacher}
           />
         )}
