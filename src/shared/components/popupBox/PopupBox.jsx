@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./PopupBox.module.css";
 import { X } from "lucide-react";
 const PopupBox = ({
@@ -45,28 +45,19 @@ const PopupBox = ({
       >
         <div className={styles.headingContainer}>
           <h4>{title}</h4>
-          <button type="button">
-            <X size={18} onClick={closeFunction} />
+          <button type="button" onClick={closeFunction}>
+            <X size={18} />
           </button>
         </div>
         {children}
-        <div className={styles.actionBtns}>
-          <button
-            type="button"
-            className={styles.btnItem}
-            onClick={closeFunction}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className={`${styles.btnItem} ${styles.saveBtn} `}
-            onClick={handleSubmitClicked}
-            disabled={submitLoading || disabled}
-          >
-            {primaryBtnText}
-          </button>
-        </div>
+        <button
+          type="submit"
+          className={` ${styles.submitBtn} `}
+          onClick={handleSubmitClicked}
+          disabled={submitLoading || disabled}
+        >
+          {primaryBtnText}
+        </button>
       </div>
     </div>
   );

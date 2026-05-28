@@ -4,7 +4,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import { ChevronRight } from "lucide-react";
 
-const MAIN_LINKS = ["/dashboard", "/classes", "/teachers", "/subjects", ""];
+const MAIN_LINKS = [
+  "/dashboard",
+  "/classes",
+  "/teachers",
+  "/subjects",
+  "/assignments",
+];
 const OTHER_LINKS = {
   helpsupport: "Help & Support",
   settings: "Settings",

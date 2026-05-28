@@ -1,7 +1,8 @@
 .popupBox {
-  min-width: clamp(330px, 30vw, 450px);
+  width: 100%;
+  max-width: 440px;
   padding: 1rem 1.5rem;
-
+  position: relative;
   background-color: var(--sidebar-background);
   border-radius: 0.7rem;
   display: flex;
@@ -26,14 +27,42 @@
   justify-content: space-between;
 }
 .headingContainer h4 {
-  font-size: 20px;
+  font-size: 1.1625rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  margin: 0;
+  padding-right: 1.75rem;
 }
 .headingContainer button {
   background-color: transparent;
   border: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: calc(var(--radius) - 2px);
+  border: none;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    background 150ms ease,
+    color 150ms ease;
 }
 
+.headingContainer button:hover {
+  background: var(--secondary);
+  color: var(--foreground);
+}
+
+.headingContainer button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
 .actionBtns {
   margin-top: 0.5rem;
   display: flex;
@@ -42,24 +71,38 @@
   justify-content: flex-end;
 }
 
-.btnItem {
-  padding: 0.5rem 1rem;
-  background-color: transparent;
-  border: 1px solid var(--color-grey-200);
-  color: var(--color-grey-900);
-  border-radius: 0.3125rem;
+.submitBtn {
+  margin-top: 0;
+  width: 100%;
+  height: 2.375rem;
+  border: none;
+  border-radius: calc(var(--radius) - 2px);
+  background: var(--gradient-primary);
+  color: var(--primary-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition:
+    opacity 150ms ease,
+    box-shadow 150ms ease;
+  box-shadow: 0 1px 4px hsl(255 65% 54% / 0.3);
 }
-.saveBtn:hover {
-  background-color: var(--sidebar-accent-foreground);
+
+.submitBtn:hover {
+  opacity: 0.92;
+  box-shadow: 0 3px 10px hsl(255 65% 54% / 0.35);
 }
-.saveBtn,
-.saveBtn:disabled:hover {
-  border-color: var(--primary);
-  color: var(--sidebar-background);
-  background-color: var(--primary);
+
+.submitBtn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }
-.btnItem:hover {
-  border-color: var(--color-grey-300);
+
+.submitBtn:active {
+  opacity: 0.85;
+}
+
+.submitBtn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
