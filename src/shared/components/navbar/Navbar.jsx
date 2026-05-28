@@ -104,6 +104,8 @@ const Navbar = () => {
           </footer>
         )}
       </div>
+
+      {isMobile && <Outlet />}
     </>
   );
 

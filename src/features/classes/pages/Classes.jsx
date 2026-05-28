@@ -23,10 +23,13 @@ const Classes = () => {
 
   if (!selectedTimetableData) {
     return (
-      <div className={styles.inactiveState}>
-        <h4>No timetable selected yet</h4>
-        <p>Select a timetable from the workspace selector above.</p>
-      </div>
+      <>
+        <Topbar page={"Classes"} />
+        <div className={styles.inactiveState}>
+          <h4>No timetable selected yet</h4>
+          <p>Select a timetable from the workspace selector above.</p>
+        </div>
+      </>
     );
   }
 
