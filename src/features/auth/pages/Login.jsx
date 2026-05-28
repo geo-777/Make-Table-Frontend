@@ -11,6 +11,7 @@ import loginHelper from "../api/loginHelper";
 import { motion } from "framer-motion";
 import { fadeUp } from "../../../shared/utils/animations";
 import { LogIn } from "lucide-react";
+import { style } from "framer-motion/client";
 
 const Login = () => {
   const { confirmLogin } = useAuth();
@@ -60,58 +61,90 @@ const Login = () => {
         animate="visible"
         transition={{ duration: 0.3 }}
       >
-        <div className={styles.left}>
-          <div className={styles.icon}>
-            <Calendar />
+        <header className={styles.header}>
+          <div className={styles.header}>
+            <div className={styles.icon}>
+              <Calendar width={18} height={18} />
+            </div>
+            <div className={styles.header_text}>MakeTable</div>
           </div>
-          <div className={styles.infographics}>
-            <h3>Welcome Back !</h3>
-            <p>Enter your details and jump right in.</p>
-          </div>
-          <form className={styles.form} onSubmit={loginHandler}>
-            <RequiredInputField
-              id={"login-username"}
-              type={"text"}
-              label={"Username"}
-              placeholder={"Username"}
-              errorState={errorState.username}
-              icon={"user"}
-              value={form.username}
-              setValue={(val) =>
-                setForm((prev) => ({ ...prev, username: val }))
-              }
-            />
+        </header>
+        <div className={styles.main_content}>
+          <div className={styles.grid_box}>
+            <div className={styles.hero_section}>
+              <h1 className={styles.hero_title}>
+                Welcome back to<br></br>
+                <span className={styles.text_gradient}>MakeTable.</span>
+              </h1>
 
-            <RequiredInputField
-              id={"login-password"}
-              type={"password"}
-              label={"Password"}
-              placeholder={"Example@123"}
-              errorState={errorState.password}
-              icon={"pass"}
-              value={form.password}
-              setValue={(val) =>
-                setForm((prev) => ({ ...prev, password: val }))
-              }
-              showPassIcon={true}
-            />
-            <a href="#">Forgot Password ?</a>
-            <button
-              type="submit"
-              disabled={submitLoading}
-              className={`${styles.loginBtn} ${
-                submitLoading ? styles.submitBtn__loading : ""
-              }`}
-            >
-              Log In <LogIn size={16} strokeWidth={3} />
-            </button>
-          </form>
-          <h4>
-            Don't have an account ? <Link to="/register">Register here</Link>
-          </h4>
-        </div>
-        <div className={styles.right}>
-          <img src={sideBar} alt="" />
+              <p className={styles.hero_subtitle}>
+                Log in to continue managing your timetables, classes and
+                assignments.
+              </p>
+
+              <div className={styles.stats_container}>
+                <div className={styles.stat_card}>
+                  <div className={styles.stat_value}>1.2s</div>
+                  <div className={styles.stat_label}>Avg Generate</div>
+                </div>
+                <div className={styles.stat_card}>
+                  <div className={styles.stat_value}>0%</div>
+                  <div className={styles.stat_label}>Conflicts</div>
+                </div>
+                <div className={styles.stat_card}>
+                  <div className={styles.stat_value}>Free</div>
+                  <div className={styles.stat_label}>Forever</div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.login_section}>
+              <div class={styles.login_card}>
+                <h2>Log in</h2>
+                <p class={styles.welcome_text}>
+                  Welcome back. Let's get you in.
+                </p>
+
+                <form className={styles.login_form}>
+                  <div className={styles.form_group}>
+                    <RequiredInputField
+                      id={"login-username"}
+                      type={"text"}
+                      label={"Username"}
+                      placeholder={"Username"}
+                      errorState={errorState.username}
+                      icon={"user"}
+                      value={form.username}
+                      setValue={(val) =>
+                        setForm((prev) => ({ ...prev, username: val }))
+                      }
+                    />{" "}
+                    
+                    <RequiredInputField
+                      id={"login-password"}
+                      type={"password"}
+                      label={"Password"}
+                      placeholder={"Example@123"}
+                      errorState={errorState.password}
+                      icon={"pass"}
+                      value={form.password}
+                      setValue={(val) =>
+                        setForm((prev) => ({ ...prev, password: val }))
+                      }
+                      showPassIcon={true}
+                    />{" "}
+                  </div>
+
+                  <button type="submit" className={styles.submit_btn}>
+                    Log in <span>→</span>
+                  </button>
+                </form>
+
+                <div className={styles.signup_prompt}>
+                  New to MakeTable? <Link to="/register">Create one</Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </motion.div>
     </main>
