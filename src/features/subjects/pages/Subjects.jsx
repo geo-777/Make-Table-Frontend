@@ -181,8 +181,8 @@ export default function Subjects() {
   if (isLoading) {
     return (
       <div className="App">
+        <Topbar page={"Subjects"} />
         <div className="mainPlaceholder">
-          <Topbar page={"Subjects"} />
 
           <div className={styles.inactiveState}>
             <Loader />
@@ -196,8 +196,8 @@ export default function Subjects() {
   if (isError) {
     return (
       <div className="App">
+        <Topbar page={"Subjects"} />
         <div className="mainPlaceholder">
-          <Topbar page={"Subjects"} />
 
           <div className={styles.inactiveState}>
             <div className={styles.largeIcon}>
@@ -217,8 +217,8 @@ export default function Subjects() {
   if (!selectedTimetableData) {
     return (
       <div className="App">
+        <Topbar page={"Subjects"} />
         <div className="mainPlaceholder">
-          <Topbar page={"Subjects"} />
 
           <div className={styles.inactiveState}>
             <h4>No timetable selected.</h4>

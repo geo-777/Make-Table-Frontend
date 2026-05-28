@@ -80,8 +80,8 @@ const Teachers = () => {
   if (isLoading) {
     return (
       <div className="App">
+        <Topbar page={"Teachers"} />
         <div className="mainPlaceholder">
-          <Topbar page={"Teachers"} />
 
           <div className={styles.inactiveState}>
             <Loader />
@@ -95,8 +95,8 @@ const Teachers = () => {
   if (isError) {
     return (
       <div className="App">
+        <Topbar page={"Teachers"} />
         <div className="mainPlaceholder">
-          <Topbar page={"Teachers"} />
 
           <div className={styles.inactiveState}>
             <div className={styles.largeIcon}>
@@ -116,8 +116,8 @@ const Teachers = () => {
   if (!selectedTimetableData) {
     return (
       <div className="App">
+        <Topbar page={"Teachers"} />
         <div className="mainPlaceholder">
-          <Topbar page={"Teachers"} />
 
           <div className={styles.inactiveState}>
             <h4>No timetable selected.</h4>
@@ -133,8 +133,8 @@ const Teachers = () => {
 
   return (
     <div className="App">
+      <Topbar page={"Teachers"} />
       <div className="mainPlaceholder">
-        <Topbar page={"Teachers"} />
 
         <PageHeader
           title={"Teachers"}
