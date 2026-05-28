@@ -1,0 +1,22 @@
+.otherLinks {
+  font-size: 15px;
+  font-weight: 500;
+}
+.breadCrumbContainer {
+  display: flex;
+  align-items: center;
+}
+.crumb {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: var(--sidebar-foreground);
+}
+.crumb:not(.active) span:hover {
+  cursor: pointer;
+  transition: color 0.25s ease-in;
+  color: var(--foreground);
+}
+.active {
+  color: var(--foreground);
+}

@@ -47,8 +47,7 @@ const Topbar = ({ page }) => {
         <span className={styles.navToggle} onClick={toggleNavHandler}>
           <PanelLeft size={17} />
         </span>
-        {/* <p>{page}</p> */}
-        <BreadCrumb />
+        {pageWidth > 830 ? <BreadCrumb /> : <p>{page}</p>}
       </div>
       <div className={styles.right} onClick={() => setIsOpen((prev) => !prev)}>
         <div className={styles.profileIcon} ref={menuRef}>
