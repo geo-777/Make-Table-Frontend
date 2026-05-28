@@ -12,44 +12,27 @@ export const Component_Type = {
 
 const capitalize = (str) => str[0].toUpperCase() + str.slice(1);
 
+const ERROR_MESSAGES = {
+  400: (item) => `Invalid ${item} data provided.`,
+  401: () => "Session expired. Please login again.",
+  403: (item) => `You don't have permission to modify this ${item}.`,
+  404: (item) => `${capitalize(item)} not found.`,
+  409: (item) => `A similar ${item} already exists.`,
+  422: (item) => `Please check the ${item} details and try again.`,
+  429: () => "Too many attempts. Please wait a moment.",
+};
+
 const handleApiError = (status, component) => {
   const item = component ?? "resource";
 
-  if (!status) {
-    return toast.error(`Unable to process ${item}. Please try again.`);
-  }
+  const getMessage = ERROR_MESSAGES[status] ?? 
+  (
+    (i) => status >= 500 
+    ? `Couldn't process ${i} right now. Try again later.`
+    : `Something went wrong while processing ${i}`
+  );
 
-  switch (status) {
-    case 400:
-      return toast.error(`Invalid ${item} data provided.`);
-
-    case 401:
-      return toast.error("Session expired. Please login again.");
-
-    case 403:
-      return toast.error(`You don't have permission to modify this ${item}.`);
-
-    case 404:
-      return toast.error(`${capitalize(item)} not found.`);
-
-    case 409:
-      return toast.error(`A similar ${item} already exists.`);
-
-    case 422:
-      return toast.error(`Please check the ${item} details and try again.`);
-
-    case 429:
-      return toast.error("Too many attempts. Please wait a moment.");
-
-    default:
-      if (status >= 500) {
-        return toast.error(
-          `Couldn't process ${item} right now. Try again later.`,
-        );
-      }
-
-      return toast.error(`Something went wrong while processing ${item}.`);
-  }
+  toast.error(getMessage(item));
 };
 
 export default handleApiError;
