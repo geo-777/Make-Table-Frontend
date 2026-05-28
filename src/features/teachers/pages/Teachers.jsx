@@ -2,7 +2,7 @@ import "../../../styles/appLayout.css";
 import styles from "../styles/Teachers.module.css";
 
 import { useMemo, useState } from "react";
-
+import { AlertTriangle } from "lucide-react";
 import Topbar from "../../../shared/components/topbar/Topbar";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import TeacherDialog from "../components/teacherDialog/TeacherDialog";
@@ -13,7 +13,6 @@ import TeacherList from "../components/teacherList/TeacherList";
 
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useTeachers from "../hooks/useTeachers";
-
 
 /*
   {
@@ -27,7 +26,6 @@ import useTeachers from "../hooks/useTeachers";
 */
 
 const Teachers = () => {
-
   const { selectedTimetableData } = useTimeTableSelect();
 
   const {
@@ -39,7 +37,7 @@ const Teachers = () => {
     deleteTeacher,
     updateTeacher,
   } = useTeachers();
-  
+
   const [activeView, setActiveView] = useState("grid");
 
   const [openAddTeacherDialog, setOpenAddTeacherDialog] = useState(false);
@@ -48,31 +46,31 @@ const Teachers = () => {
 
   const [selectedTeacher, setSelectedTeacher] = useState(null);
 
-  const teachers = useMemo(() => (data?.data ?? []), [data]);
+  const teachers = useMemo(() => data?.data ?? [], [data]);
 
   const handleDeleteTeacher = async (id) => {
-    if(!selectedTimetableData?.id) return;
+    if (!selectedTimetableData?.id) return;
 
     await deleteTeacher.mutateAsync(id);
   };
 
   const handleCreateTeacher = async (data) => {
     if (!selectedTimetableData?.id) return;
-    
+
     await createTeacher.mutateAsync({
       id: selectedTimetableData.id,
-      data
+      data,
     });
     setOpenAddTeacherDialog(false);
   };
 
   const handleUpdateTeacher = async (data) => {
     if (!selectedTimetableData?.id) return;
-    const {id, ...payload} = data;
-    
+    const { id, ...payload } = data;
+
     await updateTeacher.mutateAsync({
       id,
-      data: payload
+      data: payload,
     });
     setOpenUpdateTeacherDialog(false);
   };

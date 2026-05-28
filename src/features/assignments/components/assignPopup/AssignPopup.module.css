@@ -16,3 +16,27 @@
 .hidden {
   display: none;
 }
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.day,
+.dayActive:focus {
+  outline-color: var(--primary);
+}
+.day,
+.dayActive {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  font-size: 12px;
+  border: 1px solid var(--color-grey-300);
+  background: var(--sidebar-background);
+  cursor: pointer;
+}
+
+.dayActive {
+  background-image: var(--gradient-primary);
+  color: var(--sidebar-background);
+  border-color: var(--primary);
+}

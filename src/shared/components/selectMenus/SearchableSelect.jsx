@@ -19,9 +19,11 @@ const SearchableSelect = ({ initialPlaceholder, options, setValue, value }) => {
 
   // Update placeholder when value changes externally
   useEffect(() => {
-    const selectedOption = options.find((opt) => opt.value === value);
+    const selectedOption = options?.find((opt) => opt.value === value);
     if (selectedOption) {
       setPlaceholder(selectedOption.label);
+    } else {
+      setPlaceholder(initialPlaceholder);
     }
   }, [value, options]);
 

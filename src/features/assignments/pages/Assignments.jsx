@@ -7,6 +7,8 @@ import { useState } from "react";
 import { useAssignmentsView } from "../../../shared/zustand/listingsViewStore";
 import AssignCard from "../components/assignCard/AssignCard";
 import AssignPopup from "../components/assignPopup/AssignPopup";
+import useAssignments from "../hooks/useAssignments";
+import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 const COLUMNS = [
   {
     key: "teacher_name",
@@ -34,49 +36,13 @@ const COLUMNS = [
     render: (value) => value,
   },
 ];
-
-const MOCK_DATA = [
-  {
-    id: 0,
-    teacher_name: "John Mathew",
-    class_name: "10-A",
-    subject_name: "Mathematics",
-    role: "Subject_Teacher",
-    morning_class_days: ["Mon", "Tue", "Wed"],
-  },
-  {
-    id: 1,
-    teacher_name: "Sarah Joseph",
-    class_name: "9-B",
-    subject_name: "Physics",
-    role: "Subject_Teacher",
-    morning_class_days: ["Thu", "Fri"],
-  },
-  {
-    id: 2,
-    teacher_name: "David Thomas",
-    class_name: "8-C",
-    subject_name: "English",
-    role: "Subject_Teacher",
-    morning_class_days: ["Mon", "Wed", "Fri"],
-  },
-  {
-    id: 3,
-    teacher_name: "Anna George",
-    class_name: "12-A",
-    subject_name: "Chemistry",
-    role: "Class_Teacher",
-    morning_class_days: ["Tue"],
-  },
-];
-
+//todo : add loading state
 const Assignments = () => {
   const { selectedTimetableData } = useTimeTableSelect();
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const { activeView, setActiveView } = useAssignmentsView();
-
-  const assignData = MOCK_DATA;
-
+  const { data, isPending, isSuccess, isError } = useAssignments();
+  let assignData = data?.data ?? [];
   if (!selectedTimetableData) {
     return (
       <>
@@ -109,8 +75,9 @@ const Assignments = () => {
           }}
           onBulkImport={() => {}}
         />
+        {isPending && <StatusWrapper loader={true} />}
 
-        {!!assignData.length && activeView === "list" && (
+        {!!assignData?.length && activeView === "list" && isSuccess && (
           <ListView
             columns={COLUMNS}
             data={assignData}
@@ -123,13 +90,23 @@ const Assignments = () => {
           />
         )}
 
-        {activeView === "grid" && (
-          <div className={styles.gridContainer}>
-            {assignData.map((e) => (
-              <AssignCard key={e.id} data={e} />
-            ))}
-          </div>
-        )}
+        {/* grid view*/}
+        {activeView === "grid" &&
+          isSuccess &&
+          (assignData?.length > 0 ? (
+            <div className={styles.gridContainer}>
+              {assignData?.map((e) => <AssignCard key={e.id} data={e} />) ?? []}
+            </div>
+          ) : (
+            <StatusWrapper isError={true}>
+              <div className={styles.error404}>
+                <h4>No assignments created yet</h4>
+                <p>
+                  Start by creating your first class to organize your schedule.
+                </p>
+              </div>
+            </StatusWrapper>
+          ))}
 
         {/* create popup */}
         <AssignPopup
