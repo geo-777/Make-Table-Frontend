@@ -1,5 +1,5 @@
 import styles from "./Timetable.module.css";
-import SearchableSelect from "../../../../shared/components/searchableSelect/SearchableSelect";
+import SearchableSelect from "../../../../shared/components/selectMenus/SearchableSelect";
 const ClassTimetable = () => {
   const MOCK_DATA = [
     { label: "S! CSE", value: 1 },

@@ -1,0 +1,18 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--foreground);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.hidden {
+  display: none;
+}

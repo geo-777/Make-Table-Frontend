@@ -77,6 +77,18 @@ const Assignments = () => {
 
   const assignData = MOCK_DATA;
 
+  if (!selectedTimetableData) {
+    return (
+      <>
+        <Topbar page={"Assignments"} />
+        <div className={styles.inactiveState}>
+          <h4>No timetable selected yet</h4>
+          <p>Select a timetable from the workspace selector above.</p>
+        </div>
+      </>
+    );
+  }
+
   return (
     <div className="App">
       <div className="mainPlaceholder">
