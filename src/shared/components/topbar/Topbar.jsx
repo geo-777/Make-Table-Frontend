@@ -5,6 +5,7 @@ import ProfileDropdown from "../profileDropDown/ProfileDropDown";
 import { useState, useRef, useEffect } from "react";
 import useNavStore from "../../zustand/navStore";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import BreadCrumb from "../breadcrumb/BreadCrumb";
 const Topbar = ({ page }) => {
   const { toggleNavbar, toggleMobileNav, mobileNavOpen, setMobNav } =
     useNavStore(); //handles navbar collapsing and opening
@@ -46,7 +47,8 @@ const Topbar = ({ page }) => {
         <span className={styles.navToggle} onClick={toggleNavHandler}>
           <PanelLeft size={17} />
         </span>
-        <p>{page}</p>
+        {/* <p>{page}</p> */}
+        <BreadCrumb />
       </div>
       <div className={styles.right} onClick={() => setIsOpen((prev) => !prev)}>
         <div className={styles.profileIcon} ref={menuRef}>

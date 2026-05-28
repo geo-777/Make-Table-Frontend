@@ -1,8 +1,7 @@
 import styles from "../styles/Auth.module.css";
 import RequiredInputField from "../components/inputFieldAuth/RequiredInputField";
 import { useState } from "react";
-import sideBar from "../../../assets/side.png";
-import { Calendar } from "lucide-react";
+import { Calendar, Github } from "lucide-react";
 import { Link } from "react-router-dom";
 import { register } from "../../../api/auth.api";
 import { toast } from "react-toastify";
@@ -11,7 +10,6 @@ import loginHelper from "../api/loginHelper";
 import { useAuth } from "../../../app/providers/AuthProvider";
 import { fadeUp } from "../../../shared/utils/animations";
 import { motion } from "framer-motion";
-import { UserPlus } from "lucide-react";
 
 const Register = () => {
   const { confirmLogin } = useAuth();
@@ -67,121 +65,164 @@ const Register = () => {
   };
 
   return (
-    <main className={styles.main}>
+    <main className={styles.authPage}>
+      <div className={styles.blob1} />
+      <div className={styles.blob2} />
+
       <motion.div
-        className={styles.container}
+        className={styles.pageContainer}
         variants={fadeUp}
         initial="hidden"
         animate="visible"
         transition={{ duration: 0.3 }}
       >
-        <header className={styles.header}>
-          <div className={styles.header}>
-            <div className={styles.icon}>
-              <Calendar width={18} height={18} />
-            </div>
-            <div className={styles.header_text}>MakeTable</div>
-          </div>
-        </header>
-        <div className={styles.main_content}>
-          <div className={styles.grid_box}>
-            <div className={styles.hero_section}>
-              <h1 className={styles.hero_title}>
-                Build your first <br></br>
-                <span className={styles.text_gradient}>Timetable</span><br></br> in under
+        <div className={styles.pageContent}>
+          <aside className={styles.leftPanel}>
+            <Link to="/" className={styles.brandHeader}>
+              <div className={styles.brandLogo}>
+                <Calendar width={18} height={18} />
+              </div>
+              <span>MakeTable</span>
+            </Link>
+
+            <div className={styles.heroPanel}>
+              <h1 className={styles.heroTitle}>
+                Build your first{" "}
+                <span className={styles.textGradient}>Timetable</span> in under
                 a minute.
               </h1>
-
-              <p className={styles.hero_subtitle}>
-                Sign in to create and manage your timetables, classes and
-                assignments.
+              <p className={styles.heroText}>
+                Join educators using MakeTable to generate perfect,
+                conflict-free schedules.
               </p>
 
-              <div className={styles.stats_container}>
-                <div className={styles.stat_card}>
-                  <div className={styles.stat_value}>1.2s</div>
-                  <div className={styles.stat_label}>Avg Generate</div>
+              <div className={styles.statsGrid}>
+                <div className={styles.statCard}>
+                  <div className={styles.statValue}>1.2s</div>
+                  <div className={styles.statLabel}>Avg generate</div>
                 </div>
-                <div className={styles.stat_card}>
-                  <div className={styles.stat_value}>0%</div>
-                  <div className={styles.stat_label}>Conflicts</div>
+                <div className={styles.statCard}>
+                  <div className={styles.statValue}>0%</div>
+                  <div className={styles.statLabel}>Conflicts</div>
                 </div>
-                <div className={styles.stat_card}>
-                  <div className={styles.stat_value}>Free</div>
-                  <div className={styles.stat_label}>Forever</div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.login_section}>
-              <div class={styles.login_card}>
-                <h2>Sign in</h2>
-                <p class={styles.welcome_text}>Welcome. Let's get you in.</p>
-
-                <form className={styles.login_form}>
-                  <div className={styles.form_group}>
-                    <RequiredInputField
-                      id={"login-username"}
-                      type={"text"}
-                      label={"Username"}
-                      placeholder={"Username"}
-                      errorState={errorState.username}
-                      icon={"user"}
-                      value={form.username}
-                      setValue={(val) =>
-                        setForm((prev) => ({ ...prev, username: val }))
-                      }
-                    />
-                    <RequiredInputField
-                      id={"login-email"}
-                      type={"text"}
-                      label={"Email"}
-                      placeholder={"Email"}
-                      errorState={errorState.email}
-                      icon={"mail"}
-                      value={form.email}
-                      setValue={(val) =>
-                        setForm((prev) => ({ ...prev, email: val }))
-                      }
-                    />
-                    <RequiredInputField
-                      id={"login-password"}
-                      type={"password"}
-                      label={"Password"}
-                      placeholder={"Example@123"}
-                      errorState={errorState.password}
-                      icon={"pass"}
-                      value={form.password}
-                      setValue={(val) =>
-                        setForm((prev) => ({ ...prev, password: val }))
-                      }
-                      showPassIcon={true}
-                    />
-                    <RequiredInputField
-                      id={"login-password2"}
-                      type={"password"}
-                      label={"Confirm Password"}
-                      placeholder={"Example@123"}
-                      errorState={errorState.confirmPassword}
-                      icon={"pass"}
-                      value={form.confirmPassword}
-                      setValue={(val) =>
-                        setForm((prev) => ({ ...prev, confirmPassword: val }))
-                      }
-                      showPassIcon={true}
-                    />
-                  </div>
-
-                  <button type="submit" className={styles.submit_btn}>
-                    Sign in <span>→</span>
-                  </button>
-                </form>
-
-                <div className={styles.signup_prompt}>
-                  <Link to="/login">Already have an account?</Link>
+                <div className={styles.statCard}>
+                  <div className={styles.statValue}>Free</div>
+                  <div className={styles.statLabel}>Forever</div>
                 </div>
               </div>
             </div>
-          </div>
+
+            <p className={styles.panelFooter}>
+              © {new Date().getFullYear()} MakeTable · Open source
+            </p>
+          </aside>
+
+          <section className={styles.rightPanel}>
+            <Link to="/" className={styles.brandMobileLink}>
+              <div className={styles.brandLogoSmall}>
+                <Calendar width={14} height={14} />
+              </div>
+              <span>MakeTable</span>
+            </Link>
+
+            <motion.div
+              className={styles.authCard}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={styles.authHeader}>
+                <h2 className={styles.authTitle}>Create your account</h2>
+                <p className={styles.authSubtitle}>
+                  Start generating timetables in seconds.
+                </p>
+              </div>
+
+              {/* <button
+                type="button"
+                className={styles.oauthButton}
+                onClick={() => toast.info("OAuth coming soon")}
+              >
+                <Github width={16} height={16} />
+                Continue with GitHub
+              </button>
+
+              <div className={styles.divider}>
+                <span className={styles.dividerText}>or</span>
+              </div> */}
+
+              <form onSubmit={submitHandler} className={styles.form}>
+                <div className={styles.formGroup}>
+                  <RequiredInputField
+                    id={"login-username"}
+                    type={"text"}
+                    label={"Username"}
+                    placeholder={"Username"}
+                    errorState={errorState.username}
+                    icon={"user"}
+                    value={form.username}
+                    setValue={(val) =>
+                      setForm((prev) => ({ ...prev, username: val }))
+                    }
+                  />
+                  <RequiredInputField
+                    id={"login-email"}
+                    type={"text"}
+                    label={"Email"}
+                    placeholder={"Email"}
+                    errorState={errorState.email}
+                    icon={"mail"}
+                    value={form.email}
+                    setValue={(val) =>
+                      setForm((prev) => ({ ...prev, email: val }))
+                    }
+                  />
+                  <RequiredInputField
+                    id={"login-password"}
+                    type={"password"}
+                    label={"Password"}
+                    placeholder={"Example@123"}
+                    errorState={errorState.password}
+                    icon={"pass"}
+                    value={form.password}
+                    setValue={(val) =>
+                      setForm((prev) => ({ ...prev, password: val }))
+                    }
+                    showPassIcon={true}
+                  />
+                  <RequiredInputField
+                    id={"login-password2"}
+                    type={"password"}
+                    label={"Confirm Password"}
+                    placeholder={"Example@123"}
+                    errorState={errorState.confirmPassword}
+                    icon={"pass"}
+                    value={form.confirmPassword}
+                    setValue={(val) =>
+                      setForm((prev) => ({ ...prev, confirmPassword: val }))
+                    }
+                    showPassIcon={true}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className={styles.submitBtn}
+                  disabled={submitLoading}
+                >
+                  Create account <span>→</span>
+                </button>
+              </form>
+
+              <p className={styles.switchPrompt}>
+                Already have an account? <Link to="/login">Sign in</Link>
+              </p>
+            </motion.div>
+
+            <p className={styles.footerText}>
+              By continuing, you agree to our Terms and Privacy Policy.
+            </p>
+          </section>
         </div>
       </motion.div>
     </main>
