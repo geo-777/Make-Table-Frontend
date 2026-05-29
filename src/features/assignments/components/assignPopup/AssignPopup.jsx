@@ -16,12 +16,13 @@ const ROLE_OPTIONS = [
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const AssignPopup = ({ visible, closePopup, existingData = null }) => {
-  const { createListing } = useAssignments();
+  const { createListing, patchListing } = useAssignments();
   const isEditMode = !!existingData;
   const { data: classData } = useClasses();
   const { data: teacherData } = useTeachers();
   const { data: subjectData } = useSubjects();
   const [selectedDays, setSelectedDays] = useState(["Mon"]);
+  const [isPatched, setIsPatched] = useState(false);
   const { selectedTimetableData } = useTimeTableSelect();
 
   const CLASS_OPTIONS = useMemo(
@@ -49,9 +50,10 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
     role: ROLE_OPTIONS[0].value,
   });
 
-  // populating form on edit mode
   useEffect(() => {
-    if (isEditMode) {
+    if (!visible) return;
+
+    if (isEditMode && existingData) {
       setForm({
         teacher_id: existingData?.teacher?.id ?? null,
         class_id: existingData?.class_?.id ?? null,
@@ -59,8 +61,19 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
         role: existingData?.role ?? ROLE_OPTIONS[0].value,
       });
       setSelectedDays(existingData?.morning_class_days ?? ["Mon"]);
+      setIsPatched(false);
+      return;
     }
-  }, [existingData]);
+
+    setForm({
+      teacher_id: null,
+      class_id: null,
+      subject_id: null,
+      role: ROLE_OPTIONS[0].value,
+    });
+    setSelectedDays(["Mon"]);
+    setIsPatched(false);
+  }, [visible, isEditMode, existingData]);
 
   const popupConfig = isEditMode
     ? { title: "Edit Assignment", buttonText: "Edit" }
@@ -72,20 +85,53 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
     );
   };
 
-  const submitEnabled = useMemo(
-    () => form.teacher_id && form.class_id && form.subject_id,
-    [form],
-  );
+  const submitEnabled = useMemo(() => {
+    if (isEditMode) return isPatched;
+
+    if (!form.teacher_id || !form.class_id || !form.subject_id) return false;
+    if (form.role === "Class_Teacher" && selectedDays.length === 0)
+      return false;
+    return true;
+  }, [form, selectedDays, isEditMode, isPatched]);
+
+  useEffect(() => {
+    if (!isEditMode || !existingData) {
+      setIsPatched(false);
+      return;
+    }
+
+    const originalRole = existingData?.role ?? ROLE_OPTIONS[0].value;
+    const originalDays = existingData?.morning_class_days ?? ["Mon"];
+    const roleChanged = form.role !== originalRole;
+    const daysChanged =
+      JSON.stringify(selectedDays.slice().sort()) !==
+      JSON.stringify(originalDays.slice().sort());
+
+    setIsPatched(roleChanged || daysChanged);
+  }, [form.role, selectedDays, existingData, isEditMode]);
 
   const handleSubmit = async () => {
-    const payload = { ...form };
-    if (form?.role === "Class_Teacher")
-      payload.morning_class_days = selectedDays;
     if (isEditMode) {
+      if (!isPatched) return;
+      const payload = { role: form.role };
+      if (form.role === "Class_Teacher") {
+        payload.morning_class_days = selectedDays;
+      }
+
+      await patchListing.mutateAsync({
+        id: existingData.id,
+        data: payload,
+      });
+      closePopup();
+      return;
+    }
+
+    const payload = { ...form };
+    if (form.role === "Class_Teacher") {
+      payload.morning_class_days = selectedDays;
     }
 
     await createListing.mutateAsync(payload);
-
     closePopup();
   };
 
@@ -109,40 +155,44 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
       disabled={!submitEnabled}
     >
       <div className={styles.form}>
-        <div className={styles.field}>
-          <label className={styles.label}>Teacher Name</label>
-          <SearchableSelect
-            initialPlaceholder={"Select teacher"}
-            options={TEACHER_OPTIONS}
-            value={form?.teacher_id}
-            setValue={(value) =>
-              setForm((prev) => ({ ...prev, teacher_id: value }))
-            }
-          />
-        </div>
-        <div className={styles.field}>
-          <label className={styles.label}>Class Name</label>
-          <SearchableSelect
-            initialPlaceholder={"Select class"}
-            options={CLASS_OPTIONS}
-            value={form?.class_id}
-            setValue={(value) =>
-              setForm((prev) => ({ ...prev, class_id: value }))
-            }
-          />
-        </div>
+        {!isEditMode && (
+          <>
+            <div className={styles.field}>
+              <label className={styles.label}>Teacher Name</label>
+              <SearchableSelect
+                initialPlaceholder={"Select teacher"}
+                options={TEACHER_OPTIONS}
+                value={form?.teacher_id}
+                setValue={(value) =>
+                  setForm((prev) => ({ ...prev, teacher_id: value }))
+                }
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Class Name</label>
+              <SearchableSelect
+                initialPlaceholder={"Select class"}
+                options={CLASS_OPTIONS}
+                value={form?.class_id}
+                setValue={(value) =>
+                  setForm((prev) => ({ ...prev, class_id: value }))
+                }
+              />
+            </div>
 
-        <div className={styles.field}>
-          <label className={styles.label}>Subject Name</label>
-          <SearchableSelect
-            initialPlaceholder={"Select subject"}
-            options={SUBJECT_OPTIONS}
-            value={form?.subject_id}
-            setValue={(value) =>
-              setForm((prev) => ({ ...prev, subject_id: value }))
-            }
-          />
-        </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Subject Name</label>
+              <SearchableSelect
+                initialPlaceholder={"Select subject"}
+                options={SUBJECT_OPTIONS}
+                value={form?.subject_id}
+                setValue={(value) =>
+                  setForm((prev) => ({ ...prev, subject_id: value }))
+                }
+              />
+            </div>
+          </>
+        )}
 
         <div className={styles.field}>
           <label className={styles.label}>Teacher Role</label>
