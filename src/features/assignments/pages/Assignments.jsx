@@ -8,6 +8,7 @@ import { useAssignmentsView } from "../../../shared/zustand/listingsViewStore";
 import AssignCard from "../components/assignCard/AssignCard";
 import AssignPopup from "../components/assignPopup/AssignPopup";
 import useAssignments from "../hooks/useAssignments";
+import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 const COLUMNS = [
   {
@@ -91,36 +92,39 @@ const Assignments = () => {
           }}
           onBulkImport={() => {}}
         />
-        {isPending && <StatusWrapper loader={true} />}
+        <div className="main">
+          {isPending && <StatusWrapper loader={true} />}
 
-        {!!assignData?.length && activeView === "list" && isSuccess && (
-          <ListView data={assignData} />
-        )}
+          {!!assignData?.length && activeView === "list" && isSuccess && (
+            <ListView data={assignData} />
+          )}
 
-        {/* grid view*/}
-        {activeView === "grid" &&
-          isSuccess &&
-          (assignData?.length > 0 ? (
-            <div className={styles.gridContainer}>
-              {assignData?.map((e) => (
-                <AssignCard
-                  key={e.id}
-                  data={e}
-                  deleteFn={async (id) => await deleteListing.mutateAsync(id)}
-                  editFn={(data) => openEditDialog(data)}
-                />
-              )) ?? []}
-            </div>
-          ) : (
-            <StatusWrapper isError={true}>
-              <div className={styles.error404}>
-                <h4>No assignments created yet</h4>
-                <p>
-                  Start by creating your first class to organize your schedule.
-                </p>
+          {/* grid view*/}
+          {activeView === "grid" &&
+            isSuccess &&
+            (assignData?.length > 0 ? (
+              <div className={styles.gridContainer}>
+                {assignData?.map((e) => (
+                  <AssignCard
+                    key={e.id}
+                    data={e}
+                    deleteFn={async (id) => await deleteListing.mutateAsync(id)}
+                    editFn={(data) => openEditDialog(data)}
+                  />
+                )) ?? []}
               </div>
-            </StatusWrapper>
-          ))}
+            ) : (
+              <StatusWrapper isError={true}>
+                <div className={styles.error404}>
+                  <h4>No assignments created yet</h4>
+                  <p>
+                    Start by creating your first class to organize your
+                    schedule.
+                  </p>
+                </div>
+              </StatusWrapper>
+            ))}
+        </div>
 
         {/* create popup */}
         <AssignPopup

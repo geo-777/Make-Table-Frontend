@@ -24,13 +24,15 @@ const AssignCard = ({ data, deleteFn, editFn }) => {
           {TeacherRoles[data?.role] || ""}
         </span>
       </div>
-      <div className={styles.daysContainer}>
-        {(data?.morning_class_days ?? []).map((e) => (
-          <p className={styles.dayItem} key={e}>
-            {e}
-          </p>
-        ))}
-      </div>
+      {data?.morning_class_days && (
+        <div className={styles.daysContainer}>
+          {(data?.morning_class_days ?? []).map((e) => (
+            <p className={styles.dayItem} key={e}>
+              {e}
+            </p>
+          ))}
+        </div>
+      )}
     </ItemCard>
   );
 };

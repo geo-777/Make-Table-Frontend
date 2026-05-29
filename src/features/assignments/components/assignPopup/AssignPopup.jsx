@@ -113,10 +113,10 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
   const handleSubmit = async () => {
     if (isEditMode) {
       if (!isPatched) return;
-      const payload = { role: form.role };
-      if (form.role === "Class_Teacher") {
-        payload.morning_class_days = selectedDays;
-      }
+      const payload = {
+        role: form.role,
+        morning_class_days: form.role === "Class_Teacher" ? selectedDays : [],
+      };
 
       await patchListing.mutateAsync({
         id: existingData.id,
