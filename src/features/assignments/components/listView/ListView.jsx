@@ -3,7 +3,7 @@ import { Pencil, Trash2, X, Check } from "lucide-react";
 import { TeacherRoles, CLASS_TEACHER } from "../../utils/assignEnums";
 import { useState } from "react";
 
-const Row = ({ data }) => {
+const Row = ({ data, deleteFn, editFn }) => {
   const actionbtnSize = 16;
   const actionbtnStroke = 1.75;
   const [isEditMode, setIsEditMode] = useState(false);
@@ -22,23 +22,24 @@ const Row = ({ data }) => {
         </span>
       </div>
       <div className={`${styles.listItem} ${styles.daysContainer}`}>
-        {(data?.morning_class_days ?? []).map((e) => (
-          <p className={styles.dayItem} key={e}>
-            {e}
-          </p>
-        ))}
+        {(data?.morning_class_days ?? []).length > 0 ? (
+          (data?.morning_class_days ?? []).map((e) => (
+            <p className={styles.dayItem} key={e}>
+              {e}
+            </p>
+          ))
+        ) : (
+          <span className={styles.emDash}>—</span>
+        )}
       </div>
 
       <div className={`${styles.listItem} ${styles.listItem__actionBtns}`}>
-        <button
-          className={styles.actionBtn__list}
-          onClick={() => setIsEditMode(true)}
-        >
+        <button className={styles.actionBtn__list} onClick={() => editFn(data)}>
           <Pencil size={actionbtnSize} strokeWidth={actionbtnStroke} />
         </button>
         <button
           className={`${styles.actionBtn__list} ${styles.actionBtn__delete}`}
-          onClick={async () => await deleteClass(data?.id)}
+          onClick={async () => await deleteFn(data?.id)}
         >
           <Trash2 size={actionbtnSize} strokeWidth={actionbtnStroke} />
         </button>
@@ -47,7 +48,7 @@ const Row = ({ data }) => {
   );
 };
 
-const ListView = ({ data = [] }) => {
+const ListView = ({ data = [], deleteFn, editFn }) => {
   console.log(data);
   return (
     <div className={styles.listview__Container}>
@@ -59,7 +60,7 @@ const ListView = ({ data = [] }) => {
       <div className={styles.listHeading__item}>Actions</div>
 
       {data.map((e, i) => (
-        <Row data={e} key={e?.id ?? i} />
+        <Row data={e} key={e?.id ?? i} deleteFn={deleteFn} editFn={editFn} />
       ))}
       {data?.length === 0 && (
         <div className={styles.emptyListings}>

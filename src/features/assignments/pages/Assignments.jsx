@@ -96,7 +96,11 @@ const Assignments = () => {
           {isPending && <StatusWrapper loader={true} />}
 
           {!!assignData?.length && activeView === "list" && isSuccess && (
-            <ListView data={assignData} />
+            <ListView
+              data={assignData}
+              deleteFn={async (id) => await deleteListing.mutateAsync(id)}
+              editFn={(data) => openEditDialog(data)}
+            />
           )}
 
           {/* grid view*/}

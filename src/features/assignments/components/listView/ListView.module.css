@@ -83,3 +83,9 @@
   border-radius: 0.3rem;
   background-color: var(--sidebar-accent);
 }
+
+.emDash {
+  font-size: 15px;
+  color: var(--color-grey-400);
+  font-weight: 500;
+}
