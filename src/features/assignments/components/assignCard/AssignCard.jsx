@@ -4,14 +4,18 @@ import { TeacherRoles, CLASS_TEACHER } from "../../utils/assignEnums";
 /*
 role possible values : Subject_Teacher and Class_Teacher
 */
-const AssignCard = ({ data }) => {
+const AssignCard = ({ data, deleteFn, editFn }) => {
+  const onDelete = async () => {
+    await deleteFn(data?.id);
+  };
+
   return (
-    <ItemCard>
+    <ItemCard onDelete={onDelete} onEdit={() => editFn(data)}>
       <div className={styles.gridItem__header}>
         <div className={styles.gridItem__info}>
-          <h6>{data?.teacher_name ?? ""}</h6>
+          <h6>{data?.teacher?.name ?? ""}</h6>
           <p>
-            {data?.class_name ?? ""} · {data?.subject_name ?? ""}
+            {data?.class_?.class_name ?? ""} · {data?.subject?.name ?? ""}
           </p>
         </div>
         <span

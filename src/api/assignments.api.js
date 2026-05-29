@@ -11,6 +11,6 @@ export const deleteAssignment = async (id) => {
   return axiosInstance.delete(`/assignments/${id}`);
 };
 
-export const patchAssignment = async (timetableId, classId, data) => {
+export const patchAssignment = async (id, data) => {
   return axiosInstance.patch(`/assignments/${id}`, data);
 };

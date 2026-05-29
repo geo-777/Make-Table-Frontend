@@ -2,12 +2,13 @@ import styles from "./AssignPopup.module.css";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
 import SearchableSelect from "../../../../shared/components/selectMenus/SearchableSelect";
 import DropdownSelect from "../../../../shared/components/selectMenus/DropdownSelect";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useTeachers from "../../../teachers/hooks/useTeachers";
 import useClasses from "../../../classes/hooks/useClasses";
 import useSubjects from "../../../subjects/hooks/useSubjects";
 import useAssignments from "../../hooks/useAssignments";
 import useTimeTableSelect from "../../../../shared/zustand/timetableSelectStore";
+
 const ROLE_OPTIONS = [
   { label: "Subject Teacher", value: "Subject_Teacher" },
   { label: "Class Teacher", value: "Class_Teacher" },
@@ -41,13 +42,25 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
       subjectData?.data.map((e) => ({ label: e?.name, value: e?.id })) ?? [],
     [subjectData, selectedTimetableData],
   );
-
   const [form, setForm] = useState({
-    teacher_id: null,
+    teacher_id: existingData?.teacher_id ?? null,
     class_id: null,
     subject_id: null,
     role: ROLE_OPTIONS[0].value,
   });
+
+  // populating form on edit mode
+  useEffect(() => {
+    if (isEditMode) {
+      setForm({
+        teacher_id: existingData?.teacher?.id ?? null,
+        class_id: existingData?.class_?.id ?? null,
+        subject_id: existingData?.subject?.id ?? null,
+        role: existingData?.role ?? ROLE_OPTIONS[0].value,
+      });
+      setSelectedDays(existingData?.morning_class_days ?? ["Mon"]);
+    }
+  }, [existingData]);
 
   const popupConfig = isEditMode
     ? { title: "Edit Assignment", buttonText: "Edit" }

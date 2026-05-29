@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import {
   fetchAllAssignments,
   postAssignment,
+  deleteAssignment,
+  patchAssignment,
 } from "../../../api/assignments.api";
 import { useMemo } from "react";
 
@@ -58,9 +60,54 @@ const useAssignments = () => {
     },
   });
 
+  /* DELETE*/
+  const deleteListing = useMutation({
+    mutationFn: (assignId) => deleteAssignment(assignId),
+
+    onSuccess: (_, assignId) => {
+      updateQueryCache({
+        queryClient,
+        queryKey: ASSIGN_KEY,
+        updateFn: (oldData) => ({
+          ...oldData,
+          data: oldData.data.filter((e) => e.id !== assignId),
+        }),
+      });
+
+      toast.success("Assignment deleted.");
+    },
+
+    onError: (error) => {
+      apiErrorHandler(error?.response?.stus, Component_Type.ASSIGNMENTS);
+    },
+  });
+
+  /*PATCH*/
+
+  const patchListing = useMutation({
+    mutationFn: ({ id, data }) => patchAssignment(id, data),
+    onSuccess: (response, { id }) => {
+      const updatedAssignment = response.data;
+      updateQueryCache({
+        queryClient,
+        queryKey: ASSIGN_KEY,
+        updateFn: (oldData) => ({
+          ...oldData,
+          data: oldData.data.map((e) => (e.id === id ? updatedAssignment : e)),
+        }),
+      });
+      toast.success("Assignment updated.");
+    },
+    onError: (error) => {
+      apiErrorHandler(error?.response?.stus, Component_Type.CLASSES);
+    },
+  });
+
   return {
     ...query,
     createListing,
+    deleteListing,
+    patchListing,
   };
 };
 

@@ -1,5 +1,5 @@
 import styles from "../styles/assignments.module.css";
-import ListView from "../../../shared/components/itemView/listView/listView";
+import ListView from "../components/listView/ListView";
 import Topbar from "../../../shared/components/topbar/Topbar";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
@@ -36,13 +36,29 @@ const COLUMNS = [
     render: (value) => value,
   },
 ];
-//todo : add loading state
 const Assignments = () => {
   const { selectedTimetableData } = useTimeTableSelect();
-  const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const { activeView, setActiveView } = useAssignmentsView();
-  const { data, isPending, isSuccess, isError } = useAssignments();
+  // dialog controls
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editDialogData, setEditDialogData] = useState(null);
+  //edit dialog helpers
+  const closeEditDialog = () => {
+    setEditDialogOpen(false);
+    setEditDialogData(null);
+  };
+
+  const openEditDialog = (data) => {
+    setEditDialogData(data);
+    setEditDialogOpen(true);
+  };
+
+  //query data from hook
+  const { data, isPending, isSuccess, isError, deleteListing } =
+    useAssignments();
   let assignData = data?.data ?? [];
+
   if (!selectedTimetableData) {
     return (
       <>
@@ -78,16 +94,7 @@ const Assignments = () => {
         {isPending && <StatusWrapper loader={true} />}
 
         {!!assignData?.length && activeView === "list" && isSuccess && (
-          <ListView
-            columns={COLUMNS}
-            data={assignData}
-            onEdit={(_, data) => {
-              console.log(data);
-            }}
-            onDelete={(id) => {
-              console.log(id);
-            }}
-          />
+          <ListView data={assignData} />
         )}
 
         {/* grid view*/}
@@ -95,7 +102,14 @@ const Assignments = () => {
           isSuccess &&
           (assignData?.length > 0 ? (
             <div className={styles.gridContainer}>
-              {assignData?.map((e) => <AssignCard key={e.id} data={e} />) ?? []}
+              {assignData?.map((e) => (
+                <AssignCard
+                  key={e.id}
+                  data={e}
+                  deleteFn={async (id) => await deleteListing.mutateAsync(id)}
+                  editFn={(data) => openEditDialog(data)}
+                />
+              )) ?? []}
             </div>
           ) : (
             <StatusWrapper isError={true}>
@@ -112,6 +126,13 @@ const Assignments = () => {
         <AssignPopup
           visible={createDialogOpen}
           closePopup={() => setCreateDialogOpen(false)}
+        />
+
+        {/* edit popup*/}
+        <AssignPopup
+          visible={editDialogOpen}
+          existingData={editDialogData}
+          closePopup={closeEditDialog}
         />
       </div>
     </div>
