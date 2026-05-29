@@ -8,39 +8,90 @@ import "../../../styles/appLayout.css";
 
 /*
   {
+    id: number,
     name: string,
-    hardness: "Low" | "Med" | "High",
+    created_at: "2026-05-28T10:43:09.890Z",
     isLab: boolean,
+    hardness: "Low" | "Med" | "High",
     min_classes_day: number,
     max_classes_day: number,
     min_classes_week: number,
     max_classes_week: number,
     min_classes_consecutive: number,
     max_classes_consecutive: number,
-    lab_classes: number[],
+    lab_classes: [
+      {
+        id: number,
+        class_name: string,
+        room_name: string,
+        isLab: true,
+        created_at: "2026-05-28T10:43:09.891Z"
+      }
+    ]
   }
 */
 
+// All classes are classes declared in classes page.
+const ALL_CLASSES = [
+  { id: 0, class_name: "CSE 29", room_name: "101 Annex", isLab: false },
+  { id: 1, class_name: "CSE 31", room_name: "Lab B2", isLab: true },
+  { id: 2, class_name: "PHY Lab 1", room_name: "Science Block", isLab: true },
+  { id: 3, class_name: "ENG Seminar", room_name: "Room 204", isLab: false },
+  { id: 4, class_name: "MAT Tutorial", room_name: "Room 108", isLab: false },
+];
+
 const MOCK_SUBJECTS = [
   {
+    id: 1,
     name: "English",
     hardness: "Low",
-    isLab: false,
+    isLab: true,
     min_classes_day: 0,
     max_classes_day: 1,
     min_classes_week: 9,
     max_classes_week: 12,
     min_classes_consecutive: 1,
     max_classes_consecutive: 2,
-    lab_classes: [
-      {
-        id: 0,
-        class_name: "CSE 29",
-        room_name: "101 Annex",
-        isLab: false,
-        created_at: "2026-05-28T10:06:14.224Z",
-      },
-    ],
+    lab_classes: [{ ...ALL_CLASSES[0] }],
+  },
+  {
+    id: 2,
+    name: "Physics",
+    hardness: "High",
+    isLab: true,
+    min_classes_day: 0,
+    max_classes_day: 2,
+    min_classes_week: 3,
+    max_classes_week: 5,
+    min_classes_consecutive: 1,
+    max_classes_consecutive: 2,
+    lab_classes: [{ ...ALL_CLASSES[2] }],
+  },
+  {
+    id: 3,
+    name: "CS101",
+    hardness: "Medium",
+    isLab: true,
+    min_classes_day: 0,
+    max_classes_day: 1,
+    min_classes_week: 2,
+    max_classes_week: 3,
+    min_classes_consecutive: 1,
+    max_classes_consecutive: 2,
+    lab_classes: [{ ...ALL_CLASSES[1] }],
+  },
+  {
+    id: 4,
+    name: "Mathematics",
+    hardness: "High",
+    isLab: false,
+    min_classes_day: 0,
+    max_classes_day: 2,
+    min_classes_week: 4,
+    max_classes_week: 6,
+    min_classes_consecutive: 1,
+    max_classes_consecutive: 2,
+    lab_classes: [],
   },
 ];
 
