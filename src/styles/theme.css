@@ -9,7 +9,7 @@
   --popover-foreground: hsl(230 25% 10%);
   --light-violet: hsl(263, 92%, 90%);
   --primary: hsl(255 65% 54%);
-  --primary-foreground: hsl(0 0% 100%);
+  --primary-foreground: rgb(255, 255, 255);
 
   --secondary: hsl(225 20% 94%);
   --secondary-foreground: hsl(230 25% 10%);

@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 
 import ProtectedRoutes from "./ProtectedRoutes";
 import PublicRoutes from "./PublicRoutes";
-
 import Navbar from "../../shared/components/navbar/Navbar";
 import LoaderFull from "../../shared/components/loader/LoaderFull";
 
@@ -24,7 +23,9 @@ const Assignments = lazy(
 const Error404 = lazy(() => import("../../pages/error/Error404"));
 const LandingPage = lazy(() => import("../../pages/landingPage/LandingPage"));
 const HelpSupport = lazy(() => import("../../pages/help&support/HelpSupport"));
-
+const Documentation = lazy(
+  () => import("../../pages/documentation/Documentation"),
+);
 export default function AppRoutes() {
   return (
     <Suspense fallback={<LoaderFull />}>
@@ -57,6 +58,8 @@ export default function AppRoutes() {
             </PublicRoutes>
           }
         />
+        <Route path={"/docs"} element={<Documentation />} />
+        <Route path={"/documentation"} element={<Documentation />} />
 
         {/* --- Protected Routes --- */}
         <Route element={<Navbar />}>
