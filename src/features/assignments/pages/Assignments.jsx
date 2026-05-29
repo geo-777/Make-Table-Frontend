@@ -95,7 +95,7 @@ const Assignments = () => {
         <div className="main">
           {isPending && <StatusWrapper loader={true} />}
 
-          {!!assignData?.length && activeView === "list" && isSuccess && (
+          {activeView === "list" && isSuccess && (
             <ListView
               data={assignData}
               deleteFn={async (id) => await deleteListing.mutateAsync(id)}

@@ -80,6 +80,7 @@ const Classes = () => {
           {activeView === "grid" && isSuccess && (
             <GridView data={listings?.data || []} />
           )}
+          {isError && <StatusWrapper isError={true} error={error} />}
         </div>
       </div>
     </div>

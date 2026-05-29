@@ -21,7 +21,7 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
   const { data: classData } = useClasses();
   const { data: teacherData } = useTeachers();
   const { data: subjectData } = useSubjects();
-  const [selectedDays, setSelectedDays] = useState(["Mon"]);
+  const [selectedDays, setSelectedDays] = useState([]);
   const [isPatched, setIsPatched] = useState(false);
   const { selectedTimetableData } = useTimeTableSelect();
 
@@ -60,7 +60,7 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
         subject_id: existingData?.subject?.id ?? null,
         role: existingData?.role ?? ROLE_OPTIONS[0].value,
       });
-      setSelectedDays(existingData?.morning_class_days ?? ["Mon"]);
+      setSelectedDays(existingData?.morning_class_days ?? []);
       setIsPatched(false);
       return;
     }
@@ -71,7 +71,7 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
       subject_id: null,
       role: ROLE_OPTIONS[0].value,
     });
-    setSelectedDays(["Mon"]);
+    setSelectedDays([]);
     setIsPatched(false);
   }, [visible, isEditMode, existingData]);
 
@@ -140,7 +140,7 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
       subject_id: null,
       role: ROLE_OPTIONS[0].value,
     });
-    setSelectedDays(["Mon"]);
+    setSelectedDays([]);
     closePopup();
   };
   return (

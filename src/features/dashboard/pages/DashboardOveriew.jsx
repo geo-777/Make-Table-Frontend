@@ -24,7 +24,6 @@ const DashboardOveriew = () => {
     listingFetchError,
   } = useTimetableData();
   const { selectedTimetableData } = useTimeTableSelect();
-
   if (selectedTimetableData) return <DashboardSelected />;
 
   return (
@@ -68,7 +67,7 @@ const DashboardOveriew = () => {
               }}
             />
             {timetableListings.data.length === 0 && (
-              <StatusWrapper isError={true}>
+              <StatusWrapper>
                 <div className={styles.error404}>
                   <h4>No timetables created yet</h4>
                   <p>
