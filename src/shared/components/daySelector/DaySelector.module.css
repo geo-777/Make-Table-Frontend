@@ -1,0 +1,55 @@
+.daySelector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--foreground);
+  line-height: 1;
+}
+
+.error {
+  font-size: 0.75rem;
+  color: var(--color-danger);
+}
+
+.dayGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.dayItem {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.3rem;
+
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    color 0.18s ease;
+}
+
+.active .dayText {
+  color: var(--foreground);
+}
+
+.dayText {
+  letter-spacing: 0.01em;
+}

@@ -4,8 +4,8 @@ const CircularCheckBox = ({
   checked,
   toggleCheck,
   style,
-  checkSize = 14,
-  checkStroke = 2.5,
+  checkSize = 10,
+  checkStroke = 2.2,
 }) => {
   return (
     <span

@@ -2,6 +2,7 @@ import styles from "./AssignPopup.module.css";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
 import SearchableSelect from "../../../../shared/components/selectMenus/SearchableSelect";
 import DropdownSelect from "../../../../shared/components/selectMenus/DropdownSelect";
+import DaySelector from "../../../../shared/components/daySelector/DaySelector";
 import { useEffect, useMemo, useState } from "react";
 import useTeachers from "../../../teachers/hooks/useTeachers";
 import useClasses from "../../../classes/hooks/useClasses";
@@ -13,7 +14,6 @@ const ROLE_OPTIONS = [
   { label: "Subject Teacher", value: "Subject_Teacher" },
   { label: "Class Teacher", value: "Class_Teacher" },
 ];
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const AssignPopup = ({ visible, closePopup, existingData = null }) => {
   const { createListing, patchListing } = useAssignments();
@@ -206,22 +206,11 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
 
         {form?.role === "Class_Teacher" && (
           <div className={styles.field}>
-            <label className={styles.label}>Morning Class Days</label>
-
-            <div className={styles.days}>
-              {DAYS.map((day, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  className={
-                    selectedDays.includes(day) ? styles.dayActive : styles.day
-                  }
-                  onClick={() => toggleDay(day)}
-                >
-                  {day}
-                </button>
-              ))}
-            </div>
+            <DaySelector
+              label="Morning Class Days"
+              selectedDays={selectedDays}
+              toggleDay={toggleDay}
+            />
           </div>
         )}
       </div>

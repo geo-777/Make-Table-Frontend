@@ -1,6 +1,7 @@
 import styles from "./TimeTablePopup.module.css";
 import RequiredInputField from "../../../../shared/components/inputfields/RequiredInputField";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
+import DaySelector from "../../../../shared/components/daySelector/DaySelector";
 import { useEffect, useState } from "react";
 import useTimetableListing from "../../hooks/useTimetableListing";
 
@@ -176,28 +177,12 @@ const TimeTablePopup = ({
           errorState={errorStates.slots}
         />
         <div className={styles.formGroup}>
-          <label className={styles.label}>
-            <p>Select working days</p>
-            <p
-              className={`${styles.errorLabel} ${errorStates.days ? "" : styles.hidden} `}
-            >
-              {errorStates.days}
-            </p>
-          </label>
-          <div className={styles.days}>
-            {DAYS.map((day, i) => (
-              <button
-                key={i}
-                type="button"
-                className={
-                  selectedDays.includes(day) ? styles.dayActive : styles.day
-                }
-                onClick={() => toggleDay(day)}
-              >
-                {day}
-              </button>
-            ))}
-          </div>
+          <DaySelector
+            label="Select working days"
+            selectedDays={selectedDays}
+            toggleDay={toggleDay}
+            errorMessage={errorStates.days}
+          />
         </div>
       </form>
     </PopupBox>
