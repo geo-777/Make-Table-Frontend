@@ -48,7 +48,7 @@ const EMPTY_FORM = {
   name: "",
   isLab: false,
   hardness: "Low",
-  min_classes_day: 0,
+  min_classes_day: 1,
   max_classes_day: 2,
   min_classes_week: 2,
   max_classes_week: 5,
