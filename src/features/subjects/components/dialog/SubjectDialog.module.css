@@ -107,7 +107,6 @@
 .divider {
   height: 1px;
   background: var(--border);
-  margin-bottom: 16px;
 }
 
 .field {
@@ -191,8 +190,27 @@
 
 .hardnessWrapper {
   display: flex;
-  flex-direction: column;
   gap: 6px;
+}
+
+.hardness {
+  padding: 6px;
+  width: 100%;
+  cursor: pointer;
+  background-color: var(--card);
+  border-radius: calc(var(--radius) - 2px);
+  border: 1.5px solid var(--input);
+}
+
+.hardness:hover {
+  background: var(--card);
+  border-color: var(--ring);
+}
+
+.hardness.selected {
+  background: color-mix(in srgb, var(--primary) 10%, var(--card));
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px hsl(255 65% 54% / 0.12);
 }
 
 .hardnessPips {

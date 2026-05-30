@@ -6,6 +6,7 @@ import { useSubjectsView } from "../../../shared/zustand/listingsViewStore";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import "../../../styles/appLayout.css";
 import SubjectList from "../components/subjectList/SubjectList";
+import SubjectDialog from "../components/dialog/SubjectDialog";
 
 /*
   {
@@ -102,6 +103,7 @@ export default function Subjects() {
   const { activeView, setActiveView } = useSubjectsView();
   
   const [openImportDialog, setOpenImportDialog] = useState(false);
+  const [openSubjectDialog, setOpenSubjectDialog] = useState(false);
 
   return (
     <div className="App">
@@ -118,8 +120,8 @@ export default function Subjects() {
           addButtonText={"Add Subject"}
           activeView={activeView}
           onChangeActiveView={setActiveView}
-          onAdd={() => {}}
-          onBulkImport={() => {}}
+          onAdd={() => { setOpenSubjectDialog(true) }}
+          onBulkImport={() => setOpenImportDialog(true)}
         />
 
         {activeView == "list" &&
@@ -129,6 +131,13 @@ export default function Subjects() {
             onDelete={() => {}}
           />
         }
+
+        <SubjectDialog
+          open={openSubjectDialog}
+          onClose={() => setOpenSubjectDialog(false)}
+          onCreate={() => {}}
+          onUpdate={() => {}}
+        />
 
         {/* Import Subject Details */}
         <ImportDialog
