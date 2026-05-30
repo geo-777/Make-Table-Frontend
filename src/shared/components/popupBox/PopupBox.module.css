@@ -1,3 +1,13 @@
+.popupOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.734);
+  z-index: 998;
+  will-change: opacity;
+}
+
 .popupBox {
   width: 100%;
   max-width: 470px;

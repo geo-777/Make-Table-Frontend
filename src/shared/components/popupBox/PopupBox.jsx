@@ -52,7 +52,7 @@ const PopupBox = ({
           transition={{ duration: 0.1, ease: "easeOut" }}
         >
           <motion.div
-            className="popup_overlay"
+            className={styles.popupOverlay}
             onClick={closeFunction}
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.6 }}

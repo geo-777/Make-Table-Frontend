@@ -7,7 +7,7 @@
 }
 
 html,
-body{
+body {
   scroll-behavior: smooth;
 }
 
@@ -34,11 +34,12 @@ button:disabled {
   backdrop-filter: blur(10px);
 }
 .popupCentered {
-  position: absolute;
+  position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 999;
 }
 .unselectable {
   -webkit-user-select: none; /* Safari */
