@@ -9,7 +9,7 @@ import LoaderFull from "../../shared/components/loader/LoaderFull";
 const Login = lazy(() => import("../../features/auth/pages/Login"));
 const Register = lazy(() => import("../../features/auth/pages/Register"));
 
-const Settings = lazy(() => import("../../features/settings/Settings"));
+const Settings = lazy(() => import("../../features/settings/pages/Settings"));
 const Classes = lazy(() => import("../../features/classes/pages/Classes"));
 const Subjects = lazy(() => import("../../features/subjects/pages/Subjects"));
 const Teachers = lazy(() => import("../../features/teachers/pages/Teachers"));

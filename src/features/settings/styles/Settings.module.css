@@ -1,0 +1,368 @@
+.settingsPage {
+  padding-bottom: 2.5rem;
+}
+
+.pageHeader {
+  margin-bottom: 1.8rem;
+}
+
+.pageHeader h4 {
+  font-size: 2rem;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.pageHeader p {
+  margin: 0.75rem 0 0;
+  color: var(--sidebar-foreground);
+  font-size: 1rem;
+  max-width: 62ch;
+  line-height: 1.7;
+}
+
+.pageContent {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: flex-start;
+}
+
+.settingsSidebar {
+  position: sticky;
+  top: 1rem;
+  align-self: start;
+  padding: 1.4rem;
+  border: 1px solid var(--border);
+  background-color: var(--secondary-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.sidebarTitle {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sidebar-foreground);
+}
+
+.navList {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid transparent;
+  color: var(--foreground);
+  background: transparent;
+  font-weight: 500;
+  text-align: left;
+  transition: 0.2s ease;
+}
+
+.navItem:hover {
+  cursor: pointer;
+  background: var(--hover-main);
+}
+
+.navItemActive {
+  border-color: var(--sidebar-accent);
+  background: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+}
+
+.navItemIcon {
+  width: 1.85rem;
+  height: 1.85rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.9rem;
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.pageMain {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.sectionCard {
+  padding: 1.6rem;
+  border-radius: var(--radius);
+  background-color: var(--secondary-bg);
+  border: 0.1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--foreground);
+}
+
+.sectionDesc {
+  margin: 0.35rem 0 0;
+  color: var(--sidebar-foreground);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.profileGrid,
+.inputGrid,
+.dangerSplit {
+  display: grid;
+  gap: 1rem;
+}
+
+.profileGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.joinedAt {
+  margin-top: 1.5rem;
+  color: var(--sidebar-foreground);
+  font-size: 15px;
+  font-weight: 500;
+}
+.joinedAt span {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+.profileGrid > .fieldSet:nth-child(3) {
+  grid-column: span 2;
+}
+
+.fieldSet {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sidebar-foreground);
+}
+
+.fieldValue,
+.inputField {
+  width: 100%;
+  min-height: 3rem;
+  border-radius: 0.95rem;
+  border: 1px solid var(--border);
+  background: var(--background);
+  color: var(--foreground);
+  padding: 0.95rem 1rem;
+  font-size: 0.95rem;
+}
+
+.inputField {
+  outline: none;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin-top: 1.35rem;
+}
+
+.btn {
+  display: flex;
+  border: none;
+  border-radius: 0.65rem;
+  padding: 0.95rem 1.4rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  font-size: 15px;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btnPrimary {
+  color: var(--sidebar-background);
+  background-image: var(--gradient-primary);
+}
+
+.btnSecondary {
+  color: var(--foreground);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+.btnSecondary:hover {
+  background-color: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+}
+
+.btnDanger {
+  color: var(--sidebar-background);
+  background: var(--color-danger);
+  transition: opacity 0.2s ease-in;
+}
+.btnDanger:hover {
+  opacity: 0.8;
+}
+.themeSection {
+  display: grid;
+  gap: 1rem;
+}
+
+.themeSelector {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.themeCard {
+  background: var(--background);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  border-radius: 1rem;
+  padding: 1.15rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  text-align: left;
+}
+
+.themeCard:hover {
+  border-color: var(--primary);
+  background-color: var(--sidebar-accent);
+}
+
+.themeCardActive {
+  border-color: var(--primary);
+  background-color: var(--sidebar-accent);
+  box-shadow: 0 0 0 3px rgba(96, 59, 246, 0.232);
+}
+
+.themeIcon {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.85rem;
+  margin-bottom: 0.8rem;
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.themeCard.themeCardActive .themeIcon {
+  background-color: var(--primary);
+  color: var(--secondary-bg);
+}
+.themeName {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.themeNote {
+  margin: 0.35rem 0 0;
+  color: var(--sidebar-foreground);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.accentRow {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.8rem;
+}
+
+.accentPill {
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 0.95rem;
+  background: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.accentText {
+  margin: 0;
+  color: var(--sidebar-foreground);
+  font-size: 0.95rem;
+}
+
+.systemNote {
+  margin-top: 1rem;
+  color: var(--sidebar-foreground);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.dangerSectionCard {
+  border-color: var(--color-danger);
+}
+.dangerItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.dangerItem:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.dangerTextTitle {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 1rem;
+}
+
+.dangerTextDesc {
+  margin: 0.35rem 0 0;
+  color: var(--sidebar-foreground);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+  .pageContent {
+    grid-template-columns: 1fr;
+  }
+  .settingsSidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .settingsSidebar {
+    display: none;
+  }
+  .pageHeader {
+    margin-bottom: 1.2rem;
+  }
+  .themeSelector {
+    grid-template-columns: 1fr;
+  }
+  .profileGrid,
+  .inputGrid {
+    grid-template-columns: 1fr;
+  }
+}

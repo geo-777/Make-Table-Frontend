@@ -188,7 +188,7 @@
   width: 100%;
   max-width: 28rem;
   padding: 2rem;
-  border-radius: 2rem;
+  border-radius: 1.4rem;
   background: rgba(255, 255, 255, 0.84);
   border: 1px solid rgba(255, 255, 255, 0.88);
   box-shadow: 0 30px 80px rgba(15, 23, 42, 0.12);
@@ -269,7 +269,7 @@
 .submitBtn {
   width: 100%;
   padding: 0.95rem 1rem;
-  border-radius: 1rem;
+  border-radius: 0.6rem;
   border: none;
   background: var(--primary);
   color: var(--primary-foreground);
@@ -349,7 +349,7 @@
 
   .authCard {
     padding: 1.6rem 1.2rem;
-    border-radius: 1.75rem;
+    border-radius: 1rem;
   }
 
   .oauthButton,

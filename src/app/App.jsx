@@ -9,15 +9,15 @@ import AppRoutes from "./routes/AppRoutes";
 //dont remove these imports
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import useThemeStore from "../shared/zustand/themeStore";
 function App() {
   const { isLoading } = useAuth();
-
+  const { theme } = useThemeStore();
   if (isLoading) {
     return <LoaderFull />;
   }
   return (
-    <div className="light">
+    <div className={theme}>
       <AppRoutes />
       <ToastContainer
         position="bottom-right"
