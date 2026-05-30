@@ -49,15 +49,19 @@ const PopupBox = ({
             <X size={18} />
           </button>
         </div>
-        {children}
-        <button
-          type="submit"
-          className={` ${styles.submitBtn} `}
-          onClick={handleSubmitClicked}
-          disabled={submitLoading || disabled}
-        >
-          {primaryBtnText}
-        </button>
+        <div className={styles.body}>
+          {children}
+        </div>
+        <div className={styles.action}>
+          <button
+            type="submit"
+            className={` ${styles.submitBtn} `}
+            onClick={handleSubmitClicked}
+            disabled={submitLoading || disabled}
+          >
+            {primaryBtnText}
+          </button>
+        </div>
       </div>
     </div>
   );
