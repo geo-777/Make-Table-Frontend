@@ -2,20 +2,21 @@
   display: flex;
   justify-content: space-between;
   padding: 0.8rem 1.5rem;
-  background-color: #fff;
+  background-color: var(--secondary-bg);
   align-items: center;
   border-bottom: 0.5px solid var(--color-grey-100);
 }
 .left {
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
 }
 .left p {
   font-weight: 600;
   font-size: 16.5px;
 }
 .navToggle {
+  color: var(--foreground);
   cursor: pointer;
   transition: color 0.2s ease-in-out;
 }

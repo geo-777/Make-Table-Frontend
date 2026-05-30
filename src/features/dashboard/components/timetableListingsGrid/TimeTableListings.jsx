@@ -32,7 +32,9 @@ const TimeTableListings = ({ type, data }) => {
       />
       <div className={styles.timetableListings__header}>
         <span className={styles.icon}>
-          {type.startsWith("Draft") && <Pencil size={18} strokeWidth={1.5} />}
+          {type.startsWith("Draft") && (
+            <Pencil size={18} className={styles.draft} strokeWidth={1.5} />
+          )}
           {type.startsWith("Published") && (
             <CircleCheck
               className={styles.published}

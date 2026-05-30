@@ -132,9 +132,9 @@
 }
 
 .dropDownItem:hover {
+  background-color: var(--hover-main);
   cursor: pointer;
   color: var(--foreground);
-  background-color: #e9ebef;
 }
 .seperator {
   background-color: var(--color-grey-100);

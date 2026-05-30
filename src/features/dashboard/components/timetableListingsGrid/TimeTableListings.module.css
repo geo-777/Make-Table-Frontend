@@ -11,8 +11,9 @@
 .draftCount,
 .publishedCount {
   display: inline-block;
-  border-radius: 50%;
-  padding: 0.3rem 0.5rem;
+  border-radius: 0.55rem;
+  font-size: 13px;
+  padding: 0.3rem 0.6rem;
 }
 .draftCount {
   color: var(--sidebar-foreground);
@@ -24,6 +25,9 @@
 }
 .published {
   color: var(--accent-green-fg);
+}
+.draft {
+  color: var(--foreground);
 }
 .listingsGrid {
   padding-top: 1rem;

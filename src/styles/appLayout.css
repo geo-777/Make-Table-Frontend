@@ -18,7 +18,6 @@ body {
 }
 .main {
   margin-top: 2rem;
-
   padding-inline: 2rem;
 }
 .header {
@@ -54,6 +53,7 @@ body {
   gap: 0.4rem;
   font-size: 15px;
   font-weight: 500;
+  color: var(--foreground);
   border-radius: 0.7rem;
   border: 1.7px solid var(--color-grey-200);
   background-color: transparent;
@@ -109,7 +109,7 @@ body {
 .view-change-btn:hover {
   cursor: pointer;
   color: var(--sidebar-foreground);
-  background-color: #e9ebef;
+  background-color: var(--hover-main);
 }
 .view-active,
 .view-active:hover {

@@ -17,7 +17,7 @@ function App() {
     return <LoaderFull />;
   }
   return (
-    <>
+    <div className="light">
       <AppRoutes />
       <ToastContainer
         position="bottom-right"
@@ -27,7 +27,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
-    </>
+    </div>
   );
 }
 

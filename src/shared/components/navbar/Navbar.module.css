@@ -16,7 +16,7 @@
   height: 100vh;
   justify-content: space-between;
   border-right: 0.5px solid var(--color-grey-100);
-  background-color: #fff;
+  background-color: var(--secondary-bg);
   width: 290px;
   transition: width 0.25s ease-in-out;
   flex-shrink: 0;
@@ -45,6 +45,7 @@
 }
 
 .logo p {
+  color: var(--foreground);
   font-size: 19px;
   font-weight: 600;
 }
@@ -87,7 +88,9 @@
   gap: 1rem;
   align-items: center;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   font-size: 15px;
   padding: 0.5rem 0.3rem 0.5rem 0.5rem;
   border-radius: 0.3125rem;
@@ -106,7 +109,7 @@
 }
 
 .linkItem:hover {
-  background-color: #e9ebef;
+  background-color: var(--hover-main);
   color: var(--color-grey-900);
 }
 
@@ -160,7 +163,7 @@
     left: 0;
     bottom: 0;
     width: 290px;
-    background-color: #fff;
+    background-color: var(--secondary-bg);
     border-right: 0.5px solid var(--color-grey-100);
     transform: translateX(-100%);
     transition: transform 0.25s ease-in-out;
@@ -181,7 +184,7 @@
     width: 290px;
     transform: translateX(-100%);
     transition: transform 0.25s ease-in-out;
-    background-color: #fff;
+    background-color: var(--secondary-bg);
     border-top: 0.5px solid var(--color-grey-100);
   }
 

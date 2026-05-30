@@ -35,6 +35,7 @@
   color: var(--color-grey-500);
 }
 .selectedTimeTable__left h4 {
+  color: var(--foreground);
   font-size: 14.5px;
   font-weight: 500;
 }
@@ -69,13 +70,13 @@
 }
 
 .dropDownItem:hover {
+  background-color: var(--hover-main);
   cursor: pointer;
   color: var(--foreground);
-  background-color: #e9ebef;
 }
 .seperator {
   background-color: var(--color-grey-100);
-  height: 1px;
+  height: 0.5px;
   margin-block: 0.1rem;
 }
 .dropDownItem p {

@@ -1,6 +1,7 @@
 .otherLinks {
   font-size: 15px;
   font-weight: 500;
+  color: var(--foreground);
 }
 .breadCrumbContainer {
   display: flex;

@@ -83,7 +83,9 @@ const SelectedTimeTable = () => {
               </div>
             );
           })}
-        {isFetchSuccess && <div className={styles.seperator}></div>}
+        {isFetchSuccess && timetables?.length != 0 && (
+          <div className={styles.seperator}></div>
+        )}
         <div
           className={`${styles.dropDownItem}`}
           onClick={() => handleSelect(null)}
