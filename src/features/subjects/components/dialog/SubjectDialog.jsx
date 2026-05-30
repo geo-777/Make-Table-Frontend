@@ -1,46 +1,78 @@
 import { useState, useEffect } from "react";
 import styles from "./SubjectDialog.module.css";
-import {
-  X,
-  CheckIcon
-} from "lucide-react";
+import { CheckIcon, FlaskConical, ChevronRight, X } from "lucide-react";
+import PopupBox from "../../../../shared/components/popupBox/PopupBox";
+import LabClassDialog from "../labClassDialog/LabClassDialog";
+import { createPortal } from "react-dom";
 
-export default function SubjectDialog({ 
+/*
+  NEW SCHEMA
+
+  {
+    id: number,
+    name: string,
+    created_at: "2026-05-28T10:43:09.890Z",
+    isLab: boolean,
+    hardness: "Low" | "Med" | "High",
+    min_classes_day: number,
+    max_classes_day: number,
+    min_classes_week: number,
+    max_classes_week: number,
+    min_classes_consecutive: number,
+    max_classes_consecutive: number,
+    lab_classes: [
+      {
+        id: number,
+        class_name: string,
+        room_name: string,
+        isLab: true,
+        created_at: "2026-05-28T10:43:09.891Z"
+      }
+    ]
+  }
+*/
+
+const ALL_LAB_CLASSES = [
+  { id: 1, class_name: "Class 10-A", room_name: "Lab Room 1", isLab: true },
+  { id: 2, class_name: "Class 10-B", room_name: "Lab Room 1", isLab: true },
+  {
+    id: 3,
+    class_name: "Class 11-Science",
+    room_name: "Lab Room 2",
+    isLab: true,
+  },
+  { id: 4, class_name: "Class 9-A", room_name: "Lab Room 3", isLab: true },
+];
+
+const EMPTY_FORM = {
+  name: "",
+  isLab: false,
+  hardness: "Low",
+  min_classes_day: 1,
+  max_classes_day: 2,
+  min_classes_week: 2,
+  max_classes_week: 5,
+  min_classes_consecutive: 1,
+  max_classes_consecutive: 2,
+  lab_classes: [],
+};
+
+export default function SubjectDialog({
   open,
-
   initialData = null,
-
-  onClose, 
+  onClose,
   onCreate,
   onUpdate,
 }) {
-
   const mode = initialData ? "edit" : "create";
-  const [form, setForm] = useState({
-    name: "",
-    isLab: false,
-    hardness: 1,
-    minPerDay: 0,
-    maxPerDay: 2,
-    minPerWeek: 2,
-    maxPerWeek: 5,
-    maxConsecutive: 2,
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [labDialogOpen, setLabDialogOpen] = useState(false);
 
   useEffect(() => {
     if (initialData) {
       setForm(initialData);
     } else {
-      setForm({
-        name: "",
-        isLab: false,
-        hardness: 1,
-        minPerDay: 0,
-        maxPerDay: 2,
-        minPerWeek: 2,
-        maxPerWeek: 5,
-        maxConsecutive: 2,
-      });
+      setForm(EMPTY_FORM);
     }
   }, [initialData, open]);
 
@@ -57,197 +89,259 @@ export default function SubjectDialog({
     onClose?.();
   };
 
+  const handleLabClassesSave = (selectedIds) => {
+    const selected = ALL_LAB_CLASSES.filter((c) => selectedIds.includes(c.id));
+    handleChange("lab_classes", selected);
+  };
+
+  const removeLabClass = (id) => {
+    handleChange(
+      "lab_classes",
+      form.lab_classes.filter((c) => c.id !== id),
+    );
+  };
+
+  const popupDetail =
+    mode === "edit"
+      ? { title: "Edit Subject", primary: "Update" }
+      : { title: "Add Subject", primary: "Create" };
+
+  const HARDNESS = ["Low", "Med", "High"];
+
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div
-        className={styles.dialog}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="dialog-title"
+    <>
+      <PopupBox
+        visible={open}
+        closeFunction={onClose}
+        title={popupDetail.title}
+        primaryBtnText={popupDetail.primary}
+        handleSubmit={handleSubmit}
+        disabled={!form.name.trim()}
       >
-        {/* Header */}
-        <div className={styles.header}>
-          <h2 id="dialog-title" className={styles.title}>
-            {mode === "edit" ? "Edit Subject" : "Add Subject"}
-          </h2>
-          <button
-            className={styles.closeBtn}
-            onClick={onClose}
-            aria-label="Close"
-          >
-            <X />
-          </button>
-        </div>
+        <section className={styles.section}>
+          <span className={styles.sectionLabel}>Basic Info</span>
 
-        <div className={styles.body}>
-          {/* Basic Info */}
-          <section className={styles.section}>
-            <span className={styles.sectionLabel}>Basic Info</span>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="subject-name">
+              Name
+            </label>
+            <input
+              id="subject-name"
+              className={styles.input}
+              placeholder="e.g. Mathematics"
+              value={form.name}
+              onChange={(e) => handleChange("name", e.target.value)}
+            />
+          </div>
 
+          <div className={styles.row}>
+            <label className={styles.checkboxLabel}>
+              <span
+                role="checkbox"
+                aria-checked={form.isLab}
+                tabIndex={0}
+                className={`${styles.checkbox} ${form.isLab ? styles.checked : ""}`}
+                onClick={() => handleChange("isLab", !form.isLab)}
+                onKeyDown={(e) => {
+                  e.key === " " && handleChange("isLab", !form.isLab);
+                }}
+              >
+                {form.isLab && <CheckIcon strokeWidth={3} />}
+              </span>
+              Is Lab
+            </label>
+
+            <div className={styles.field} style={{ flex: 1 }}>
+              <label className={styles.label} htmlFor="hardness">
+                Hardness
+              </label>
+              <div className={styles.hardnessWrapper}>
+                {HARDNESS.map((h) => (
+                  <button
+                    key={h}
+                    className={`${styles.hardness} ${form.hardness === h ? styles.selected : ""}`}
+                    title={h}
+                    onClick={() => handleChange("hardness", h)}
+                  >
+                    {h}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className={styles.divider} />
+
+        <section className={styles.section}>
+          <span className={styles.sectionLabel}>Daily Constraints</span>
+          <div className={styles.grid2}>
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="subject-name">
-                Name
+              <label className={styles.label} htmlFor="min-day">
+                Min classes/day
               </label>
               <input
-                id="subject-name"
+                id="min-day"
+                type="number"
                 className={styles.input}
-                placeholder="e.g. Mathematics"
-                value={form.name}
-                onChange={(e) => handleChange("name", e.target.value)}
+                min={0}
+                value={form.min_classes_day}
+                onChange={(e) =>
+                  handleChange("min_classes_day", Number(e.target.value))
+                }
               />
             </div>
-
-            <div className={styles.row}>
-              <label className={styles.checkboxLabel}>
-                <span
-                  role="checkbox"
-                  aria-checked={form.isLab}
-                  tabIndex={0}
-                  className={`${styles.checkbox} ${form.isLab ? styles.checked : ""}`}
-                  onClick={() => handleChange("isLab", !form.isLab)}
-                  onKeyDown={(e) =>
-                    e.key === " " && handleChange("isLab", !form.isLab)
-                  }
-                >
-                  {form.isLab && <CheckIcon strokeWidth={3} />}
-                </span>
-                Is Lab
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="max-day">
+                Max classes/day
               </label>
-
-              <div className={styles.field} style={{ flex: 1 }}>
-                <label className={styles.label} htmlFor="hardness">
-                  Hardness (1-3)
-                </label>
-                <div className={styles.hardnessWrapper}>
-                  <input
-                    id="hardness"
-                    type="number"
-                    className={styles.input}
-                    min={1}
-                    max={3}
-                    value={form.hardness}
-                    onChange={(e) =>
-                      handleChange("hardness", Number(e.target.value))
-                    }
-                  />
-                  <div className={styles.hardnessPips}>
-                    {Array.from({ length: 3 }, (_, i) => (
-                      <span
-                        key={i}
-                        className={`${styles.pip} ${i < form.hardness ? styles.pipActive : ""}`}
-                        style={{ "--i": i }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <input
+                id="max-day"
+                type="number"
+                className={styles.input}
+                min={0}
+                value={form.max_classes_day}
+                onChange={(e) =>
+                  handleChange("max_classes_day", Number(e.target.value))
+                }
+              />
             </div>
-          </section>
+          </div>
+        </section>
 
-          <div className={styles.divider} />
-
-          {/* Daily Constraints */}
-          <section className={styles.section}>
-            <span className={styles.sectionLabel}>Daily Constraints</span>
-            <div className={styles.grid2}>
-              <div className={styles.field}>
-                <label className={styles.label} htmlFor="min-day">
-                  Min classes/day
-                </label>
-                <input
-                  id="min-day"
-                  type="number"
-                  className={styles.input}
-                  min={0}
-                  value={form.minPerDay}
-                  onChange={(e) =>
-                    handleChange("minPerDay", Number(e.target.value))
-                  }
-                />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label} htmlFor="max-day">
-                  Max classes/day
-                </label>
-                <input
-                  id="max-day"
-                  type="number"
-                  className={styles.input}
-                  min={0}
-                  value={form.maxPerDay}
-                  onChange={(e) =>
-                    handleChange("maxPerDay", Number(e.target.value))
-                  }
-                />
-              </div>
+        <section className={styles.section}>
+          <span className={styles.sectionLabel}>Weekly Constraints</span>
+          <div className={styles.grid2}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="min-week">
+                Min classes/week
+              </label>
+              <input
+                id="min-week"
+                type="number"
+                className={styles.input}
+                min={0}
+                value={form.min_classes_week}
+                onChange={(e) =>
+                  handleChange("min_classes_week", Number(e.target.value))
+                }
+              />
             </div>
-          </section>
-
-          <div className={styles.divider} />
-
-          {/* Weekly Constraints */}
-          <section className={styles.section}>
-            <span className={styles.sectionLabel}>Weekly Constraints</span>
-            <div className={styles.grid2}>
-              <div className={styles.field}>
-                <label className={styles.label} htmlFor="min-week">
-                  Min classes/week
-                </label>
-                <input
-                  id="min-week"
-                  type="number"
-                  className={styles.input}
-                  min={0}
-                  value={form.minPerWeek}
-                  onChange={(e) =>
-                    handleChange("minPerWeek", Number(e.target.value))
-                  }
-                />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label} htmlFor="max-week">
-                  Max classes/week
-                </label>
-                <input
-                  id="max-week"
-                  type="number"
-                  className={styles.input}
-                  min={0}
-                  value={form.maxPerWeek}
-                  onChange={(e) =>
-                    handleChange("maxPerWeek", Number(e.target.value))
-                  }
-                />
-              </div>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="max-week">
+                Max classes/week
+              </label>
+              <input
+                id="max-week"
+                type="number"
+                className={styles.input}
+                min={0}
+                value={form.max_classes_week}
+                onChange={(e) =>
+                  handleChange("max_classes_week", Number(e.target.value))
+                }
+              />
             </div>
+          </div>
+        </section>
 
+        <section className={styles.section}>
+          <span className={styles.sectionLabel}>Consecutive Constraints</span>
+          <div className={styles.grid2}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="min-consec">
+                Min Consec.
+              </label>
+              <input
+                id="min-consec"
+                type="number"
+                className={styles.input}
+                min={0}
+                value={form.min_classes_consecutive}
+                onChange={(e) =>
+                  handleChange(
+                    "min_classes_consecutive",
+                    Number(e.target.value),
+                  )
+                }
+              />
+            </div>
             <div className={styles.field}>
               <label className={styles.label} htmlFor="max-consec">
-                Max consecutive
+                Max Consec.
               </label>
               <input
                 id="max-consec"
                 type="number"
                 className={styles.input}
-                min={1}
-                value={form.maxConsecutive}
+                min={0}
+                value={form.max_classes_consecutive}
                 onChange={(e) =>
-                  handleChange("maxConsecutive", Number(e.target.value))
+                  handleChange(
+                    "max_classes_consecutive",
+                    Number(e.target.value),
+                  )
                 }
               />
             </div>
-          </section>
+          </div>
+        </section>
 
-          <button
-            className={styles.createBtn}
-            onClick={handleSubmit}
-            disabled={!form.name.trim()}
-          >
-            {mode === "edit" ? "Update Subject" : "Create Subject"}
-          </button>
-        </div>
-      </div>
-    </div>
+        {form.isLab && (
+          <>
+            <div className={styles.divider} />
+
+            <section className={styles.section}>
+              <div className={styles.labClassesHeader}>
+                <span className={styles.sectionLabel}>Lab Classes</span>
+                <button
+                  className={styles.assignBtn}
+                  onClick={() => setLabDialogOpen(true)}
+                >
+                  <FlaskConical size={13} />
+                  Assign classes
+                  <ChevronRight size={13} />
+                </button>
+              </div>
+
+              {form.lab_classes.length === 0 ? (
+                <p className={styles.labClassesEmpty}>
+                  No classes assigned yet.
+                </p>
+              ) : (
+                <ul className={styles.labClassesList}>
+                  {form.lab_classes.map((cls) => (
+                    <li key={cls.id} className={styles.labClassChip}>
+                      <span className={styles.labClassChipName}>
+                        {cls.class_name}
+                      </span>
+                      <span className={styles.labClassChipRoom}>
+                        {cls.room_name}
+                      </span>
+                      <button
+                        className={styles.labClassChipRemove}
+                        onClick={() => removeLabClass(cls.id)}
+                        aria-label={`Remove ${cls.class_name}`}
+                      >
+                        <X size={11} strokeWidth={2.5} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </>
+        )}
+      </PopupBox>
+
+      <LabClassDialog
+        isOpen={labDialogOpen}
+        onClose={() => setLabDialogOpen(false)}
+        onSave={handleLabClassesSave}
+        labClasses={ALL_LAB_CLASSES}
+        selectedIds={form.lab_classes.map((c) => c.id)}
+        subjectName={form.name}
+      />
+    </>
   );
 }

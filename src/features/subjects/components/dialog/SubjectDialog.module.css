@@ -20,6 +20,7 @@
   width: 100%;
   max-width: 512px;
   max-height: 88vh;
+  z-index: 899;
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--card);
@@ -107,7 +108,6 @@
 .divider {
   height: 1px;
   background: var(--border);
-  margin-bottom: 16px;
 }
 
 .field {
@@ -191,8 +191,27 @@
 
 .hardnessWrapper {
   display: flex;
-  flex-direction: column;
   gap: 6px;
+}
+
+.hardness {
+  padding: 6px;
+  width: 100%;
+  cursor: pointer;
+  background-color: var(--card);
+  border-radius: calc(var(--radius) - 2px);
+  border: 1.5px solid var(--input);
+}
+
+.hardness:hover {
+  background: var(--card);
+  border-color: var(--ring);
+}
+
+.hardness.selected {
+  background: color-mix(in srgb, var(--primary) 10%, var(--card));
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px hsl(255 65% 54% / 0.12);
 }
 
 .hardnessPips {
@@ -246,6 +265,96 @@
   opacity: 0.45;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+.labClassesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.assignBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--accent-violet-fg);
+  background: var(--accent-violet-bg);
+  border: 1px solid hsl(255 60% 88%);
+  border-radius: calc(var(--radius) - 0.375rem);
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: background 0.13s, box-shadow 0.13s;
+}
+
+.assignBtn:hover {
+  background: hsl(255 60% 91%);
+  box-shadow: 0 1px 4px hsl(255 65% 54% / 0.15);
+}
+
+.labClassesEmpty {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  margin: 0;
+  padding: 0.375rem 0;
+}
+
+.labClassesList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.labClassChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--accent-violet-bg);
+  border: 1px solid hsl(255 60% 88%);
+  border-radius: 999px;
+  padding: 0.2rem 0.3rem 0.2rem 0.6rem;
+  max-width: 100%;
+}
+
+.labClassChipName {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--accent-violet-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.labClassChipRoom {
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.labClassChipRemove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background 0.12s, color 0.12s;
+}
+
+.labClassChipRemove:hover {
+  background: hsl(255 60% 85%);
+  color: var(--accent-violet-fg);
 }
 
 @media (max-width: 480px) {

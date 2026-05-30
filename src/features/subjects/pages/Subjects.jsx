@@ -1,126 +1,46 @@
-import "../../../styles/appLayout.css";
-import Topbar from "../../../shared/components/topbar/Topbar";
-import PageHeader from "../../../shared/components/pageHeader/PageHeader";
-import ListView from "../../../shared/components/itemView/listView/listView";
-import ItemCard from "../../../shared/components/itemView/itemCard/ItemCard";
-import SubjectDialog from "../components/dialog/SubjectDialog";
-import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import { useMemo, useState } from "react";
-import styles from "../styles/Subjects.module.css";
+import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
+import PageHeader from "../../../shared/components/pageHeader/PageHeader";
+import Topbar from "../../../shared/components/topbar/Topbar";
+import { useSubjectsView } from "../../../shared/zustand/listingsViewStore";
+import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
+import "../../../styles/appLayout.css";
+import SubjectList from "../components/subjectList/SubjectList";
+import SubjectDialog from "../components/dialog/SubjectDialog";
 import useSubjects from "../hooks/useSubjects";
+import styles from "../styles/Subjects.module.css";
 import Loader from "../../../shared/components/loader/Loader";
 import { AlertTriangle } from "lucide-react";
 
 /*
-  Expected Input
-
   {
+    id: number,
     name: string,
-    hardness: number (btw 1 - 3) --> more flexible approach
-    isLab: boolean
-    maxConsecutive: number,       --> i can change the name no issue
-    maxPerday: number,            --> i can change the name no issue
-    maxPerWeek: number,           --> i can change the name no issue
-    minPerDay: number,            --> i can change the name no issue
-    minPerWeek: number,           --> i can change the name no issue
-  }
-
-  Actual Input
-
-  {
-    name: string,
-    hardness: "Low" | "Med" | "High",
+    created_at: "2026-05-28T10:43:09.890Z",
     isLab: boolean,
+    hardness: "Low" | "Med" | "High",
     min_classes_day: number,
     max_classes_day: number,
     min_classes_week: number,
     max_classes_week: number,
-    min_classes_consecutive: number, --> not neccessarily needed. (for now lets pass in a value of 1 )
+    min_classes_consecutive: number,
     max_classes_consecutive: number,
-    lab_classes: number[],
+    lab_classes: [
+      {
+        id: number,
+        class_name: string,
+        room_name: string,
+        isLab: true,
+        created_at: "2026-05-28T10:43:09.891Z"
+      }
+    ]
   }
 */
 
-const COLUMNS = [
-  {
-    key: "name",
-    label: "Name",
-    render: (value) => value,
-  },
-  {
-    key: "type",
-    label: "Type",
-    type: "boolean",
-    trueLabel: "Lab",
-    falseLabel: "Theory",
-    render: (value) => (value === "lab" ? "Lab" : "Theory"),
-  },
-  {
-    key: "hardness",
-    label: "Hardness",
-    render: (value) => `${value}/3`,
-  },
-  {
-    key: "daily",
-    label: "Daily",
-    render: (value) => value.join("-"),
-  },
-  {
-    key: "weekly",
-    label: "Weekly",
-    render: (value) => value.join("-"),
-  },
-  {
-    key: "consecutive",
-    label: "Consec.",
-    render: (value) => value,
-  },
-];
-
-// --- Helpers ------------------------------------------------------------------
-// TODO: remove helpers once backend is configured properly.
-// i have to do this because vishy is busy and wont update the schema.
-
-const HARDNESS_LABEL_TO_NUMBER = { Low: 1, Med: 2, High: 3 };
-const HARDNESS_NUMBER_TO_LABEL = { 1: "Low", 2: "Med", 3: "High" };
-
-// Converts backend shape → UI shape
-const normalizeSubject = (subject) => ({
-  id: subject.id,
-  name: subject.name,
-  type: subject.isLab ? "lab" : "theory",
-  hardness: HARDNESS_LABEL_TO_NUMBER[subject.hardness] ?? subject.hardness,
-  daily: [subject.min_classes_day, subject.max_classes_day],
-  weekly: [subject.min_classes_week, subject.max_classes_week],
-  consecutive: subject.max_classes_consecutive,
-});
-
-// Converts UI form values → API payload
-const transformPayload = (values) => {
-  const payload = {
-    name: values.name,
-    isLab: values.isLab,
-    hardness:
-      HARDNESS_NUMBER_TO_LABEL[Number(values.hardness)] ?? values.hardness,
-    min_classes_day: Number(values.minPerDay),
-    max_classes_day: Number(values.maxPerDay),
-    min_classes_week: Number(values.minPerWeek),
-    max_classes_week: Number(values.maxPerWeek),
-    min_classes_consecutive: 1,
-    max_classes_consecutive: Number(values.maxConsecutive),
-    lab_classes: [],
-  };
-
-  if (values.id !== undefined) {
-    payload.id = values.id;
-  }
-
-  return payload;
-};
-
 export default function Subjects() {
+
   const { selectedTimetableData } = useTimeTableSelect();
-  const timetableId = selectedTimetableData?.id;
+  const { activeView, setActiveView } = useSubjectsView();
 
   const {
     data,
@@ -132,50 +52,57 @@ export default function Subjects() {
     updateSubject,
   } = useSubjects();
 
-  const [activeView, setActiveView] = useState("grid");
+  const [openImportDialog, setOpenImportDialog] = useState(false);
   const [openAddSubjectDialog, setOpenAddSubjectDialog] = useState(false);
-  const [openEditSubjectDialog, setOpenEditSubjectDialog] = useState(false);
-  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [openUpdateSubjectDialog, setOpenUpdateSubjectDialog] = useState(false);
 
-  const subjects = useMemo(() => {
-    return (data?.data ?? []).map(normalizeSubject);
-  }, [data]);
+  const subjects = useMemo(() => (data?.data ?? []), [data]);
+  
 
-  const handleCreateSubject = async (values) => {
-    if (!timetableId) return;
+  const handleDeleteSubject = async (data) => {
+    if(!selectedTimetableData?.id) return;
 
-    const payload = transformPayload(values);
-
-    await createSubject.mutateAsync({
-      id: timetableId,
-      data: payload,
+    console.log(data);
+    await deleteSubject.mutateAsync({
+      id: selectedTimetableData.id,
+      data
     });
+  }
 
-    setOpenAddSubjectDialog(false);
-  };
+  const handleUpdateSubject = async (data) => {
+    if(!selectedTimetableData?.id) return;
 
-  const handleUpdateSubject = async (values) => {
-    if (!selectedSubject) return;
-
-    const payload = transformPayload(values);
-
+    console.log(data);
+    const {id, ...payload} = data;
     await updateSubject.mutateAsync({
-      id: selectedSubject.id,
+      id,
       data: payload,
     });
+  }
 
-    setOpenEditSubjectDialog(false);
-    setSelectedSubject(null);
-  };
+  const handleCreateSubject = async (data) => {
+    if (!selectedTimetableData?.id) return;
 
-  const handleDeleteSubject = async (subjectId) => {
-    await deleteSubject.mutateAsync(subjectId);
-  };
+    if(data.lab_classes.length === null) data["lab_classes"] = null;
+    
+    const payload = {
+      name: data.name,
+      min_classes_day: data.min_classes_day,
+      max_classes_day: data.max_classes_day,
+      min_classes_week: data.min_classes_week,
+      max_classes_week: data.max_classes_week,
+      min_classes_consecutive: data.min_classes_consecutive,
+      max_classes_consecutive: data.max_classes_consecutive,
+      isLab: data.isLab,
+      lab_classes: data.isLab.length > 0 ? data.isLab : null,
+      hardness: data.hardness,
+    };
 
-  const handleOpenEditDialog = (subject) => {
-    setSelectedSubject(subject);
-
-    setOpenEditSubjectDialog(true);
+    console.log(payload);
+    await createSubject.mutateAsync({
+      id: selectedTimetableData.id,
+      payload,
+    });
   };
 
   if (isLoading) {
@@ -183,7 +110,6 @@ export default function Subjects() {
       <div className="App">
         <Topbar page={"Subjects"} />
         <div className="mainPlaceholder">
-
           <div className={styles.inactiveState}>
             <Loader />
             <p>Fetching subjects...</p>
@@ -198,14 +124,13 @@ export default function Subjects() {
       <div className="App">
         <Topbar page={"Subjects"} />
         <div className="mainPlaceholder">
-
           <div className={styles.inactiveState}>
             <div className={styles.largeIcon}>
               <AlertTriangle size={24} />
             </div>
             <h4>Something went wrong.</h4>
             <p>
-              We couldn't load your subjects. Check your connection and try
+              We couldn't load subject details. Check your connection and try
               refreshing — if it keeps happening, the server might be down.
             </p>
           </div>
@@ -219,12 +144,11 @@ export default function Subjects() {
       <div className="App">
         <Topbar page={"Subjects"} />
         <div className="mainPlaceholder">
-
           <div className={styles.inactiveState}>
             <h4>No timetable selected.</h4>
             <p>
               Pick a timetable from the workspace selector at the top to start
-              managing its subjects.
+              managing subject details.
             </p>
           </div>
         </div>
@@ -234,9 +158,8 @@ export default function Subjects() {
 
   return (
     <div className="App">
+      <Topbar page={"Subjects"} />
       <div className="mainPlaceholder">
-        <Topbar page={"Subjects"} />
-
         <PageHeader
           title={"Subjects"}
           description={
@@ -247,13 +170,15 @@ export default function Subjects() {
           addButtonText={"Add Subject"}
           activeView={activeView}
           onChangeActiveView={setActiveView}
-          onAdd={() => setOpenAddSubjectDialog(true)}
-          onBulkImport={() => {}}
+          onAdd={() => {
+            setOpenAddSubjectDialog(true);
+          }}
+          onBulkImport={() => setOpenImportDialog(true)}
         />
 
         {!subjects.length && (
           <div className={styles.inactiveState}>
-            <h4>No subjects yet.</h4>
+            <h4>No Subjects defined.</h4>
             <p>
               Add your first subject to start defining constraints for this
               timetable.
@@ -261,100 +186,42 @@ export default function Subjects() {
           </div>
         )}
 
-        {!!subjects.length && activeView === "list" && (
-          <ListView
-            data={subjects}
-            columns={COLUMNS}
-            onEdit={(_, rowData) => handleOpenEditDialog(rowData)}
-            onDelete={(rowId) => handleDeleteSubject(rowId)}
+        {!!subjects.length && activeView == "list" && (
+          <SubjectList
+            subjects={subjects}
+            onEdit={handleUpdateSubject}
+            onDelete={handleDeleteSubject}
           />
         )}
 
-        {!!subjects.length && activeView === "grid" && (
-          <div className={styles.gridView__Container}>
-            {subjects.map((subject) => {
-              const isLab = subject.type === "lab";
+        {/* Add Subject */}
+        <SubjectDialog
+          open={openAddSubjectDialog}
+          onClose={() => setOpenAddSubjectDialog(false)}
+          onCreate={handleCreateSubject}
+        />
 
-              return (
-                <ItemCard
-                  key={subject.id}
-                  onEdit={() => handleOpenEditDialog(subject)}
-                  onDelete={() => handleDeleteSubject(subject.id)}
-                >
-                  <div className={styles.card__Header}>
-                    <h3 className={styles.card__Title}>{subject.name}</h3>
-                  </div>
+        {/* Update Subject */}
+        <SubjectDialog
+          open={openUpdateSubjectDialog}
+          onClose={() => setOpenUpdateSubjectDialog(false)}
+          initialData={subjects}
+          onUpdate={handleUpdateSubject}
+        />
 
-                  <div className={styles.card__Meta}>
-                    <span
-                      className={`
-                          ${styles.card__Badge}
-                          ${
-                            isLab
-                              ? styles.card__Badge__lab
-                              : styles.card__Badge__theory
-                          }
-                        `}
-                    >
-                      {isLab ? "Lab" : "Theory"}
-                    </span>
-
-                    <span className={styles.card__Hardness}>
-                      {subject.hardness}/3 hardness
-                    </span>
-                  </div>
-
-                  <div className={styles.card__Stats}>
-                    <div className={styles.card__StatBox}>
-                      <span className={styles.card__StatValue}>
-                        {subject.daily.join("-")}
-                      </span>
-
-                      <span className={styles.card__StatLabel}>Daily</span>
-                    </div>
-
-                    <div className={styles.card__StatBox}>
-                      <span className={styles.card__StatValue}>
-                        {subject.weekly.join("-")}
-                      </span>
-
-                      <span className={styles.card__StatLabel}>Weekly</span>
-                    </div>
-
-                    <div className={styles.card__StatBox}>
-                      <span className={styles.card__StatValue}>
-                        {subject.consecutive}
-                      </span>
-
-                      <span className={styles.card__StatLabel}>Consec.</span>
-                    </div>
-                  </div>
-                </ItemCard>
-              );
-            })}
-          </div>
-        )}
+        {/* Import Subject Details */}
+        <ImportDialog
+          open={openImportDialog}
+          title={"Import Subjects"}
+          description={"Add all subject that need to be scheduled"}
+          onClose={() => {
+            setOpenImportDialog(false);
+          }}
+          onSelectCSV={() => {}}
+          onSelectText={() => {}}
+          onSelectTimetable={() => {}}
+        />
       </div>
-
-      <SubjectDialog
-        open={openAddSubjectDialog}
-        loading={createSubject.isPending}
-        onClose={() => {
-          setOpenAddSubjectDialog(false);
-        }}
-        onCreate={handleCreateSubject}
-      />
-
-      <SubjectDialog
-        open={openEditSubjectDialog}
-        loading={updateSubject.isPending}
-        onClose={() => {
-          setOpenEditSubjectDialog(false);
-          setSelectedSubject(null);
-        }}
-        onUpdate={handleUpdateSubject}
-        initialData={selectedSubject}
-      />
     </div>
   );
 }

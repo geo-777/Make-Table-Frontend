@@ -1,0 +1,57 @@
+.labBadgeWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.labBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--accent-violet-bg);
+  color: var(--accent-violet-fg);
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.labBadge:hover {
+  background: var(--light-violet);
+}
+.tooltip {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--color-grey-100);
+  color: var(--color-grey-700);
+  border-radius: 8px;
+  padding: 6px 0;
+  box-shadow: var(--shadow-elevated);
+  min-width: 210px;
+  pointer-events: none;
+}
+
+.tooltipRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 5px 14px;
+}
+
+.tooltipClass {
+  font-size: 12px;
+}
+
+.tooltipRoom {
+  font-size: 11px;
+  color: var(--color-grey-300);
+  white-space: nowrap;
+}

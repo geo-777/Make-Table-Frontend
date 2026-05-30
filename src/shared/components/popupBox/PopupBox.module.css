@@ -9,10 +9,11 @@
 }
 
 .popupBox {
-  width: 100%;
-  max-width: 470px;
-  padding: 1rem 1.5rem;
   position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 512px;
+  max-height: 88vh;
   background-color: var(--sidebar-background);
   border-radius: 0.7rem;
   display: flex;
@@ -25,13 +26,22 @@
   color: var(--foreground);
   z-index: 1000;
 }
+
 .open {
   pointer-events: auto;
 }
+
 .headingContainer {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--sidebar-background);
+  padding: 1.5rem 1.5rem 0;
 }
+
 .headingContainer h4 {
   font-size: 1.1625rem;
   font-weight: 600;
@@ -41,17 +51,16 @@
   margin: 0;
   padding-right: 1.75rem;
 }
+
 .headingContainer button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 1.75rem;
   height: 1.75rem;
-  border-radius: calc(var(--radius) - 2px);
+  flex-shrink: 0;
   border: none;
+  border-radius: calc(var(--radius) - 2px);
   background: transparent;
   color: var(--muted-foreground);
   cursor: pointer;
@@ -69,16 +78,35 @@
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
-.actionBtns {
-  margin-top: 0.5rem;
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  justify-content: flex-end;
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.5rem 0;
+}
+
+.body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: var(--color-grey-200);
+  border-radius: 2px;
+}
+
+.action {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background-color: var(--sidebar-background);
+  padding: 0.75rem 1.5rem 1.5rem;
 }
 
 .submitBtn {
-  margin-top: 0;
   width: 100%;
   height: 2.375rem;
   border: none;

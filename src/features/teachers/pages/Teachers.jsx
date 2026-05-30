@@ -13,6 +13,8 @@ import TeacherList from "../components/teacherList/TeacherList";
 
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useTeachers from "../hooks/useTeachers";
+import { useTeachersView } from "../../../shared/zustand/listingsViewStore";
+
 
 /*
   {
@@ -27,6 +29,7 @@ import useTeachers from "../hooks/useTeachers";
 
 const Teachers = () => {
   const { selectedTimetableData } = useTimeTableSelect();
+  const { activeView, setActiveView } = useTeachersView();
 
   const {
     data,
