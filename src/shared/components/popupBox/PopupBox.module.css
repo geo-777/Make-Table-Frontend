@@ -1,35 +1,65 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.rootVisible {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background-color: hsl(230 25% 10% / 0.55);
+  backdrop-filter: blur(4px);
+}
+
 .popupBox {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 512px;
   max-height: 88vh;
-  position: relative;
   background-color: var(--sidebar-background);
   border-radius: 0.7rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  color: var(--foreground);
+  overflow: hidden;
+
   opacity: 0;
   pointer-events: none;
+  transform: scale(0.95) translateY(6px);
   transition:
     transform 0.2s ease,
-    opacity 0.1s ease;
-  transform: scale(0.6);
-  color: var(--foreground);
-  z-index: 899;
-  overflow: hidden;
+    opacity 0.15s ease;
 }
+
 .open {
-  transform: scale(1);
-  pointer-events: auto;
   opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
 }
+
 .headingContainer {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   position: sticky;
   top: 0;
-  padding: 1.5rem 1.5rem 0 1.5rem;
+  z-index: 1;
+  background-color: var(--sidebar-background);
+  padding: 1.5rem 1.5rem 0;
 }
+
 .headingContainer h4 {
   font-size: 1.1625rem;
   font-weight: 600;
@@ -39,17 +69,16 @@
   margin: 0;
   padding-right: 1.75rem;
 }
+
 .headingContainer button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 1.75rem;
   height: 1.75rem;
-  border-radius: calc(var(--radius) - 2px);
+  flex-shrink: 0;
   border: none;
+  border-radius: calc(var(--radius) - 2px);
   background: transparent;
   color: var(--muted-foreground);
   cursor: pointer;
@@ -67,23 +96,35 @@
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
-.actionBtns {
-  margin-top: 0.5rem;
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  justify-content: flex-end;
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.5rem 0;
+}
+
+.body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: var(--color-grey-200);
+  border-radius: 2px;
 }
 
 .action {
-  background-color: var(--sidebar-background);
   position: sticky;
   bottom: 0;
-  padding: 0 1.5rem 1.5rem 1.5rem;
+  z-index: 1;
+  background-color: var(--sidebar-background);
+  padding: 0.75rem 1.5rem 1.5rem;
 }
 
 .submitBtn {
-  margin-top: 0;
   width: 100%;
   height: 2.375rem;
   border: none;
@@ -116,10 +157,4 @@
 .submitBtn:disabled {
   pointer-events: none;
   opacity: 0.5;
-}
-
-.body {
-  height: 100%;
-  overflow-y: auto;
-  padding: 1rem 1.5rem 0 1.5rem;
 }

@@ -334,17 +334,14 @@ export default function SubjectDialog({
         )}
       </PopupBox>
 
-      {createPortal(
-        <LabClassDialog
-          isOpen={labDialogOpen}
-          onClose={() => setLabDialogOpen(false)}
-          onSave={handleLabClassesSave}
-          labClasses={ALL_LAB_CLASSES}
-          selectedIds={form.lab_classes.map((c) => c.id)}
-          subjectName={form.name}
-        />,
-        document.body,
-      )}
+      <LabClassDialog
+        isOpen={labDialogOpen}
+        onClose={() => setLabDialogOpen(false)}
+        onSave={handleLabClassesSave}
+        labClasses={ALL_LAB_CLASSES}
+        selectedIds={form.lab_classes.map((c) => c.id)}
+        subjectName={form.name}
+      />
     </>
   );
 }

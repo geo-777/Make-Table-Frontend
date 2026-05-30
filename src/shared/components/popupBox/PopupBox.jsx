@@ -1,6 +1,8 @@
 import { useState } from "react";
-import styles from "./PopupBox.module.css";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import styles from "./PopupBox.module.css";
+
 const PopupBox = ({
   visible,
   closeFunction,
@@ -11,6 +13,7 @@ const PopupBox = ({
   disabled = false,
 }) => {
   const [submitLoading, setSubmitLoading] = useState(false);
+
   const handleSubmitClicked = async (e) => {
     if (submitLoading) return;
     setSubmitLoading(true);
@@ -20,50 +23,42 @@ const PopupBox = ({
     } finally {
       setSubmitLoading(false);
     }
-
     if (invokeCloseFunction) closeFunction();
   };
-  return (
+
+  return createPortal(
     <div
-      className="popupCentered"
-      style={{
-        pointerEvents: visible ? "auto" : "none",
-        opacity: visible ? 1 : 0,
-      }}
+      className={`${styles.root} ${visible ? styles.rootVisible : ""}`}
+      onClick={closeFunction}
     >
-      <div
-        style={{
-          pointerEvents: visible ? "auto" : "none",
-          opacity: visible ? 0.6 : 0,
-        }}
-        onClick={closeFunction}
-        className="popup_overlay"
-      ></div>
+      <div className={styles.overlay} aria-hidden="true" />
+
       <div
         className={`${styles.popupBox} ${visible ? styles.open : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.headingContainer}>
           <h4>{title}</h4>
-          <button type="button" onClick={closeFunction}>
+          <button type="button" onClick={closeFunction} aria-label="Close">
             <X size={18} />
           </button>
         </div>
-        <div className={styles.body}>
-          {children}
-        </div>
+
+        <div className={styles.body}>{children}</div>
+
         <div className={styles.action}>
           <button
             type="submit"
-            className={` ${styles.submitBtn} `}
+            className={`${styles.submitBtn} ${submitLoading ? styles.submitLoading : ""}`}
             onClick={handleSubmitClicked}
             disabled={submitLoading || disabled}
           >
-            {primaryBtnText}
+            {submitLoading ? "Saving…" : primaryBtnText}
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 
