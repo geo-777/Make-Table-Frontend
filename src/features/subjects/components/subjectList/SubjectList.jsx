@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState} from "react";
 import { Pencil, Trash2, Check, X } from "lucide-react";
 import styles from "./SubjectList.module.css";
+import LabClassesTooltip from "../labClassesTooltip/LabClassesTooltip";
 
 const MOCK_CLASSES = [
   {
@@ -39,50 +40,6 @@ function HardnessBadge({ value }) {
   const cls = HARDNESS_CLASS[value] ?? "med";
   return (
     <span className={`${styles.hardnessBadge} ${styles[cls]}`}>{value}</span>
-  );
-}
-
-function LabClassesTooltip({ labClasses }) {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    function handler(e) {
-      if (ref.current && !ref.current.contains(e.target)) setVisible(false);
-    }
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  if (!labClasses || labClasses.length === 0) {
-    return <span className={styles.labEmpty}>—</span>;
-  }
-
-  return (
-    <span ref={ref} className={styles.labBadgeWrapper}>
-      <button
-        className={styles.labBadge}
-        onMouseEnter={() => setVisible(true)}
-        onMouseLeave={() => setVisible(false)}
-        onFocus={() => setVisible(true)}
-        onBlur={() => setVisible(false)}
-        aria-label={`${labClasses.length} lab classes assigned`}
-      >
-        {labClasses.length} class{labClasses.length !== 1 ? "es" : ""}
-      </button>
-
-      {visible && (
-        <div className={styles.tooltip}>
-          <span className={styles.tooltipArrow} />
-          {labClasses.map((c) => (
-            <div key={c.id} className={styles.tooltipRow}>
-              <span className={styles.tooltipClass}>{c.class_name}</span>
-              <span className={styles.tooltipRoom}>{c.room_name}</span>
-            </div>
-          ))}
-        </div>
-      )}
-    </span>
   );
 }
 

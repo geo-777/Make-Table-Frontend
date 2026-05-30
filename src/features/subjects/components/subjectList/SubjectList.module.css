@@ -145,78 +145,9 @@
   border-color: var(--ring);
 }
 
-.labBadgeWrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.labBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--accent-violet-bg);
-  color: var(--accent-violet-fg);
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  font-family: inherit;
-  transition: background 0.15s;
-}
-
-.labBadge:hover {
-  background: var(--light-violet);
-}
-
 .labEmpty {
   color: var(--color-grey-300);
   font-size: 13px;
-}
-
-.tooltip {
-  position: absolute;
-  z-index: 100;
-  top: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--color-grey-900);
-  border-radius: 8px;
-  padding: 6px 0;
-  box-shadow: var(--shadow-elevated);
-  min-width: 210px;
-  pointer-events: none;
-}
-
-.tooltipArrow {
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 10px;
-  height: 10px;
-  background: var(--color-grey-900);
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
-
-.tooltipRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding: 5px 14px;
-}
-
-.tooltipClass {
-  font-size: 12px;
-  color: var(--color-grey-50);
-}
-
-.tooltipRoom {
-  font-size: 11px;
-  color: var(--color-grey-300);
-  white-space: nowrap;
 }
 
 .nameInput {
