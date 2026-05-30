@@ -1,0 +1,312 @@
+.tableWrapper {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  background: var(--card);
+  font-family: inherit;
+  margin: 2rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead tr {
+  background: var(--card);
+}
+
+.table thead th {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.table thead th.centerTh {
+  text-align: center;
+}
+
+.table tbody tr {
+  transition: background 0.12s;
+}
+
+.table tbody tr:hover td {
+  background: var(--accent);
+}
+
+.table tbody tr.editingRow td {
+  background: hsl(225 60% 98.5%);
+}
+
+.table td {
+  padding: 18px 20px;
+  font-size: 13.5px;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table td.centerTd {
+  text-align: center;
+}
+
+.table td.editTd {
+  padding: 10px 14px;
+}
+
+.nameCell {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.nameCellInner {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.labIcon {
+  color: var(--accent-violet-fg);
+  flex-shrink: 0;
+}
+
+.isLabNo {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.isLabYes {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--accent-violet-bg);
+  color: var(--accent-violet-fg);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.hardnessBadge {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--foreground);
+}
+
+.hardnessBadge .dot {
+  display: none;
+}
+
+.rangeDisplay {
+  font-size: 13px;
+  color: var(--color-grey-500);
+}
+
+.rangeSep {
+  color: var(--color-grey-300);
+  margin: 0 2px;
+}
+
+.rangeInputGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.numberInput {
+  width: 42px;
+  padding: 4px 5px;
+  border-radius: 5px;
+  border: 1px solid var(--input);
+  background: var(--secondary-bg);
+  font-size: 12px;
+  text-align: center;
+  color: var(--foreground);
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: inherit;
+}
+
+.numberInput:focus {
+  border-color: var(--ring);
+}
+
+.labBadgeWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.labBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--accent-violet-bg);
+  color: var(--accent-violet-fg);
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.labBadge:hover {
+  background: var(--light-violet);
+}
+
+.labEmpty {
+  color: var(--color-grey-300);
+  font-size: 13px;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-grey-900);
+  border-radius: 8px;
+  padding: 6px 0;
+  box-shadow: var(--shadow-elevated);
+  min-width: 210px;
+  pointer-events: none;
+}
+
+.tooltipArrow {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  background: var(--color-grey-900);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.tooltipRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 5px 14px;
+}
+
+.tooltipClass {
+  font-size: 12px;
+  color: var(--color-grey-50);
+}
+
+.tooltipRoom {
+  font-size: 11px;
+  color: var(--color-grey-300);
+  white-space: nowrap;
+}
+
+.nameInput {
+  width: 150px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--input);
+  background: var(--secondary-bg);
+  font-size: 13px;
+  color: var(--foreground);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.nameInput:focus {
+  border-color: var(--ring);
+}
+
+.hardnessSelect {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--input);
+  background: var(--secondary-bg);
+  font-size: 12px;
+  color: var(--foreground);
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.hardnessSelect:focus {
+  border-color: var(--ring);
+}
+
+.labCheckbox {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.actionsCell {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.actionsGroup {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.15s, color 0.15s;
+  color: var(--muted-foreground);
+}
+
+.editBtn:hover {
+  color: var(--accent-foreground);
+}
+
+.deleteBtn:hover {
+  background: var(--accent-red-bg);
+  color: var(--accent-red-fg);
+}
+
+.saveBtn {
+  color: var(--accent-green-fg);
+}
+
+.saveBtn:hover {
+  background: var(--accent-greener-bg);
+  color: var(--accent-greener-fg);
+}
+
+.cancelBtn {
+  color: var(--color-grey-400);
+}
+
+.cancelBtn:hover {
+  background: var(--accent-red-bg);
+  color: var(--accent-red-fg);
+}

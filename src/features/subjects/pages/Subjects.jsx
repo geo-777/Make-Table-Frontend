@@ -5,6 +5,7 @@ import Topbar from "../../../shared/components/topbar/Topbar";
 import { useSubjectsView } from "../../../shared/zustand/listingsViewStore";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import "../../../styles/appLayout.css";
+import SubjectList from "../components/subjectList/SubjectList";
 
 /*
   {
@@ -52,7 +53,7 @@ const MOCK_SUBJECTS = [
     max_classes_week: 12,
     min_classes_consecutive: 1,
     max_classes_consecutive: 2,
-    lab_classes: [{ ...ALL_CLASSES[0] }],
+    lab_classes: [{ ...ALL_CLASSES[0] }, {...ALL_CLASSES[1]}],
   },
   {
     id: 2,
@@ -120,6 +121,14 @@ export default function Subjects() {
           onAdd={() => {}}
           onBulkImport={() => {}}
         />
+
+        {activeView == "list" &&
+          <SubjectList 
+            subjects={MOCK_SUBJECTS}
+            onEdit={() => {}}
+            onDelete={() => {}}
+          />
+        }
 
         {/* Import Subject Details */}
         <ImportDialog
