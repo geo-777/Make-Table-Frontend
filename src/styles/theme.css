@@ -11,6 +11,10 @@
   --primary: hsl(255 65% 54%);
   --primary-foreground: rgb(255, 255, 255);
 
+  /* RGB fallbacks for components that use rgba(var(--...-rgb), alpha) */
+  --primary-rgb: 100 62 214;
+  --muted-rgb: 243 244 246;
+
   --secondary: hsl(225 20% 94%);
   --secondary-foreground: hsl(230 25% 10%);
 
@@ -110,6 +114,10 @@
 
   --primary: hsl(255 75% 68%);
   --primary-foreground: hsl(230 25% 8%);
+
+  /* RGB fallbacks for dark theme */
+  --primary-rgb: 143 112 235;
+  --muted-rgb: 45 49 64;
 
   --secondary: hsl(230 15% 16%);
   --secondary-foreground: hsl(225 15% 92%);

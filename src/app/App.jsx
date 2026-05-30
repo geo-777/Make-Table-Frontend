@@ -4,7 +4,7 @@ import "../styles/theme.css";
 import LoaderFull from "../shared/components/loader/LoaderFull";
 import { useAuth } from "./providers/AuthProvider";
 import AppRoutes from "./routes/AppRoutes";
-
+import { useEffect } from "react";
 //react toastify bs for notification system
 //dont remove these imports
 import { ToastContainer } from "react-toastify";
@@ -13,11 +13,18 @@ import useThemeStore from "../shared/zustand/themeStore";
 function App() {
   const { isLoading } = useAuth();
   const { theme } = useThemeStore();
+  // applying theme class to the root html element
+  useEffect(() => {
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(theme);
+  }, [theme]);
+
   if (isLoading) {
     return <LoaderFull />;
   }
+
   return (
-    <div className={theme}>
+    <>
       <AppRoutes />
       <ToastContainer
         position="bottom-right"
@@ -27,7 +34,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
-    </div>
+    </>
   );
 }
 

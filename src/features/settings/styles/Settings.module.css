@@ -216,7 +216,7 @@
 }
 
 .btnDanger {
-  color: var(--sidebar-background);
+  color: #fff;
   background: var(--color-danger);
   transition: opacity 0.2s ease-in;
 }
