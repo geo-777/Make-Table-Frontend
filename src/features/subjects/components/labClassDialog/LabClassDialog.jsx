@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { X, Check, Search, FlaskConical } from "lucide-react";
 import styles from "./LabClassDialog.module.css";
+import { createPortal } from "react-dom";
 
 export default function LabClassDialog({
   isOpen,
@@ -81,7 +82,7 @@ export default function LabClassDialog({
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div
       className={styles.backdrop}
       ref={dialogRef}
@@ -191,6 +192,7 @@ export default function LabClassDialog({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
