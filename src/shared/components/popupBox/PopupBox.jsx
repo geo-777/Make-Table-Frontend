@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./PopupBox.module.css";
 import { X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 const PopupBox = ({
   visible,
   closeFunction,
@@ -23,43 +24,68 @@ const PopupBox = ({
 
     if (invokeCloseFunction) closeFunction();
   };
+
+  const onKeyDown = (e) => {
+    if (e.key !== "Enter") return;
+    // prevents cntrl + enter, shift + enter type combos.. only enter key is allowed
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    const tag = e.target?.tagName?.toLowerCase();
+    if (tag === "textarea") return;
+    if (e.target?.isContentEditable) return;
+    if (tag != "input") return;
+    e.preventDefault();
+
+    handleSubmitClicked(e);
+  };
+
+  // todo (optional i guess) : maybe refactor this a bit once the priority stuff are done.
+  // maybe use variables instead of hardcoding..
   return (
-    <div
-      className="popupCentered"
-      style={{
-        pointerEvents: visible ? "auto" : "none",
-        opacity: visible ? 1 : 0,
-      }}
-    >
-      <div
-        style={{
-          pointerEvents: visible ? "auto" : "none",
-          opacity: visible ? 0.6 : 0,
-        }}
-        onClick={closeFunction}
-        className="popup_overlay"
-      ></div>
-      <div
-        className={`${styles.popupBox} ${visible ? styles.open : ""}`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className={styles.headingContainer}>
-          <h4>{title}</h4>
-          <button type="button" onClick={closeFunction}>
-            <X size={18} />
-          </button>
-        </div>
-        {children}
-        <button
-          type="submit"
-          className={` ${styles.submitBtn} `}
-          onClick={handleSubmitClicked}
-          disabled={submitLoading || disabled}
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          className="popupCentered"
+          onKeyDown={onKeyDown}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.1, ease: "easeOut" }}
         >
-          {primaryBtnText}
-        </button>
-      </div>
-    </div>
+          <motion.div
+            className="popup_overlay"
+            onClick={closeFunction}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
+          />
+          <motion.div
+            className={styles.popupBox}
+            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, scale: 0.75 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
+          >
+            <div className={styles.headingContainer}>
+              <h4>{title}</h4>
+              <button type="button" onClick={closeFunction}>
+                <X size={18} />
+              </button>
+            </div>
+            {children}
+            <button
+              type="submit"
+              className={` ${styles.submitBtn} `}
+              onClick={handleSubmitClicked}
+              disabled={submitLoading || disabled}
+            >
+              {primaryBtnText}
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
