@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import styles from "./SubjectDialog.module.css";
-import {
-  CheckIcon
-} from "lucide-react";
+import { CheckIcon, FlaskConical, ChevronRight, X } from "lucide-react";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
+import LabClassDialog from "../labClassDialog/LabClassDialog";
+import { createPortal } from "react-dom";
 
 /*
   NEW SCHEMA
@@ -32,44 +32,47 @@ import PopupBox from "../../../../shared/components/popupBox/PopupBox";
   }
 */
 
-export default function SubjectDialog({ 
+const ALL_LAB_CLASSES = [
+  { id: 1, class_name: "Class 10-A", room_name: "Lab Room 1", isLab: true },
+  { id: 2, class_name: "Class 10-B", room_name: "Lab Room 1", isLab: true },
+  {
+    id: 3,
+    class_name: "Class 11-Science",
+    room_name: "Lab Room 2",
+    isLab: true,
+  },
+  { id: 4, class_name: "Class 9-A", room_name: "Lab Room 3", isLab: true },
+];
+
+const EMPTY_FORM = {
+  name: "",
+  isLab: false,
+  hardness: "Low",
+  min_classes_day: 0,
+  max_classes_day: 2,
+  min_classes_week: 2,
+  max_classes_week: 5,
+  min_classes_consecutive: 1,
+  max_classes_consecutive: 2,
+  lab_classes: [],
+};
+
+export default function SubjectDialog({
   open,
   initialData = null,
-  onClose, 
+  onClose,
   onCreate,
   onUpdate,
 }) {
-
   const mode = initialData ? "edit" : "create";
-  const [form, setForm] = useState({
-    name: "",
-    isLab: false,
-    hardness: "Low",
-    min_classes_day: 0,
-    max_classes_day: 2,
-    min_classes_week: 2,
-    max_classes_week: 5,
-    min_classes_consecutive: 1,
-    max_classes_consecutive: 2,
-    lab_classes: []
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [labDialogOpen, setLabDialogOpen] = useState(false);
 
   useEffect(() => {
-    if(initialData) {
+    if (initialData) {
       setForm(initialData);
     } else {
-      setForm({
-        name: "",
-        isLab: false,
-        hardness: "Low",
-        min_classes_day: 0,
-        max_classes_day: 2,
-        min_classes_week: 2,
-        max_classes_week: 5,
-        min_classes_consecutive: 1,
-        max_classes_consecutive: 2,
-        lab_classes: []
-      });
+      setForm(EMPTY_FORM);
     }
   }, [initialData, open]);
 
@@ -86,13 +89,22 @@ export default function SubjectDialog({
     onClose?.();
   };
 
-  const popupDetail = mode === "edit" ? {
-    title: "Edit Subject",
-    primary: "Update",
-  } : {
-    title: "Add Subject",
-    primary: "Create",
+  const handleLabClassesSave = (selectedIds) => {
+    const selected = ALL_LAB_CLASSES.filter((c) => selectedIds.includes(c.id));
+    handleChange("lab_classes", selected);
   };
+
+  const removeLabClass = (id) => {
+    handleChange(
+      "lab_classes",
+      form.lab_classes.filter((c) => c.id !== id),
+    );
+  };
+
+  const popupDetail =
+    mode === "edit"
+      ? { title: "Edit Subject", primary: "Update" }
+      : { title: "Add Subject", primary: "Create" };
 
   const HARDNESS = ["Low", "Med", "High"];
 
@@ -146,6 +158,7 @@ export default function SubjectDialog({
               <div className={styles.hardnessWrapper}>
                 {HARDNESS.map((h) => (
                   <button
+                    key={h}
                     className={`${styles.hardness} ${form.hardness === h ? styles.selected : ""}`}
                     title={h}
                     onClick={() => handleChange("hardness", h)}
@@ -172,7 +185,7 @@ export default function SubjectDialog({
                 type="number"
                 className={styles.input}
                 min={0}
-                value={form.minPerDay}
+                value={form.min_classes_day}
                 onChange={(e) =>
                   handleChange("min_classes_day", Number(e.target.value))
                 }
@@ -233,7 +246,7 @@ export default function SubjectDialog({
         </section>
 
         <section className={styles.section}>
-          <span className={styles.sectionLabel}>Consecutive constraints</span>
+          <span className={styles.sectionLabel}>Consecutive Constraints</span>
           <div className={styles.grid2}>
             <div className={styles.field}>
               <label className={styles.label} htmlFor="min-consec">
@@ -246,7 +259,10 @@ export default function SubjectDialog({
                 min={0}
                 value={form.min_classes_consecutive}
                 onChange={(e) =>
-                  handleChange("min_classes_consecutive", Number(e.target.value))
+                  handleChange(
+                    "min_classes_consecutive",
+                    Number(e.target.value),
+                  )
                 }
               />
             </div>
@@ -261,19 +277,74 @@ export default function SubjectDialog({
                 min={0}
                 value={form.max_classes_consecutive}
                 onChange={(e) =>
-                  handleChange("max_classes_consecutive", Number(e.target.value))
+                  handleChange(
+                    "max_classes_consecutive",
+                    Number(e.target.value),
+                  )
                 }
               />
             </div>
           </div>
         </section>
 
-        <div className={styles.divider} />
+        {form.isLab && (
+          <>
+            <div className={styles.divider} />
 
-        {/*
-          This is where subject selection must go
-        */}
+            <section className={styles.section}>
+              <div className={styles.labClassesHeader}>
+                <span className={styles.sectionLabel}>Lab Classes</span>
+                <button
+                  className={styles.assignBtn}
+                  onClick={() => setLabDialogOpen(true)}
+                >
+                  <FlaskConical size={13} />
+                  Assign classes
+                  <ChevronRight size={13} />
+                </button>
+              </div>
+
+              {form.lab_classes.length === 0 ? (
+                <p className={styles.labClassesEmpty}>
+                  No classes assigned yet.
+                </p>
+              ) : (
+                <ul className={styles.labClassesList}>
+                  {form.lab_classes.map((cls) => (
+                    <li key={cls.id} className={styles.labClassChip}>
+                      <span className={styles.labClassChipName}>
+                        {cls.class_name}
+                      </span>
+                      <span className={styles.labClassChipRoom}>
+                        {cls.room_name}
+                      </span>
+                      <button
+                        className={styles.labClassChipRemove}
+                        onClick={() => removeLabClass(cls.id)}
+                        aria-label={`Remove ${cls.class_name}`}
+                      >
+                        <X size={11} strokeWidth={2.5} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </>
+        )}
       </PopupBox>
+
+      {createPortal(
+        <LabClassDialog
+          isOpen={labDialogOpen}
+          onClose={() => setLabDialogOpen(false)}
+          onSave={handleLabClassesSave}
+          labClasses={ALL_LAB_CLASSES}
+          selectedIds={form.lab_classes.map((c) => c.id)}
+          subjectName={form.name}
+        />,
+        document.body,
+      )}
     </>
   );
 }

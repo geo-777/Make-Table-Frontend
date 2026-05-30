@@ -28,6 +28,7 @@
   flex-direction: column;
   overflow: hidden;
   animation: slideUp 0.18s ease;
+  z-index: 999;
 }
 
 @keyframes slideUp {
