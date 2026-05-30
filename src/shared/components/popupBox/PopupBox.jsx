@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import styles from "./PopupBox.module.css";
-import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 const PopupBox = ({
   visible,
