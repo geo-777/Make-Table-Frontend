@@ -15,7 +15,6 @@ import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useTeachers from "../hooks/useTeachers";
 import { useTeachersView } from "../../../shared/zustand/listingsViewStore";
 
-
 /*
   {
     "id":                       number,
@@ -40,8 +39,6 @@ const Teachers = () => {
     deleteTeacher,
     updateTeacher,
   } = useTeachers();
-
-  const [activeView, setActiveView] = useState("grid");
 
   const [openAddTeacherDialog, setOpenAddTeacherDialog] = useState(false);
   const [openUpdateTeacherDialog, setOpenUpdateTeacherDialog] = useState(false);
