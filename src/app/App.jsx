@@ -8,6 +8,7 @@ import { useEffect } from "react";
 //react toastify bs for notification system
 //dont remove these imports
 import { ToastContainer } from "react-toastify";
+import "../styles/animations.css";
 import "react-toastify/dist/ReactToastify.css";
 import useThemeStore from "../shared/zustand/themeStore";
 function App() {

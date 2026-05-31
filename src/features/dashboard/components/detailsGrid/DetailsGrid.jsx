@@ -5,7 +5,7 @@ const DetailsGrid = ({ data }) => {
   const iconSize = 20;
   const iconStrokeWidth = 2;
   return (
-    <div className={`${styles.detailsGrid} `}>
+    <div className={`${styles.detailsGrid} stagger-children`}>
       <div className={styles.gridItem}>
         <div className={styles.detailsGrid__icon}>
           <Table2 size={iconSize} strokeWidth={iconStrokeWidth} />

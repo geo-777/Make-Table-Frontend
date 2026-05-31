@@ -20,7 +20,7 @@ const TimeTableListings = ({ type, data }) => {
     return [...(data ?? [])].sort((a, b) => b.id - a.id);
   }, [data]);
   return (
-    <div className={`${styles.timetableListings} `}>
+    <div className={`${styles.timetableListings} stagger-children `}>
       <TimeTablePopup
         mode="edit"
         closePopup={() => {

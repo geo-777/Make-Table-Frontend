@@ -37,7 +37,7 @@ const DashboardOveriew = () => {
         <Topbar page={"Dashboard"} />
 
         <header className="header">
-          <div className="headings">
+          <div className="headings stagger-children">
             <h4>My Timetables</h4>
             <p>Manage your timetable workspaces</p>
           </div>
