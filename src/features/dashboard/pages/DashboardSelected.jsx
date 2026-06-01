@@ -12,6 +12,7 @@ import useClasses from "../../../features/classes/hooks/useClasses";
 import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
 import useTeachers from "../../../features/teachers/hooks/useTeachers";
 import useSubjects from "../../../features/subjects/hooks/useSubjects";
+import { useState } from "react";
 
 const Header = ({
   name,
@@ -60,6 +61,48 @@ const Header = ({
   );
 }
 
+const TABS = [
+  { id: "class", label: "Class Timetables" },
+  { id: "teacher", label: "Teacher Timetables" },
+];
+
+function Tabs({ defaultTab = "teacher", onTabChange }) {
+  const [activeTab, setActiveTab] = useState(defaultTab);
+
+  const handleSelect = (id) => {
+    setActiveTab(id);
+    onTabChange?.(id);
+  };
+
+  return (
+    <div
+      className={styles.tabList}
+      role="tablist"
+      aria-orientation="horizontal"
+    >
+      {TABS.map((tab) => {
+        const isActive = activeTab === tab.id;
+        return (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            id={`tab-trigger-${tab.id}`}
+            aria-selected={isActive}
+            aria-controls={`tab-content-${tab.id}`}
+            data-state={isActive ? "active" : "inactive"}
+            tabIndex={isActive ? 0 : -1}
+            className={`${styles.tab} ${isActive ? styles.tabActive : ""}`}
+            onClick={() => handleSelect(tab.id)}
+          >
+            {tab.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function DashboardSelected() {
   
   const { selectedTimetableData } = useTimeTableSelect();
@@ -85,6 +128,13 @@ export default function DashboardSelected() {
           subjects={subjects?.data?.length}
           classes={classes?.data?.length}
         />
+
+        <div className={styles.body}>
+          <div className={styles.left}>
+            <Tabs />
+          </div>
+          <div className={styles.right}></div>
+        </div>
       </div>
     </div>
   );
