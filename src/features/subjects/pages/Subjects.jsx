@@ -13,6 +13,7 @@ import SubjectDialog from "../components/dialog/SubjectDialog";
 import { useSubjectsView } from "../../../shared/zustand/listingsViewStore";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useSubjects from "../hooks/useSubjects";
+import SubjectCard from "../components/subjectCard/SubjectCard";
 
 /*
   {
@@ -202,12 +203,24 @@ export default function Subjects() {
           </div>
         )}
 
-        {!!subjects.length && activeView == "list" && (
+        {!!subjects.length && activeView === "list" && (
           <SubjectList
             subjects={subjects}
             onEdit={handleUpdateSubject}
             onDelete={handleDeleteSubject}
           />
+        )}
+
+        {!!subjects.length && activeView === "grid" && (
+          <div className={styles.gridContainer}>
+            {subjects.map((subject) => (
+              <SubjectCard
+                subject={subject}
+                onEdit={() => setOpenUpdateSubjectDialog(true)}
+                onDelete={handleDeleteSubject}
+              />
+            ))}
+          </div>
         )}
 
         {/* Add Subject */}
