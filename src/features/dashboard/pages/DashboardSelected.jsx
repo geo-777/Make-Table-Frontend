@@ -1,95 +1,81 @@
 import "../../../styles/appLayout.css";
+import styles from "../styles/DashboardSelected.module.css";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import { Play, Zap, TriangleAlert } from "lucide-react";
+import { 
+  // Link2,
+  // Share2, 
+  Play, 
+  Zap 
+} from "lucide-react";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
-import styles from "../styles/Dashboard.module.css";
-import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
-import ClassTimetable from "../components/timeTables/ClassTimetable";
-import TeacherTimetable from "../components/timeTables/TeacherTimetable";
-import { useState } from "react";
+import useClasses from "../../../features/classes/hooks/useClasses";
 
-const VIEW_STATUS = {
-  Public: "Published",
-  Private: "Private",
-};
-const DashboardSelected = () => {
-  const { selectedTimetableData } = useTimeTableSelect();
-
-  const [timeTableMode, setTimeTableMode] = useState("classes");
-
+const Header = ({
+  name,
+  days,
+  slots,
+  classes,
+  viewStatus,
+}) => {
   return (
-    <div className="App">
-      <div className="mainPlaceholder">
-        <Topbar page={"Dashboard"} />
-
-        <header className="header">
-          <div className="headings">
-            <h4>{selectedTimetableData?.name || "Unknown"}</h4>
-            <div className={styles.header_extraInfo}>
-              <span
-                className={`${styles.typeIcon} ${selectedTimetableData.view_status === "Public" ? styles.publishedLabel : styles.draftLabel}`}
-              >
-                {" "}
-                <span className={styles.statusDot}></span>
-                {VIEW_STATUS[selectedTimetableData.view_status]}
-              </span>
-              <p>
-                {selectedTimetableData?.days.length} days ·{" "}
-                {selectedTimetableData?.slots} slots/day
-              </p>
-            </div>
-          </div>
-          <div className="right-panel">
-            <button
-              className="primary"
-              style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
-            >
-              <Play size={16} strokeWidth={2.5} /> <p>Generate</p>{" "}
-            </button>
-            <button className="secondary-btn">
-              {" "}
-              <Zap strokeWidth={1.7} size={18} /> <p>Force </p>{" "}
-            </button>
-          </div>
-        </header>
-        <div className={`main`}>
-          <DetailsGridTimetable />
-          <div className={styles.modeSelect}>
-            <span
-              onClick={() => setTimeTableMode("classes")}
-              className={timeTableMode === "classes" ? styles.activeMode : ""}
-            >
-              Class Timetables
-            </span>
-            <span
-              onClick={() => setTimeTableMode("teachers")}
-              className={timeTableMode === "teachers" ? styles.activeMode : ""}
-            >
-              Teacher Timetables
-            </span>
-          </div>
-          {timeTableMode === "classes" ? (
-            <ClassTimetable />
-          ) : (
-            <TeacherTimetable />
-          )}
-          <div className={styles.violationsContainer}>
-            <h4>Violations</h4>
-            <div className={styles.violations}>
-              <div className={styles.violationItem}>
-                <TriangleAlert size={16} />
-                <p>Dr. Smith: Dr. Smith has 3 consecutive classes on Monday</p>
-              </div>
-              <div className={styles.violationItem}>
-                <TriangleAlert size={16} />
-                <p>Physics: Physics exceeds max 2 classes/day on Thursday</p>
-              </div>
-            </div>
-          </div>
+    <div className={styles.wrapper}>
+      <div className={styles.info}>
+        <h1 className={styles.title}>{name}</h1>
+        <div className={styles.meta}>
+          <span className={`${styles.badge} ${styles.grey}`} >
+            <span className={styles.dot} />
+            {viewStatus}
+          </span>
+          <span className={styles.metaText}>
+            {days} days · {slots} slots/day · {classes} classes
+          </span>
         </div>
+      </div>
+
+      <div className={styles.actions}>
+        {/* <button className={styles.btnOutline}>
+          <Link2 size={16} />
+          Copy link
+        </button>
+
+        <button className={styles.btnOutline}>
+          <Share2 size={16} />
+          Share
+        </button> */}
+
+        <button className={styles.btnPrimary}>
+          <Play size={16} />
+          Generate
+        </button>
+
+        <button className={styles.btnOutline}>
+          <Zap size={16} />
+          Force
+        </button>
       </div>
     </div>
   );
-};
+}
 
-export default DashboardSelected;
+export default function DashboardSelected() {
+  
+  const { selectedTimetableData } = useTimeTableSelect();
+  const { data:classes } = useClasses();
+
+  console.log(selectedTimetableData);
+
+  return (
+    <div className="App">
+      <Topbar page={"Dashboard"} />
+      <div className="mainPlaceholder">
+        <Header
+          name={selectedTimetableData?.name || "Unknown"}
+          days={selectedTimetableData?.days.length ?? 0}
+          slots={selectedTimetableData?.slots ?? 0}
+          classes={classes.data.length ?? 0}
+          viewStatus={selectedTimetableData.view_status}
+        />
+      </div>
+    </div>
+  );
+}

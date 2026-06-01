@@ -2,7 +2,7 @@ import styles from "./Timetable.module.css";
 import SearchableSelect from "../../../../shared/components/selectMenus/SearchableSelect";
 const ClassTimetable = () => {
   const MOCK_DATA = [
-    { label: "S! CSE", value: 1 },
+    { label: "S1 CSE", value: 1 },
     { label: "S2 CSE", value: 2 },
   ];
   return (

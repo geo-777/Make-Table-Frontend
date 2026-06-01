@@ -1,6 +1,6 @@
 import styles from "./DetailsGrid.module.css";
 import { GraduationCap, LibraryBig, Users } from "lucide-react";
-const DetailsGridTimetable = ({ data }) => {
+const DetailsGridTimetable = ({ classes, teachers, subjects }) => {
   const iconSize = 20;
   const iconStrokeWidth = 2;
   return (
@@ -11,7 +11,7 @@ const DetailsGridTimetable = ({ data }) => {
         </div>
         <div className={styles.detailsGrid__info}>
           <p>Classes</p>
-          <h4>{data?.total ?? "—"}</h4>
+          <h4>{classes ?? "—"}</h4>
         </div>
       </div>
       <div className={styles.gridItem}>
@@ -20,7 +20,7 @@ const DetailsGridTimetable = ({ data }) => {
         </div>
         <div className={styles.detailsGrid__info}>
           <p>Teachers</p>
-          <h4>{data?.published ?? "—"}</h4>{" "}
+          <h4>{teachers ?? "—"}</h4>{" "}
         </div>
       </div>
       <div className={styles.gridItem}>
@@ -29,7 +29,7 @@ const DetailsGridTimetable = ({ data }) => {
         </div>
         <div className={styles.detailsGrid__info}>
           <p>Subjects</p>
-          <h4>{data?.drafts ?? "—"}</h4>
+          <h4>{subjects ?? "—"}</h4>
         </div>
       </div>
     </div>
