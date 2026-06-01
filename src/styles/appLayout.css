@@ -1,6 +1,5 @@
 body {
   background-color: var(--background);
-  overflow: hidden;
 }
 .App {
   background-color: var(--background);

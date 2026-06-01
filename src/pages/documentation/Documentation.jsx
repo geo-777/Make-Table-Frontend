@@ -36,10 +36,6 @@ const SECTIONS = [
         h: "Workspaces",
         p: "Everything in MakeTable is scoped to a workspace (a timetable). Switch workspaces from the sidebar — data never leaks between them.",
       },
-      {
-        h: "Demo mode",
-        p: "Hit ‘Try the demo’ on the landing page to explore with sample data. No account needed.",
-      },
     ],
   },
   {
@@ -106,10 +102,6 @@ const SECTIONS = [
       {
         h: "How it works",
         p: "MakeTable runs a constraint-solving engine that explores valid schedules and ranks them by conflict score, balance, and your preferences.",
-      },
-      {
-        h: "Fill rate",
-        p: "Shown on each timetable — it's filled_slots ÷ total_slots, where total_slots = days × periods × classes.",
       },
     ],
   },
