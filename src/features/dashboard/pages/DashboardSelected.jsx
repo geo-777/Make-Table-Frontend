@@ -14,6 +14,7 @@ import useTeachers from "../../../features/teachers/hooks/useTeachers";
 import useSubjects from "../../../features/subjects/hooks/useSubjects";
 import { useState } from "react";
 import Dropdown from "../components/dropDown/Dropdown";
+import ClassTimetable from "../components/classTimetable/ClassTimetable";
 
 const Header = ({
   name,
@@ -139,11 +140,13 @@ export default function DashboardSelected() {
             {activeTab === "class" && (
               <>
                 <Dropdown
-                  options={classes.data.map((c) => c.class_name)}
-                  defaultValue={classes.data.map((c) => c.class_name)[0] ?? ""}
+                  options={classes?.data.map((c) => c.class_name)}
+                  defaultValue={classes?.data.map((c) => c.class_name)[0] ?? ""}
                   placeholder="Select a class"
                   onChange={() => {}}
                 ></Dropdown>
+
+                <ClassTimetable />
               </>
             )}
 

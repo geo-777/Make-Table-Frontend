@@ -128,14 +128,14 @@
 }
 
 .left {
-  width: 75%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
 .right {
-  width: 25%;
+  width: 100%;
 }
 
 .tabList {
