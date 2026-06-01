@@ -27,6 +27,7 @@ import useSubjects from "../hooks/useSubjects";
     max_classes_week: number,
     min_classes_consecutive: number,
     max_classes_consecutive: number,
+    rgb_code: string,
     lab_classes: [
       {
         id: number,
@@ -39,8 +40,29 @@ import useSubjects from "../hooks/useSubjects";
   }
 */
 
-export default function Subjects() {
+function hashString(str) {
+  let hash = 0;
 
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  return Math.abs(hash);
+}
+
+const createSubjectColor = (subjectName) => {
+  const theme = [210, 250, 280, 160, 30];
+  const hash = hashString(subjectName);
+
+  const hue = theme[hash % theme.length];
+
+  const saturation = 65 + (hash % 10);
+  const lightness = 55 + ((hash >> 3) % 10);
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+};
+
+export default function Subjects() {
   const { selectedTimetableData } = useTimeTableSelect();
   const { activeView, setActiveView } = useSubjectsView();
 
@@ -58,35 +80,27 @@ export default function Subjects() {
   const [openAddSubjectDialog, setOpenAddSubjectDialog] = useState(false);
   const [openUpdateSubjectDialog, setOpenUpdateSubjectDialog] = useState(false);
 
-  const subjects = useMemo(() => (data?.data ?? []), [data]);
-  
+  const subjects = useMemo(() => data?.data ?? [], [data]);
 
   const handleDeleteSubject = async (data) => {
-    if(!selectedTimetableData?.id) return;
+    if (!selectedTimetableData?.id) return;
 
-    console.log(data);
-    await deleteSubject.mutateAsync({
-      id: selectedTimetableData.id,
-      data
-    });
-  }
+    await deleteSubject.mutateAsync(data.id);
+  };
 
   const handleUpdateSubject = async (data) => {
-    if(!selectedTimetableData?.id) return;
+    if (!selectedTimetableData?.id) return;
 
-    console.log(data);
-    const {id, ...payload} = data;
+    const { id, ...payload } = data;
     await updateSubject.mutateAsync({
       id,
       data: payload,
     });
-  }
+  };
 
   const handleCreateSubject = async (data) => {
     if (!selectedTimetableData?.id) return;
 
-    if(data.lab_classes.length === null) data["lab_classes"] = null;
-    
     const payload = {
       name: data.name,
       min_classes_day: data.min_classes_day,
@@ -96,11 +110,11 @@ export default function Subjects() {
       min_classes_consecutive: data.min_classes_consecutive,
       max_classes_consecutive: data.max_classes_consecutive,
       isLab: data.isLab,
-      lab_classes: data.isLab.length > 0 ? data.isLab : null,
+      lab_classes: data.lab_classes?.length > 0 ? data.lab_classes : null,
       hardness: data.hardness,
+      rgb_code: createSubjectColor(data.name),
     };
 
-    console.log(payload);
     await createSubject.mutateAsync({
       id: selectedTimetableData.id,
       payload,

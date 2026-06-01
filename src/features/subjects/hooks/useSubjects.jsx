@@ -46,7 +46,10 @@ const hydrateSubjects = async (subjects, queryClient) => {
       }),
     ),
   );
-  return results.map((r) => r?.data ?? r);
+  return results.map((r) => {
+    if (r && typeof r === "object" && "data" in r) return r.data;
+    return r;
+  });
 };
 
 // --- Hook --------------------------------------------
@@ -61,10 +64,8 @@ const useSubjects = () => {
       const listResponse = await fetchAllSubjects_GET(timetableId);
       const subjects = listResponse?.data ?? listResponse ?? [];
 
-      
       const hydrated = await hydrateSubjects(subjects, queryClient);
 
-      
       return { ...listResponse, data: hydrated };
     },
     enabled: Boolean(timetableId),
@@ -75,11 +76,10 @@ const useSubjects = () => {
 
   // -------------------------------------------------------------------
   const createSubjectMutation = useMutation({
-    mutationFn: ({ id, data }) => createSubject_POST(id, data),
+    mutationFn: ({ id, payload }) => createSubject_POST(id, payload),
     onSuccess: (response, variables) => {
       const newSubject = response?.data;
 
-      
       queryClient.setQueryData(subjectKeys.single(newSubject.id), newSubject);
 
       queryClient.setQueryData(
@@ -123,9 +123,8 @@ const useSubjects = () => {
       );
       handleError(error);
     },
-    onSuccess: (_, id) => {
-     
-      queryClient.removeQueries({ queryKey: subjectKeys.single(id) });
+    onSuccess: (_, variables) => {
+      queryClient.removeQueries({ queryKey: subjectKeys.single(variables) });
       toast.success("Subject deleted successfully.");
     },
     onSettled: () => {
