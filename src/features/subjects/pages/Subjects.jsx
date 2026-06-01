@@ -80,13 +80,14 @@ export default function Subjects() {
   const [openImportDialog, setOpenImportDialog] = useState(false);
   const [openAddSubjectDialog, setOpenAddSubjectDialog] = useState(false);
   const [openUpdateSubjectDialog, setOpenUpdateSubjectDialog] = useState(false);
+  const [selectedSubject, setSelectedSubject] = useState(null);
 
   const subjects = useMemo(() => data?.data ?? [], [data]);
 
-  const handleDeleteSubject = async (data) => {
+  const handleDeleteSubject = async (id) => {
     if (!selectedTimetableData?.id) return;
 
-    await deleteSubject.mutateAsync(data.id);
+    await deleteSubject.mutateAsync(id);
   };
 
   const handleUpdateSubject = async (data) => {
@@ -215,8 +216,12 @@ export default function Subjects() {
           <div className={styles.gridContainer}>
             {subjects.map((subject) => (
               <SubjectCard
+                key={subject.id}
                 subject={subject}
-                onEdit={() => setOpenUpdateSubjectDialog(true)}
+                onEdit={() => {
+                  setSelectedSubject(subject);
+                  setOpenUpdateSubjectDialog(true);
+                }}
                 onDelete={handleDeleteSubject}
               />
             ))}
@@ -234,7 +239,7 @@ export default function Subjects() {
         <SubjectDialog
           open={openUpdateSubjectDialog}
           onClose={() => setOpenUpdateSubjectDialog(false)}
-          initialData={subjects}
+          initialData={selectedSubject}
           onUpdate={handleUpdateSubject}
         />
 

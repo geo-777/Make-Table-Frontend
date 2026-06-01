@@ -84,9 +84,22 @@ export default function SubjectDialog({
 
   const handleSubmit = () => {
     if (!form.name.trim()) return;
-    if (mode === "edit") onUpdate?.(form);
-    else onCreate?.(form);
-    onClose?.();
+
+    if(mode !== "edit") {
+      onCreate?.(form);
+      onClose?.();
+      return;
+    }
+
+    const changedFields = Object.fromEntries(
+      Object.entries(form).filter(([key, value]) => value !== initialData[key]),
+    );
+
+    if (Object.keys(changedFields).length > 0) {
+      onUpdate({id: initialData.id, ...changedFields});
+    }
+    
+    onClose();
   };
 
   const handleLabClassesSave = (selectedIds) => {
