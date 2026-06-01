@@ -3,7 +3,7 @@ import styles from "./SubjectDialog.module.css";
 import { CheckIcon, FlaskConical, ChevronRight, X } from "lucide-react";
 import PopupBox from "../../../../shared/components/popupBox/PopupBox";
 import LabClassDialog from "../labClassDialog/LabClassDialog";
-import { createPortal } from "react-dom";
+import useClasses from "../../../classes/hooks/useClasses";
 
 /*
   NEW SCHEMA
@@ -21,28 +21,10 @@ import { createPortal } from "react-dom";
     min_classes_consecutive: number,
     max_classes_consecutive: number,
     lab_classes: [
-      {
-        id: number,
-        class_name: string,
-        room_name: string,
-        isLab: true,
-        created_at: "2026-05-28T10:43:09.891Z"
-      }
+      0, 1, 2
     ]
   }
 */
-
-const ALL_LAB_CLASSES = [
-  { id: 1, class_name: "Class 10-A", room_name: "Lab Room 1", isLab: true },
-  { id: 2, class_name: "Class 10-B", room_name: "Lab Room 1", isLab: true },
-  {
-    id: 3,
-    class_name: "Class 11-Science",
-    room_name: "Lab Room 2",
-    isLab: true,
-  },
-  { id: 4, class_name: "Class 9-A", room_name: "Lab Room 3", isLab: true },
-];
 
 const EMPTY_FORM = {
   name: "",
@@ -68,6 +50,8 @@ export default function SubjectDialog({
   const [form, setForm] = useState(EMPTY_FORM);
   const [labDialogOpen, setLabDialogOpen] = useState(false);
 
+  const { data: classes } = useClasses();
+
   useEffect(() => {
     if (initialData) {
       setForm(initialData);
@@ -86,16 +70,26 @@ export default function SubjectDialog({
     if (!form.name.trim()) return;
 
     if(mode !== "edit") {
-      onCreate?.(form);
+      const payload = {...form, lab_classes: form.lab_classes.map((c) => c.id)}
+
+      onCreate?.(payload);
       onClose?.();
       return;
     }
 
-    const changedFields = Object.fromEntries(
+    let changedFields = Object.fromEntries(
       Object.entries(form).filter(([key, value]) => value !== initialData[key]),
     );
 
     if (Object.keys(changedFields).length > 0) {
+      changedFields = changedFields.lab_classes
+        ? {
+            ...changedFields,
+            lab_classes: changedFields.lab_classes.map((c) => c.id),
+          }
+        : changedFields;
+
+      console.log(changedFields);
       onUpdate({id: initialData.id, ...changedFields});
     }
     
@@ -103,7 +97,7 @@ export default function SubjectDialog({
   };
 
   const handleLabClassesSave = (selectedIds) => {
-    const selected = ALL_LAB_CLASSES.filter((c) => selectedIds.includes(c.id));
+    const selected = classes.data.filter((c) => selectedIds.includes(c.id));
     handleChange("lab_classes", selected);
   };
 
@@ -351,7 +345,7 @@ export default function SubjectDialog({
         isOpen={labDialogOpen}
         onClose={() => setLabDialogOpen(false)}
         onSave={handleLabClassesSave}
-        labClasses={ALL_LAB_CLASSES}
+        labClasses={classes.data.filter((c) => c.isLab)}
         selectedIds={form.lab_classes.map((c) => c.id)}
         subjectName={form.name}
       />
