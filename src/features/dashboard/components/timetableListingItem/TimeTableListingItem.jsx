@@ -9,12 +9,11 @@ import {
   Trash2,
   Eye,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import DropDownMenu from "../../../../shared/components/dropDownMenu/DropDownMenu";
-import { useEffect, useRef } from "react";
 import useTimetableListing from "../../hooks/useTimetableListing";
 import useTimeTableSelect from "../../../../shared/zustand/timetableSelectStore.js";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 /*
 listingData of the format {
     name : "Timetable name"

@@ -1,0 +1,134 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+  min-width: 180px;
+  font-family: inherit;
+  width: fit-content;
+}
+
+.trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--secondary-bg);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 0.125rem);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+  box-shadow: var(--shadow-card);
+  outline: none;
+}
+
+.trigger:hover {
+  background: var(--hover-main);
+  border-color: var(--border);
+}
+
+.triggerOpen,
+.trigger:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb) / 0.15);
+}
+
+.triggerLabel {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--foreground);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--secondary-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius, 0.75rem);
+  box-shadow: var(--shadow-elevated, 0 8px 30px 0 hsl(230 25% 10% / 0.12));
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  z-index: 50;
+  overflow: hidden;
+  animation: menuIn 0.15s ease;
+}
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: calc(var(--radius, 0.75rem) - 2px);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background 0.12s ease;
+  outline: none;
+}
+
+.item:hover {
+  background: var(--hover-main);
+}
+
+.item:focus-visible {
+  background: var(--hover-main);
+}
+
+.itemSelected {
+  background: var(--accent);
+  color: var(--accent-violet-fg);
+  font-weight: 500;
+}
+
+.itemSelected:hover {
+  background: var(--accent);
+}
+
+.checkIcon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.itemLabel {
+  flex: 1;
+}

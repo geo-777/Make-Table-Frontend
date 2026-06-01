@@ -13,6 +13,7 @@ import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable
 import useTeachers from "../../../features/teachers/hooks/useTeachers";
 import useSubjects from "../../../features/subjects/hooks/useSubjects";
 import { useState } from "react";
+import Dropdown from "../components/dropDown/Dropdown";
 
 const Header = ({
   name,
@@ -66,8 +67,8 @@ const TABS = [
   { id: "teacher", label: "Teacher Timetables" },
 ];
 
-function Tabs({ defaultTab = "teacher", onTabChange }) {
-  const [activeTab, setActiveTab] = useState(defaultTab);
+function Tabs({ onTabChange }) {
+  const [activeTab, setActiveTab] = useState("class");
 
   const handleSelect = (id) => {
     setActiveTab(id);
@@ -111,6 +112,8 @@ export default function DashboardSelected() {
   const { data: teachers } = useTeachers();
   const { data: subjects } = useSubjects();
 
+  const [activeTab, setActiveTab] = useState("class");
+
   return (
     <div className="App">
       <Topbar page={"Dashboard"} />
@@ -131,7 +134,29 @@ export default function DashboardSelected() {
 
         <div className={styles.body}>
           <div className={styles.left}>
-            <Tabs />
+            <Tabs onTabChange={(tab) => setActiveTab(tab)} />
+
+            {activeTab === "class" && (
+              <>
+                <Dropdown
+                  options={classes.data.map((c) => c.class_name)}
+                  defaultValue={classes.data.map((c) => c.class_name)[0] ?? ""}
+                  placeholder="Select a class"
+                  onChange={() => {}}
+                ></Dropdown>
+              </>
+            )}
+
+            {activeTab === "teacher" && (
+              <>
+                <Dropdown
+                  options={teachers.data.map((t) => t.name)}
+                  defaultValue={teachers.data.map((t) => t.name)[0] ?? ""}
+                  placeholder="Select a Teacher"
+                  onChange={() => {}}
+                ></Dropdown>
+              </>
+            )}
           </div>
           <div className={styles.right}></div>
         </div>
