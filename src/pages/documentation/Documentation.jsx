@@ -1,8 +1,8 @@
 import { useAuth } from "../../app/providers/AuthProvider";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar,
   ArrowLeft,
@@ -139,34 +139,30 @@ export default function Documentation() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(SECTIONS[0].id);
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        });
-      },
-      { rootMargin: "-30% 0px -60% 0px" },
-    );
-    SECTIONS.forEach((s) => {
-      const el = document.getElementById(s.id);
-      if (el) obs.observe(el);
-    });
-    const videoEl = document.getElementById("video-tutorial");
-    if (videoEl) obs.observe(videoEl);
-    return () => obs.disconnect();
-  }, []);
+  const isSearching = query.trim().length > 0;
 
-  const filtered = SECTIONS.map((s) => ({
-    ...s,
-    content: s.content.filter(
-      (c) =>
-        !query ||
-        c.h.toLowerCase().includes(query.toLowerCase()) ||
-        c.p.toLowerCase().includes(query.toLowerCase()) ||
-        s.title.toLowerCase().includes(query.toLowerCase()),
-    ),
-  })).filter((s) => s.content.length > 0);
+  // If searching, search across ALL sections. Otherwise, only show the active tab.
+  const sectionsToDisplay = isSearching
+    ? SECTIONS
+    : SECTIONS.filter((s) => s.id === active);
+
+  const filtered = sectionsToDisplay
+    .map((s) => ({
+      ...s,
+      content: s.content.filter(
+        (c) =>
+          !isSearching ||
+          c.h.toLowerCase().includes(query.toLowerCase()) ||
+          c.p.toLowerCase().includes(query.toLowerCase()) ||
+          s.title.toLowerCase().includes(query.toLowerCase())
+      ),
+    }))
+    .filter((s) => s.content.length > 0);
+
+  // Handle Video Tutorial tab visibility
+  const showVideo = isSearching
+    ? "video tutorial".includes(query.toLowerCase())
+    : active === "video-tutorial";
 
   return (
     <div className={styles.container}>
@@ -256,30 +252,40 @@ export default function Documentation() {
               <a
                 key={s.id}
                 href={`#${s.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActive(s.id);
+                  setQuery(""); // Clear search when switching tabs
+                }}
                 className={`${styles.navLink} ${
-                  active === s.id
+                  active === s.id && !isSearching
                     ? styles.navLinkActive
                     : styles.navLinkInactive
                 }`}
               >
                 <s.icon size={14} />
                 {s.title}
-                {active === s.id && (
+                {active === s.id && !isSearching && (
                   <ChevronRight size={12} className={styles.chevron} />
                 )}
               </a>
             ))}
             <a
               href="#video-tutorial"
+              onClick={(e) => {
+                e.preventDefault();
+                setActive("video-tutorial");
+                setQuery(""); // Clear search when switching tabs
+              }}
               className={`${styles.navLink} ${
-                active === "video-tutorial"
+                active === "video-tutorial" && !isSearching
                   ? styles.navLinkActive
                   : styles.navLinkInactive
               }`}
             >
               <Play size={14} />
               Video Tutorial
-              {active === "video-tutorial" && (
+              {active === "video-tutorial" && !isSearching && (
                 <ChevronRight size={12} className={styles.chevron} />
               )}
             </a>
@@ -288,61 +294,67 @@ export default function Documentation() {
 
         {/* Content */}
         <div className={styles.contentArea}>
-          {filtered.length === 0 && (
+          {filtered.length === 0 && !showVideo && (
             <p className={styles.noResults}>No results for “{query}”.</p>
           )}
-          {filtered.map((section) => (
-            <motion.div
-              key={section.id}
-              id={section.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5 }}
-              className={styles.section}
-            >
-              <div className={styles.sectionHeader}>
-                <div className={`${styles.sectionIconWrapper} ${styles.glass}`}>
-                  <section.icon size={16} className={styles.sectionIcon} />
-                </div>
-                <h2 className={styles.sectionTitle}>{section.title}</h2>
-              </div>
-              <div className={styles.cardGrid}>
-                {section.content.map((c) => (
-                  <div key={c.h} className={`${styles.card} ${styles.glass}`}>
-                    <h3 className={styles.cardTitle}>{c.h}</h3>
-                    <p className={styles.cardText}>{c.p}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
 
-          {/* Video Tutorial */}
-          <motion.div
-            id="video-tutorial"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5 }}
-            className={styles.section}
-          >
-            <div className={styles.sectionHeader}>
-              <div className={`${styles.sectionIconWrapper} ${styles.glass}`}>
-                <Play size={16} className={styles.sectionIcon} />
-              </div>
-              <h2 className={styles.sectionTitle}>Video Tutorial</h2>
-            </div>
-            <div className={`${styles.videoWrapper} ${styles.glass}`}>
-              <iframe
-                className={styles.iframe}
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                title="MakeTable Tutorial"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </motion.div>
+          <AnimatePresence mode="wait">
+            {filtered.map((section) => (
+              <motion.div
+                key={section.id}
+                id={section.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+                className={styles.section}
+              >
+                <div className={styles.sectionHeader}>
+                  <div className={`${styles.sectionIconWrapper} ${styles.glass}`}>
+                    <section.icon size={16} className={styles.sectionIcon} />
+                  </div>
+                  <h2 className={styles.sectionTitle}>{section.title}</h2>
+                </div>
+                <div className={styles.cardGrid}>
+                  {section.content.map((c) => (
+                    <div key={c.h} className={`${styles.card} ${styles.glass}`}>
+                      <h3 className={styles.cardTitle}>{c.h}</h3>
+                      <p className={styles.cardText}>{c.p}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Video Tutorial */}
+            {showVideo && (
+              <motion.div
+                key="video-tutorial"
+                id="video-tutorial"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+                className={styles.section}
+              >
+                <div className={styles.sectionHeader}>
+                  <div className={`${styles.sectionIconWrapper} ${styles.glass}`}>
+                    <Play size={16} className={styles.sectionIcon} />
+                  </div>
+                  <h2 className={styles.sectionTitle}>Video Tutorial</h2>
+                </div>
+                <div className={`${styles.videoWrapper} ${styles.glass}`}>
+                  <iframe
+                    className={styles.iframe}
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="MakeTable Tutorial"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* CTA */}
           <div className={`${styles.ctaSection} ${styles.glass}`}>
