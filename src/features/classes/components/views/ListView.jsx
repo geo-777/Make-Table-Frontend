@@ -138,7 +138,7 @@ const ListView = ({ data }) => {
     deleteListing.mutateAsync(id);
   };
   return (
-    <div className={styles.listview__Container}>
+    <div className={`${styles.listview__Container} fadeInUp fast`}>
       <div className={styles.listHeading__item}>Class Name</div>
       <div className={styles.listHeading__item}>Room </div>
       <div className={styles.listHeading__item}>Type</div>

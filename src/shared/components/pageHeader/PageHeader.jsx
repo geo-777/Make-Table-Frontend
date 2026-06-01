@@ -10,16 +10,15 @@ export default function PageHeader({
   onAdd,
   onBulkImport,
 }) {
-
   return (
     <header className={styles.header}>
-      <div className={styles.headings}>
+      <div className={`fadeInUp fast  ${styles.headings}`}>
         <h4>{title}</h4>
         <p>{description}</p>
       </div>
       <div className={styles.rightPanel}>
         <div className={styles.secondaryBtnsContainer}>
-          <div className={styles.viewChangerContainer}>
+          <div className={`${styles.viewChangerContainer} fadeInUp fast`}>
             <span
               onClick={() => onChangeActiveView("list")}
               className={`${styles.viewChangeBtn} ${activeView === "list" ? styles.viewActive : ""} `}
@@ -33,13 +32,19 @@ export default function PageHeader({
               <Grid2x2 size={18} strokeWidth={2} />
             </span>
           </div>
-          <button className={styles.secondaryBtn} onClick={onBulkImport}>
+          <button
+            className={`${styles.secondaryBtn} fadeInUp fast`}
+            onClick={onBulkImport}
+          >
             {" "}
             <Download strokeWidth={1.7} size={18} /> <p>Import</p>{" "}
           </button>
         </div>
 
-        <button className={`${styles.primary} ${styles.addBtn}`} onClick={onAdd}>
+        <button
+          className={`${styles.primary} fadeInUp fast ${styles.addBtn}`}
+          onClick={onAdd}
+        >
           <Plus strokeWidth={2} /> <p>{addButtonText}</p>{" "}
         </button>
       </div>

@@ -80,7 +80,9 @@ const GridView = ({ data }) => {
           </div>
         </StatusWrapper>
       )}
-      <div className={styles.gridContainer}>
+      <div
+        className={`${styles.gridContainer} stagger-children fast grid-fast-stagger `}
+      >
         {data.map((e, i) => (
           <GridItem openEditPopup={openEditPopup} data={e} key={i} />
         ))}

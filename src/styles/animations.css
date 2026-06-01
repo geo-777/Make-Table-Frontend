@@ -8,36 +8,102 @@
     transform: translateY(0);
   }
 }
+
+:root {
+  --animation-speed: 0.4s;
+  --stagger-delay: 60ms;
+}
+
+.fast {
+  --animation-speed: 0.2s;
+}
+
+.fadeInUp {
+  animation: fade-in-up var(--animation-speed) ease-out both;
+}
+.grid-fast-stagger {
+  --stagger-delay: 20ms;
+}
 .stagger-children > * {
-  animation: fade-in-up 0.4s ease-out both;
+  animation: fade-in-up var(--animation-speed) ease-out both;
 }
+
 .stagger-children > *:nth-child(1) {
-  animation-delay: 0ms;
+  animation-delay: calc(var(--stagger-delay) * 0);
 }
+
 .stagger-children > *:nth-child(2) {
-  animation-delay: 60ms;
+  animation-delay: calc(var(--stagger-delay) * 1);
 }
+
 .stagger-children > *:nth-child(3) {
-  animation-delay: 120ms;
+  animation-delay: calc(var(--stagger-delay) * 2);
 }
+
 .stagger-children > *:nth-child(4) {
-  animation-delay: 180ms;
+  animation-delay: calc(var(--stagger-delay) * 3);
 }
+
 .stagger-children > *:nth-child(5) {
-  animation-delay: 240ms;
+  animation-delay: calc(var(--stagger-delay) * 4);
 }
+
 .stagger-children > *:nth-child(6) {
-  animation-delay: 300ms;
+  animation-delay: calc(var(--stagger-delay) * 5);
 }
+
 .stagger-children > *:nth-child(7) {
-  animation-delay: 360ms;
+  animation-delay: calc(var(--stagger-delay) * 6);
 }
+
 .stagger-children > *:nth-child(8) {
-  animation-delay: 420ms;
+  animation-delay: calc(var(--stagger-delay) * 7);
 }
+
 .stagger-children > *:nth-child(9) {
-  animation-delay: 480ms;
+  animation-delay: calc(var(--stagger-delay) * 8);
 }
+
 .stagger-children > *:nth-child(10) {
-  animation-delay: 540ms;
+  animation-delay: calc(var(--stagger-delay) * 9);
+}
+
+.stagger-children > *:nth-child(11) {
+  animation-delay: calc(var(--stagger-delay) * 10);
+}
+
+.stagger-children > *:nth-child(12) {
+  animation-delay: calc(var(--stagger-delay) * 11);
+}
+
+.stagger-children > *:nth-child(13) {
+  animation-delay: calc(var(--stagger-delay) * 12);
+}
+
+.stagger-children > *:nth-child(14) {
+  animation-delay: calc(var(--stagger-delay) * 13);
+}
+
+.stagger-children > *:nth-child(15) {
+  animation-delay: calc(var(--stagger-delay) * 14);
+}
+
+.stagger-children > *:nth-child(16) {
+  animation-delay: calc(var(--stagger-delay) * 15);
+}
+
+.stagger-children > *:nth-child(17) {
+  animation-delay: calc(var(--stagger-delay) * 16);
+}
+
+.stagger-children > *:nth-child(18) {
+  animation-delay: calc(var(--stagger-delay) * 17);
+}
+
+.stagger-children > *:nth-child(19) {
+  animation-delay: calc(var(--stagger-delay) * 18);
+}
+
+.stagger-children > *:nth-child(20) {
+  animation-delay: calc(var(--stagger-delay) * 19);
 }
