@@ -9,6 +9,9 @@ import {
 } from "lucide-react";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useClasses from "../../../features/classes/hooks/useClasses";
+import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
+import useTeachers from "../../../features/teachers/hooks/useTeachers";
+import useSubjects from "../../../features/subjects/hooks/useSubjects";
 
 const Header = ({
   name,
@@ -60,9 +63,10 @@ const Header = ({
 export default function DashboardSelected() {
   
   const { selectedTimetableData } = useTimeTableSelect();
-  const { data:classes } = useClasses();
 
-  console.log(selectedTimetableData);
+  const { data: classes } = useClasses();
+  const { data: teachers } = useTeachers();
+  const { data: subjects } = useSubjects();
 
   return (
     <div className="App">
@@ -72,8 +76,14 @@ export default function DashboardSelected() {
           name={selectedTimetableData?.name || "Unknown"}
           days={selectedTimetableData?.days.length ?? 0}
           slots={selectedTimetableData?.slots ?? 0}
-          classes={classes.data.length ?? 0}
+          classes={classes?.data?.length ?? 0}
           viewStatus={selectedTimetableData.view_status}
+        />
+
+        <DetailsGridTimetable
+          teachers={teachers?.data?.length}
+          subjects={subjects?.data?.length}
+          classes={classes?.data?.length}
         />
       </div>
     </div>
