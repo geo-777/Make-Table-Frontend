@@ -14,7 +14,7 @@ import useTeachers from "../../../features/teachers/hooks/useTeachers";
 import useSubjects from "../../../features/subjects/hooks/useSubjects";
 import { useState } from "react";
 import Dropdown from "../components/dropDown/Dropdown";
-import ClassTimetable from "../components/classTimetable/ClassTimetable";
+import ClassTimetable from "../components/timeTables/classTimetable/ClassTimetable";
 
 const Header = ({
   name,
