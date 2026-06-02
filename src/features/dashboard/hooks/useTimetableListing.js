@@ -47,7 +47,7 @@ const useTimetableListing = () => {
     },
 
     onError: (error) => {
-      apiErrorHandler(error?.response?.stus, Component_Type.TIMETABLES);
+      handleApiError(error?.response?.stus, Component_Type.TIMETABLES);
       error?.response?.status;
     },
   });
@@ -68,7 +68,7 @@ const useTimetableListing = () => {
     },
 
     onError: (error) => {
-      apiErrorHandler(error?.response?.stus, Component_Type.TIMETABLES);
+      handleApiError(error?.response?.stus, Component_Type.TIMETABLES);
       error?.response?.status;
     },
   });
@@ -95,7 +95,7 @@ const useTimetableListing = () => {
     },
 
     onError: (error) => {
-      apiErrorHandler(error?.response?.stus, Component_Type.TIMETABLES);
+      handleApiError(error?.response?.stus, Component_Type.TIMETABLES);
       error?.response?.status;
     },
   });
@@ -126,7 +126,7 @@ const useTimetableListing = () => {
     },
 
     onError: (error) => {
-      apiErrorHandler(error?.response?.stus, Component_Type.TIMETABLES);
+      handleApiError(error?.response?.stus, Component_Type.TIMETABLES);
       error?.response?.status;
     },
   });

@@ -8,7 +8,7 @@ export const useTimetableData = () => {
   const query = readListings();
 
   const timetableListings = query.data;
-  const timetables = query.data?.data ?? [];
+  const timetables = useMemo(() => query.data?.data, [query.data?.data]);
 
   const draftTimeTables = useMemo(
     () => timetables.filter((e) => e.view_status === "Private"),
