@@ -79,6 +79,7 @@
   font-weight: 500;
   cursor: pointer;
   position: relative;
+  padding: 8px;
   transition: transform 0.3s ease-in-out
 }
 
@@ -91,16 +92,17 @@
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -4px;
+  transform: translateX(-50%);
+  bottom: 0px;
   width: 0;
-  height: 2px;
-  background: #1c1c1e;
+  height: 3px;
+  background: linear-gradient(90deg,rgba(153, 42, 155, 1) 0%, rgba(93, 83, 237, 1) 100%);
+  border-radius: 18px;
   transition: all 0.25s ease;
 }
 
 .header nav a:hover::after {
-  width: 100%;
-  left: 0;
+  width: 60%;
 }
 
 .actions {
@@ -115,6 +117,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 /* ================= HERO ================= */
@@ -321,6 +324,8 @@
 .features {
   padding: 5rem 5%;
   text-align: center;
+  width: 90%;
+  overflow: hidden;
 }
 
 .features h2 {
@@ -329,26 +334,43 @@
 }
 
 .featureGrid {
-  max-width: 1100px;
   margin: auto;
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  gap: 1.5rem;
+  animation: scroll 15s linear infinite;
+}
 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-  gap: 2rem;
+@keyframes scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.featureGrid:hover {
+  animation-play-state: paused;
 }
 
 .featureCard {
-  padding: 2.5rem 2rem;
+  padding: 5rem 2rem;
   border-radius: 0.75rem;
   background: #ffffff;
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
   border: 1px solid #1c1c1e;
+  width: 500px;
   transition: transform 0.2s ease-in-out;
 }
 
-.featureCard:hover{
-  transform: scale(1.2);
-  border: 1px solid var(--color-grey-300);
+.featureGrid:hover .featureCard{
+  background-color: var(--background);
+}
+
+.featureCard:hover {
+  transform: translateY(-20px) !important;
+  border: 1px solid var(--color-grey-500);
+  box-shadow: -8px 8px var(--color-grey-300);
+  background-color: var(--light-violet) !important;
 }
 
 .featureCard h4 {

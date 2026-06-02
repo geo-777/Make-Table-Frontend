@@ -235,6 +235,24 @@ const LandingPage = () => {
                 <p>{f.desc}</p>
               </motion.div>
             ))}
+
+            {/* Duplicate Items for smooth scrolling */}
+
+            {FEATURES.map((f, i) => (
+              <motion.div
+                key={i}
+                className={styles.featureCard}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <div className={styles.icon}>{f.icon}</div>
+                <h4>{f.title}</h4>
+                <p>{f.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </section>
 
