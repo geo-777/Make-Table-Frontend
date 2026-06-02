@@ -1,7 +1,13 @@
 import { LogOut, Trash2 } from "lucide-react";
 import styles from "../styles/Settings.module.css";
+import { useAuth } from "../../../app/providers/AuthProvider";
 
 const DangerZoneSection = () => {
+  const { logout } = useAuth();
+
+  const logoutHandler = async () => {
+    await logout();
+  };
   return (
     <section
       id="danger"
@@ -27,6 +33,7 @@ const DangerZoneSection = () => {
           <button
             className={`${styles.btn} ${styles.btnSecondary} `}
             type="button"
+            onClick={logoutHandler}
           >
             <LogOut size={16} style={{ marginRight: "0.5rem" }} /> Sign out
           </button>

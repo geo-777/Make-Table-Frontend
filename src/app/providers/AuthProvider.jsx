@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useRef, useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import { checkLoggedIn, refresh, logoutAxiosRequest } from "../../api/auth.api";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -6,6 +13,7 @@ const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const isRefreshing = useRef(false);
@@ -36,6 +44,7 @@ const AuthProvider = ({ children }) => {
 
   const fetchCurrentUser = async () => {
     const response = await checkLoggedIn();
+    setUserData(response?.data);
     return response.data.username;
   };
 
@@ -122,13 +131,10 @@ const AuthProvider = ({ children }) => {
     confirmLogin,
     logout,
     refreshToken,
+    userData,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

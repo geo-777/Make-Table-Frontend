@@ -1,7 +1,23 @@
 import styles from "../styles/Settings.module.css";
 import { User } from "lucide-react";
 import RequiredInputField from "../../../shared/components/inputfields/RequiredInputField";
+import { useAuth } from "../../../app/providers/AuthProvider";
+import { useMemo } from "react";
 const ProfileSection = () => {
+  const { userData } = useAuth();
+  const joinedAt = useMemo(() => {
+    const date = new Date(userData?.created_at);
+
+    if (isNaN(date.getTime())) {
+      return "\u2014";
+    } else {
+      return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
+    }
+  }, [userData]);
   return (
     <section id="profile" className={styles.sectionCard}>
       <div className={styles.sectionHeader}>
@@ -31,7 +47,7 @@ const ProfileSection = () => {
       <div className={styles.joinedAt}>
         <p>Joined</p>
         <span>
-          <User size={20} /> <p>&#8212;</p>
+          <User size={20} /> <p>{joinedAt}</p>
         </span>
       </div>
       <div className={styles.cardFooter}>

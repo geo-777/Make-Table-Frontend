@@ -366,3 +366,11 @@
     grid-template-columns: 1fr;
   }
 }
+.btn:active:not(:disabled) {
+  opacity: 0.85;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

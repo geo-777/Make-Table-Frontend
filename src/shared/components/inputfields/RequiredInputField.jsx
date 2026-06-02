@@ -36,6 +36,7 @@ const RequiredInputField = ({
       <input
         type={type}
         id={id}
+        autoComplete="off"
         min={min}
         placeholder={placeholder}
         value={value}
