@@ -1,4 +1,7 @@
 import styles from "./Timetable.module.css";
+import {
+  Microscope
+} from "lucide-react";
 
 function normaliseEntry(entry, mode) {
   if (!entry) return null;
@@ -80,7 +83,7 @@ function EntryCard({ entry }) {
       <span className={styles.entryName}>{subjectName}</span>
       {meta && (
         <span className={styles.entryMeta}>
-          {isLab ? "🔬 " : ""}
+          {isLab ? <Microscope size={10} /> : ""}{" "}
           {meta}
           {role === "Class_Teacher" ? " · CT" : ""}
         </span>

@@ -14,7 +14,8 @@ import useTeachers from "../../../features/teachers/hooks/useTeachers";
 import useSubjects from "../../../features/subjects/hooks/useSubjects";
 import { useState } from "react";
 import Dropdown from "../components/dropDown/Dropdown";
-import ClassTimetable from "../components/timeTables/classTimetable/ClassTimetable";
+import Table from "../components/timeTables/Table";
+import { mockTimetable, mockClassEntries, mockTeacherEntries } from "../components/timeTables/MOCK_DATA";
 
 const Header = ({
   name,
@@ -146,7 +147,12 @@ export default function DashboardSelected() {
                   onChange={() => {}}
                 ></Dropdown>
 
-                <ClassTimetable />
+                <Table
+                  entries={mockClassEntries}
+                  slotCount={mockTimetable.slots}
+                  days={mockTimetable.days}
+                  mode="class"
+                />
               </>
             )}
 
@@ -158,6 +164,13 @@ export default function DashboardSelected() {
                   placeholder="Select a Teacher"
                   onChange={() => {}}
                 ></Dropdown>
+
+                <Table
+                  entries={mockTeacherEntries}
+                  slotCount={mockTimetable.slots}
+                  days={mockTimetable.days}
+                  mode="teacher"
+                />
               </>
             )}
           </div>
