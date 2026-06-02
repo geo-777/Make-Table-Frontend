@@ -12,10 +12,12 @@ import useClasses from "../../../features/classes/hooks/useClasses";
 import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
 import useTeachers from "../../../features/teachers/hooks/useTeachers";
 import useSubjects from "../../../features/subjects/hooks/useSubjects";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Dropdown from "../components/dropDown/Dropdown";
 import Table from "../components/timeTables/Table";
 import { mockTimetable, mockClassEntries, mockTeacherEntries } from "../components/timeTables/MOCK_DATA";
+import { generate_POST } from "../../../api/generations.api";
+import { toast } from "react-toastify";
 
 const Header = ({
   name,
@@ -23,6 +25,8 @@ const Header = ({
   slots,
   classes,
   viewStatus,
+  isGenerating,
+  onGenerate,
 }) => {
   return (
     <div className={styles.wrapper}>
@@ -50,9 +54,13 @@ const Header = ({
           Share
         </button> */}
 
-        <button className={styles.btnPrimary}>
+        <button 
+          className={styles.btnPrimary}
+          onClick={onGenerate}
+          disabled={isGenerating}
+        >
           <Play size={16} />
-          Generate
+          {isGenerating ? "Generating..." : "Generate"}
         </button>
 
         <button className={styles.btnOutline}>
@@ -110,11 +118,30 @@ export default function DashboardSelected() {
   
   const { selectedTimetableData } = useTimeTableSelect();
 
-  const { data: classes } = useClasses();
+  const { data: classes  } = useClasses();
   const { data: teachers } = useTeachers();
   const { data: subjects } = useSubjects();
 
   const [activeTab, setActiveTab] = useState("class");
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleTimetableGeneration = useCallback(async () => {
+    if(!selectedTimetableData);
+    try {
+      setIsGenerating(true);
+      const result = await generate_POST(selectedTimetableData.id, true);
+
+      if (result?.data?.status === "Failed") {
+        toast.error("Timetable Failed to generate.");
+      }
+
+      console.log(result);
+    } catch (err) {
+      console.error(err);
+      toast.error("Timetable Failed to generate.");
+    }
+    setIsGenerating(false);
+  }, [selectedTimetableData]);
 
   return (
     <div className="App">
@@ -126,6 +153,8 @@ export default function DashboardSelected() {
           slots={selectedTimetableData?.slots ?? 0}
           classes={classes?.data?.length ?? 0}
           viewStatus={selectedTimetableData.view_status}
+          isGenerating={isGenerating}
+          onGenerate={handleTimetableGeneration}
         />
 
         <DetailsGridTimetable

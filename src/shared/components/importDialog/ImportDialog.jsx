@@ -2,7 +2,6 @@ import styles from "./ImportDialog.module.css";
 import { useEffect, useRef } from "react";
 import {
   FileSpreadsheet,
-  TypeIcon,
   GitBranch,
   InfoIcon,
   X
@@ -14,7 +13,6 @@ export default function ImportDialog({
   title,
   description,
   onSelectCSV,
-  onSelectText,
   onSelectTimetable,
 }) {
   const overlayRef = useRef(null);
@@ -70,18 +68,6 @@ export default function ImportDialog({
               <span className={styles.badge}>RECOMMENDED</span>
               <p className={styles.cardDesc}>
                 Upload from Excel, Google Sheets, or CSV
-              </p>
-            </button>
-
-            <button className={styles.card} onClick={onSelectText}>
-              <div className={styles.cardHeader}>
-                <span className={styles.cardIcon}>
-                  <TypeIcon />
-                </span>
-                <span className={styles.cardLabel}>Text Import</span>
-              </div>
-              <p className={`${styles.cardDesc} ${styles.cardDescBottom}`}>
-                Paste names directly, one per line
               </p>
             </button>
 
