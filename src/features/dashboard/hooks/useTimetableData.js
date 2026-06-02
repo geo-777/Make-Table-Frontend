@@ -11,12 +11,12 @@ export const useTimetableData = () => {
   const timetables = useMemo(() => query.data?.data, [query.data?.data]);
 
   const draftTimeTables = useMemo(
-    () => timetables.filter((e) => e.view_status === "Private"),
+    () => timetables?.filter((e) => e.view_status === "Private"),
     [timetables],
   );
 
   const publishedTimeTables = useMemo(
-    () => timetables.filter((e) => e.view_status === "Public"),
+    () => timetables?.filter((e) => e.view_status === "Public"),
     [timetables],
   );
 

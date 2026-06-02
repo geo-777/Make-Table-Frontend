@@ -27,13 +27,14 @@ const Header = ({
   viewStatus,
   isGenerating,
   onGenerate,
+  onForce,
 }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.info}>
         <h1 className={styles.title}>{name}</h1>
         <div className={styles.meta}>
-          <span className={`${styles.badge} ${styles.grey}`} >
+          <span className={`${styles.badge} ${isGenerating ? styles.violet : ""}`} >
             <span className={styles.dot} />
             {viewStatus}
           </span>
@@ -63,7 +64,11 @@ const Header = ({
           {isGenerating ? "Generating..." : "Generate"}
         </button>
 
-        <button className={styles.btnOutline}>
+        <button 
+          className={styles.btnOutline}
+          disabled={isGenerating}
+          onClick={onForce}
+        >
           <Zap size={16} />
           Force
         </button>
@@ -125,11 +130,12 @@ export default function DashboardSelected() {
   const [activeTab, setActiveTab] = useState("class");
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleTimetableGeneration = useCallback(async () => {
+  const handleTimetableGeneration = useCallback(
+    async (force = false) => {
     if(!selectedTimetableData);
     try {
       setIsGenerating(true);
-      const result = await generate_POST(selectedTimetableData.id, true);
+      const result = await generate_POST(selectedTimetableData.id, force);
 
       if (result?.data?.status === "Failed") {
         toast.error("Timetable Failed to generate.");
@@ -139,8 +145,9 @@ export default function DashboardSelected() {
     } catch (err) {
       console.error(err);
       toast.error("Timetable Failed to generate.");
+    } finally {
+      setIsGenerating(false);
     }
-    setIsGenerating(false);
   }, [selectedTimetableData]);
 
   return (
@@ -155,6 +162,7 @@ export default function DashboardSelected() {
           viewStatus={selectedTimetableData.view_status}
           isGenerating={isGenerating}
           onGenerate={handleTimetableGeneration}
+          onForce={() => handleTimetableGeneration(true)}
         />
 
         <DetailsGridTimetable

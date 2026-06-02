@@ -37,13 +37,18 @@
   font-weight: 500;
   padding: 0.25rem 0.625rem;
   border-radius: 9999px;
+  background-color: var(--color-grey-50);
+  color: color-mix(in srgb, var(--color-grey-500) 90%, var(--color-grey-50));
+}
+
+.badge.green {
   background-color: var(--accent-green-bg);
   color: var(--accent-green-fg);
 }
 
-.badge.grey {
-  background-color: var(--color-grey-50);
-  color: color-mix(in srgb, var(--color-grey-500) 90%, var(--color-grey-50));
+.badge.violet {
+  background-color: var(--accent-violet-bg);
+  color: var(--accent-violet-fg);
 }
 
 .dot {
@@ -51,11 +56,15 @@
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 9999px;
+  background-color: color-mix(in srgb, var(--color-grey-500) 90%, var(--color-grey-50));
+}
+
+.badge.green .dot {
   background-color: var(--accent-green-fg);
 }
 
-.badge.grey .dot {
-  background-color: color-mix(in srgb, var(--color-grey-500) 90%, var(--color-grey-50));
+.badge.violet .dot {
+  background-color: var(--accent-violet-fg);
 }
 
 .metaText {
