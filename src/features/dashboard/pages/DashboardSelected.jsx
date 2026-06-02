@@ -131,7 +131,7 @@ export default function DashboardSelected() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handleTimetableGeneration = useCallback(
-    async (force = false) => {
+    async (_, force = false) => {
     if(!selectedTimetableData);
     try {
       setIsGenerating(true);
@@ -140,8 +140,6 @@ export default function DashboardSelected() {
       if (result?.data?.status === "Failed") {
         toast.error("Timetable Failed to generate.");
       }
-
-      console.log(result);
     } catch (err) {
       console.error(err);
       toast.error("Timetable Failed to generate.");
