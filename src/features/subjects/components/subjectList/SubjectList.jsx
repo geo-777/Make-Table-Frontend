@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 import { Pencil, Trash2, Check, X } from "lucide-react";
 import styles from "./SubjectList.module.css";
 import LabClassesTooltip from "../labClassesTooltip/LabClassesTooltip";
@@ -125,7 +125,7 @@ export default function SubjectList({ subjects = [], onEdit, onDelete }) {
   };
 
   return (
-    <div className={styles.tableWrapper}>
+    <div className={`fadeInUp fast ${styles.tableWrapper}`}>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -206,9 +206,7 @@ export default function SubjectList({ subjects = [], onEdit, onDelete }) {
 
                 <td className={`${styles.editTd} ${styles.centerTd}`}>
                   <LabClassesTooltip
-                    labClasses={
-                      subject.lab_classes ?? labClasses.slice(0, 2)
-                    }
+                    labClasses={subject.lab_classes ?? labClasses.slice(0, 2)}
                   />
                 </td>
 

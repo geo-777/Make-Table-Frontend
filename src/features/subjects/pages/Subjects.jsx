@@ -213,7 +213,9 @@ export default function Subjects() {
         )}
 
         {!!subjects.length && activeView === "grid" && (
-          <div className={styles.gridContainer}>
+          <div
+            className={`stagger-children fast grid-fast-stagger ${styles.gridContainer}`}
+          >
             {subjects.map((subject) => (
               <SubjectCard
                 key={subject.id}

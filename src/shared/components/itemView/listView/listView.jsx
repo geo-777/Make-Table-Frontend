@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pencil, Trash2, X, Check } from "lucide-react";
 import styles from "./listView.module.css";
-
+import "../../../../styles/animations.css";
 export default function ListView({
   data = [],
   columns = [],
@@ -10,7 +10,7 @@ export default function ListView({
 }) {
   return (
     <div
-      className={styles.listview__Container}
+      className={`fadeInUp fast ${styles.listview__Container}`}
       style={{ gridTemplateColumns: `repeat(${columns.length + 1}, auto)` }}
     >
       {columns.map((col) => (
@@ -124,7 +124,9 @@ function CellValue({ col, value }) {
       <span
         className={`${styles.badge} ${value.toLowerCase() === col.trueLabel.toLowerCase() ? styles.badge__true : styles.badge__false}`}
       >
-        {value.toLowerCase() === col.trueLabel.toLowerCase() ? col.trueLabel : col.falseLabel}
+        {value.toLowerCase() === col.trueLabel.toLowerCase()
+          ? col.trueLabel
+          : col.falseLabel}
       </span>
     );
   }

@@ -24,17 +24,19 @@ export default function TeacherList({ teachers = [], onEdit, onDelete }) {
   const handleSave = () => {
     if (onEdit) {
       const teacher = teachers.find((t) => t.id === editingId);
-      if(!teacher) {
+      if (!teacher) {
         console.error("[TeacherList: 28] Teacher not found.");
         return;
-      };
+      }
       const changedFields = Object.fromEntries(
-        Object.entries(editForm).filter(([key, value]) => value !== teacher[key]),
+        Object.entries(editForm).filter(
+          ([key, value]) => value !== teacher[key],
+        ),
       );
 
-      if(Object.keys(changedFields).length === 0) return;
+      if (Object.keys(changedFields).length === 0) return;
 
-      onEdit({id: teacher.id, ...changedFields});
+      onEdit({ id: teacher.id, ...changedFields });
     }
     setEditingId(null);
     setEditForm({});
@@ -45,7 +47,7 @@ export default function TeacherList({ teachers = [], onEdit, onDelete }) {
   };
 
   return (
-    <div className={styles.tableWrapper}>
+    <div className={`fadeInUp fast ${styles.tableWrapper}`}>
       <table className={styles.table}>
         <thead>
           <tr>

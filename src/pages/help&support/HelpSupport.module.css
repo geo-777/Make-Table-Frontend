@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  animation: fadeInUp 0.5s ease-out;
+  animation: fadeInUp 0.25s ease-out;
 }
 
 @keyframes fadeInUp {

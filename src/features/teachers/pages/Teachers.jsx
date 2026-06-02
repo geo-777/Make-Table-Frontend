@@ -80,7 +80,6 @@ const Teachers = () => {
       <div className="App">
         <Topbar page={"Teachers"} />
         <div className="mainPlaceholder">
-
           <div className={styles.inactiveState}>
             <Loader />
             <p>Fetching teachers...</p>
@@ -95,7 +94,6 @@ const Teachers = () => {
       <div className="App">
         <Topbar page={"Teachers"} />
         <div className="mainPlaceholder">
-
           <div className={styles.inactiveState}>
             <div className={styles.largeIcon}>
               <AlertTriangle size={24} />
@@ -116,7 +114,6 @@ const Teachers = () => {
       <div className="App">
         <Topbar page={"Teachers"} />
         <div className="mainPlaceholder">
-
           <div className={styles.inactiveState}>
             <h4>No timetable selected.</h4>
             <p>
@@ -133,7 +130,6 @@ const Teachers = () => {
     <div className="App">
       <Topbar page={"Teachers"} />
       <div className="mainPlaceholder">
-
         <PageHeader
           title={"Teachers"}
           description={
@@ -171,7 +167,9 @@ const Teachers = () => {
         )}
 
         {activeView === "grid" && (
-          <div className={styles.gridContainer}>
+          <div
+            className={`stagger-children fast grid-fast-stagger ${styles.gridContainer}`}
+          >
             {teachers.map((teacher) => (
               <TeacherCard
                 key={teacher.id}

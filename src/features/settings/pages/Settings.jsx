@@ -27,7 +27,9 @@ const Settings = () => {
             <h4>Settings</h4>
             <p>Manage your account, preferences and appearance.</p>
           </div>
-          <div className={styles.pageContent}>
+          <div
+            className={`stagger-children fast grid-fast-stagger ${styles.pageContent}`}
+          >
             <SettingsNav
               tabs={tabs}
               active={activeSection}

@@ -3,6 +3,9 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
 }
+.deteilsGridTimetable {
+  padding-inline: 2rem;
+}
 .gridItem {
   display: flex;
   gap: 1rem;

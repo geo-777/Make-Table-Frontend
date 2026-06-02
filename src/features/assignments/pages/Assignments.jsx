@@ -8,6 +8,8 @@ import { useAssignmentsView } from "../../../shared/zustand/listingsViewStore";
 import AssignCard from "../components/assignCard/AssignCard";
 import AssignPopup from "../components/assignPopup/AssignPopup";
 import useAssignments from "../hooks/useAssignments";
+import "../../../styles/appLayout.css";
+
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 const COLUMNS = [
@@ -42,6 +44,7 @@ const Assignments = () => {
   const { activeView, setActiveView } = useAssignmentsView();
   // dialog controls
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [openImportDialog, setOpenImportDialog] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editDialogData, setEditDialogData] = useState(null);
   //edit dialog helpers
@@ -90,7 +93,9 @@ const Assignments = () => {
           onAdd={() => {
             setCreateDialogOpen(true);
           }}
-          onBulkImport={() => {}}
+          onBulkImport={() => {
+            setOpenImportDialog(true);
+          }}
         />
         <div className="main">
           {isPending && <StatusWrapper loader={true} />}
@@ -107,7 +112,9 @@ const Assignments = () => {
           {activeView === "grid" &&
             isSuccess &&
             (assignData?.length > 0 ? (
-              <div className={styles.gridContainer}>
+              <div
+                className={`${styles.gridContainer} stagger-children fast grid-fast-stagger `}
+              >
                 {assignData?.map((e) => (
                   <AssignCard
                     key={e.id}
@@ -141,6 +148,19 @@ const Assignments = () => {
           visible={editDialogOpen}
           existingData={editDialogData}
           closePopup={closeEditDialog}
+        />
+
+        {/* Import Assignment Details */}
+        <ImportDialog
+          open={openImportDialog}
+          title={"Import Assignments"}
+          description={"Add all assignments that need to be scheduled."}
+          onClose={() => {
+            setOpenImportDialog(false);
+          }}
+          onSelectCSV={() => {}}
+          onSelectText={() => {}}
+          onSelectTimetable={() => {}}
         />
       </div>
     </div>

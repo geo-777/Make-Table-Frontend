@@ -26,7 +26,9 @@ const DetailsGridTimetable = ({ classes, teachers, subjects }) => {
   ];
 
   return (
-    <div className={styles.detailsGrid}>
+    <div
+      className={`${styles.detailsGrid} stagger-children ${styles.deteilsGridTimetable}`}
+    >
       {details.map((item) => (
         <div className={styles.gridItem}>
           <div className={`${styles.detailsGrid__icon} ${item.style}`}>
