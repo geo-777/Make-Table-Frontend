@@ -1,10 +1,26 @@
 import styles from "./Timetable.module.css";
 
+function normaliseEntry(entry, mode) {
+  if (!entry) return null;
+  return {
+    id: entry.id,
+    slot: entry.slot,
+    subjectName: entry.subject.name,
+    rgbCode: entry.subject.rgb_code,
+    isLab: entry.lab != null,
+    role: entry.role,
+    meta:
+      mode === "teacher"
+        ? (entry.class_?.class_name ?? "")
+        : (entry.teacher?.name ?? ""),
+  };
+}
+
 export default function Timetable({
   slotCount,
   entries,
   days,
-  colors,
+  mode = "class",
 }) {
   return (
     <div className={styles.wrapper}>
@@ -27,30 +43,48 @@ export default function Timetable({
               style={{ animationDelay: `${rowIndex * 60}ms` }}
             >
               <td className={styles.dayTd}>{day}</td>
-              {entries[day].map((entry, slotIndex) => (
-                <td key={slotIndex} className={styles.entryTd}>
-                  {entry ? (
-                    <div
-                      className={`${styles.entryCard} ${styles[colors[entry.subject]]} ${
-                        entry.isLab ? styles.labCard : ""
-                      }`}
-                    >
-                      <span className={styles.entryName}>
-                        {entry.subject}
-                      </span>
-                      <span className={styles.entryMeta}>
-                        {entry.class} · {entry.teacher}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className={styles.emptyCard}>—</div>
-                  )}
-                </td>
-              ))}
+              {entries[day].map((rawEntry, slotIndex) => {
+                const entry = normaliseEntry(rawEntry, mode);
+                return (
+                  <td key={slotIndex} className={styles.entryTd}>
+                    {entry ? (
+                      <EntryCard entry={entry} />
+                    ) : (
+                      <div className={styles.emptyCard}>—</div>
+                    )}
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+function EntryCard({ entry }) {
+  const { rgbCode, subjectName, meta, isLab, role } = entry;
+
+  const cardStyle = {
+    "--entry-color": rgbCode,
+    backgroundColor: `color-mix(in srgb, ${rgbCode} 40%, transparent)`,
+    border: `1px solid color-mix(in srgb, ${rgbCode} 40%, transparent)`,
+  };
+
+  return (
+    <div
+      className={`${styles.entryCard} ${isLab ? styles.labCard : ""}`}
+      style={cardStyle}
+    >
+      <span className={styles.entryName}>{subjectName}</span>
+      {meta && (
+        <span className={styles.entryMeta}>
+          {isLab ? "🔬 " : ""}
+          {meta}
+          {role === "Class_Teacher" ? " · CT" : ""}
+        </span>
+      )}
     </div>
   );
 }
