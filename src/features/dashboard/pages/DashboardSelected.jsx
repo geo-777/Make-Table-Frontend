@@ -107,7 +107,7 @@ function Tabs({ onTabChange }) {
   );
 }
 
-function groupEntriesByDay(entries) {
+export function groupEntriesByDay(entries) {
   return entries.reduce((acc, entry) => {
     const day = entry.day;
     if (!acc[day]) acc[day] = [];
@@ -252,20 +252,23 @@ export default function DashboardSelected() {
   const handleCopyLink = async (activeTab) => {
     try {
       const base = `${window.location.origin}`;
-      const selected = activeTab === "class" ? selectedClass.id : selectedTeacher.id;
+      const selected =
+        activeTab === "class" ? selectedClass.id : selectedTeacher.id;
 
       // output format
       // #1 -> http://localhost:5173/timetable/class/1
       // #2 -> http://localhost:5173/timetable/teacher/1
-      await navigator.clipboard.writeText(`${base}/timetable/${activeTab}/${selected}`);
+      await navigator.clipboard.writeText(
+        `${base}/timetable/${activeTab}/${selected}`,
+      );
       toast.success("Link copied successfully.");
       setIsLinkCopied(true);
       setTimeout(() => setIsLinkCopied(false), 2000);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       toast.error("Failed to copy link.");
     }
-  }
+  };
 
   return (
     <div className="App">

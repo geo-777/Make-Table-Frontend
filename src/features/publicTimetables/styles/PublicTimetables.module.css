@@ -72,7 +72,8 @@
 }
 
 .pageHeader,
-.table {
+.table,
+.footer {
   margin-top: 2rem;
   margin-inline: 10vw;
 }
@@ -91,6 +92,17 @@
   font-size: 28px;
   font-weight: 600;
 }
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 14px;
+}
+.footer span {
+  color: var(--primary);
+  font-weight: 500;
+}
 /*  media queries  */
 
 @media (max-width: 400px) {
@@ -98,7 +110,18 @@
     padding-inline: 1rem;
   }
   .pageHeader,
-  .table {
+  .table,
+  .footer {
     margin-inline: 1rem;
   }
+}
+.emptyState {
+  width: 100%;
+  padding: 3rem;
+  color: var(--color-grey-500);
+  border-radius: var(--radius);
+  border: 2px dashed var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
