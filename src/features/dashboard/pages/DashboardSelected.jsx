@@ -1,23 +1,18 @@
 import "../../../styles/appLayout.css";
 import styles from "../styles/DashboardSelected.module.css";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import { 
-  // Link2,
-  // Share2, 
-  Play, 
-  Zap 
-} from "lucide-react";
+import { Play, Zap } from "lucide-react";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useClasses from "../../../features/classes/hooks/useClasses";
 import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
 import useTeachers from "../../../features/teachers/hooks/useTeachers";
 import useSubjects from "../../../features/subjects/hooks/useSubjects";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Dropdown from "../components/dropDown/Dropdown";
 import Table from "../components/timeTables/Table";
-import { mockTimetable, mockClassEntries, mockTeacherEntries } from "../components/timeTables/MOCK_DATA";
 import { generate_POST } from "../../../api/generations.api";
 import { toast } from "react-toastify";
+import { useTimetableEntry } from "../hooks/useTimetableEntry";
 
 const Header = ({
   name,
@@ -34,7 +29,9 @@ const Header = ({
       <div className={styles.info}>
         <h1 className={styles.title}>{name}</h1>
         <div className={styles.meta}>
-          <span className={`${styles.badge} ${isGenerating ? styles.violet : ""}`} >
+          <span
+            className={`${styles.badge} ${isGenerating ? styles.violet : ""}`}
+          >
             <span className={styles.dot} />
             {viewStatus}
           </span>
@@ -45,17 +42,7 @@ const Header = ({
       </div>
 
       <div className={styles.actions}>
-        {/* <button className={styles.btnOutline}>
-          <Link2 size={16} />
-          Copy link
-        </button>
-
-        <button className={styles.btnOutline}>
-          <Share2 size={16} />
-          Share
-        </button> */}
-
-        <button 
+        <button
           className={styles.btnPrimary}
           onClick={onGenerate}
           disabled={isGenerating}
@@ -64,7 +51,7 @@ const Header = ({
           {isGenerating ? "Generating..." : "Generate"}
         </button>
 
-        <button 
+        <button
           className={styles.btnOutline}
           disabled={isGenerating}
           onClick={onForce}
@@ -75,7 +62,7 @@ const Header = ({
       </div>
     </div>
   );
-}
+};
 
 const TABS = [
   { id: "class", label: "Class Timetables" },
@@ -120,33 +107,112 @@ function Tabs({ onTabChange }) {
 }
 
 export default function DashboardSelected() {
-  
   const { selectedTimetableData } = useTimeTableSelect();
 
-  const { data: classes  } = useClasses();
+  const { data: classes } = useClasses();
   const { data: teachers } = useTeachers();
   const { data: subjects } = useSubjects();
 
+  const {
+    classTimetables,
+    teacherTimetables,
+    loading,
+    fetchClassTimetable,
+    fetchTeacherTimetable,
+    clearClassTimetables,
+    clearTeacherTimetables,
+  } = useTimetableEntry();
+
   const [activeTab, setActiveTab] = useState("class");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+
+  useEffect(() => {
+    const firstClass = classes?.data?.[0];
+    if (firstClass && !selectedClass) {
+      setSelectedClass(firstClass);
+      fetchClassTimetable(firstClass.id);
+    }
+  }, [classes, fetchClassTimetable, selectedClass]);
+
+  useEffect(() => {
+    const firstTeacher = teachers?.data?.[0];
+    if (firstTeacher && !selectedTeacher) {
+      setSelectedTeacher(firstTeacher);
+    }
+  }, [teachers, selectedTeacher]);
+
+  const handleClassChange = useCallback(
+    (className) => {
+      const found = classes?.data?.find((c) => c.class_name === className);
+      if (!found) return;
+      setSelectedClass(found);
+      clearClassTimetables();
+      fetchClassTimetable(found.id);
+    },
+    [classes, fetchClassTimetable, clearClassTimetables],
+  );
+
+  const handleTeacherChange = useCallback(
+    (teacherName) => {
+      const found = teachers?.data?.find((t) => t.name === teacherName);
+      if (!found) return;
+      setSelectedTeacher(found);
+      clearTeacherTimetables();
+      fetchTeacherTimetable(found.id);
+    },
+    [teachers, fetchTeacherTimetable, clearTeacherTimetables],
+  );
+
+  const handleTabChange = useCallback(
+    (tab) => {
+      setActiveTab(tab);
+      if (
+        tab === "teacher" &&
+        selectedTeacher &&
+        teacherTimetables.length === 0
+      ) {
+        fetchTeacherTimetable(selectedTeacher.id);
+      }
+      if (tab === "class" && selectedClass && classTimetables.length === 0) {
+        fetchClassTimetable(selectedClass.id);
+      }
+    },
+    [
+      selectedTeacher,
+      selectedClass,
+      classTimetables,
+      teacherTimetables,
+      fetchClassTimetable,
+      fetchTeacherTimetable,
+    ],
+  );
 
   const handleTimetableGeneration = useCallback(
-    async (_, force = false) => {
-    if(!selectedTimetableData);
-    try {
-      setIsGenerating(true);
-      const result = await generate_POST(selectedTimetableData.id, force);
+    async (force = false) => {
+      if (!selectedTimetableData) return;
+      try {
+        setIsGenerating(true);
+        const result = await generate_POST(selectedTimetableData.id, force);
 
-      if (result?.data?.status === "Failed") {
+        if (result?.data?.status === "Failed") {
+          toast.error("Timetable Failed to generate.");
+        } else if (result?.data?.status === "Active") {
+          toast.success("Timetable was created successfully.");
+        }
+      } catch (err) {
+        console.error(err);
         toast.error("Timetable Failed to generate.");
+      } finally {
+        setIsGenerating(false);
       }
-    } catch (err) {
-      console.error(err);
-      toast.error("Timetable Failed to generate.");
-    } finally {
-      setIsGenerating(false);
-    }
-  }, [selectedTimetableData]);
+    },
+    [selectedTimetableData],
+  );
+
+  const classEntries = classTimetables.flatMap((tt) => tt.entries);
+  const teacherEntries = teacherTimetables.flatMap((tt) => tt.entries);
 
   return (
     <div className="App">
@@ -157,9 +223,9 @@ export default function DashboardSelected() {
           days={selectedTimetableData?.days.length ?? 0}
           slots={selectedTimetableData?.slots ?? 0}
           classes={classes?.data?.length ?? 0}
-          viewStatus={selectedTimetableData.view_status}
+          viewStatus={selectedTimetableData?.view_status}
           isGenerating={isGenerating}
-          onGenerate={handleTimetableGeneration}
+          onGenerate={() => handleTimetableGeneration(false)}
           onForce={() => handleTimetableGeneration(true)}
         />
 
@@ -171,22 +237,23 @@ export default function DashboardSelected() {
 
         <div className={styles.body}>
           <div className={styles.left}>
-            <Tabs onTabChange={(tab) => setActiveTab(tab)} />
+            <Tabs onTabChange={handleTabChange} />
 
             {activeTab === "class" && (
               <>
                 <Dropdown
-                  options={classes?.data.map((c) => c.class_name)}
-                  defaultValue={classes?.data.map((c) => c.class_name)[0] ?? ""}
+                  options={classes?.data?.map((c) => c.class_name) ?? []}
+                  defaultValue={classes?.data?.[0]?.class_name ?? ""}
                   placeholder="Select a class"
-                  onChange={() => {}}
-                ></Dropdown>
+                  onChange={handleClassChange}
+                />
 
                 <Table
-                  entries={mockClassEntries}
-                  slotCount={mockTimetable.slots}
-                  days={mockTimetable.days}
+                  entries={classEntries}
+                  slotCount={selectedTimetableData?.slots ?? 0}
+                  days={selectedTimetableData?.days ?? []}
                   mode="class"
+                  isLoading={loading.class}
                 />
               </>
             )}
@@ -194,17 +261,18 @@ export default function DashboardSelected() {
             {activeTab === "teacher" && (
               <>
                 <Dropdown
-                  options={teachers.data.map((t) => t.name)}
-                  defaultValue={teachers.data.map((t) => t.name)[0] ?? ""}
+                  options={teachers?.data?.map((t) => t.name) ?? []}
+                  defaultValue={teachers?.data?.[0]?.name ?? ""}
                   placeholder="Select a Teacher"
-                  onChange={() => {}}
-                ></Dropdown>
+                  onChange={handleTeacherChange}
+                />
 
                 <Table
-                  entries={mockTeacherEntries}
-                  slotCount={mockTimetable.slots}
-                  days={mockTimetable.days}
+                  entries={teacherEntries}
+                  slotCount={selectedTimetableData?.slots ?? 0}
+                  days={selectedTimetableData?.days ?? []}
                   mode="teacher"
+                  isLoading={loading.teacher}
                 />
               </>
             )}

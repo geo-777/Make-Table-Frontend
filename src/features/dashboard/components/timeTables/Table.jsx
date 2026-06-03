@@ -24,6 +24,7 @@ export default function Timetable({
   entries,
   days,
   mode = "class",
+  isLoading = false,
 }) {
   return (
     <div className={styles.wrapper}>
