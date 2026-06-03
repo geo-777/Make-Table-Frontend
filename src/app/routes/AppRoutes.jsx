@@ -26,6 +26,9 @@ const HelpSupport = lazy(() => import("../../pages/help&support/HelpSupport"));
 const Documentation = lazy(
   () => import("../../pages/documentation/Documentation"),
 );
+const PublicTimetables = lazy(
+  () => import("../../features/publicTimetables/pages/PublicTimetables"),
+);
 export default function AppRoutes() {
   return (
     <Suspense fallback={<LoaderFull />}>
@@ -60,6 +63,14 @@ export default function AppRoutes() {
         />
         <Route path={"/docs"} element={<Documentation />} />
         <Route path={"/documentation"} element={<Documentation />} />
+        <Route
+          path={"/timetable/class/:id"}
+          element={<PublicTimetables classTable={true} />}
+        />
+        <Route
+          path="/timetable/teacher/:id"
+          element={<PublicTimetables classTable={false} />}
+        />
 
         {/* --- Protected Routes --- */}
         <Route element={<Navbar />}>

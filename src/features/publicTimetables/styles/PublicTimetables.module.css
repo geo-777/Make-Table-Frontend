@@ -1,0 +1,104 @@
+.logo {
+  cursor: pointer;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  white-space: nowrap;
+  transition: color 0.35s ease-out;
+}
+
+.logo p {
+  color: var(--foreground);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.logoIcon {
+  color: var(--background);
+  background-image: var(--gradient-primary);
+  flex-shrink: 0;
+  padding: 0.35rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo:hover.logo p {
+  color: var(--primary);
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 10vw;
+  padding-block: 1rem;
+  background-color: var(--secondary-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.main {
+  background-color: var(--background);
+  min-height: 100vh;
+}
+
+.actionBtns__nav {
+  display: flex;
+  gap: 0.6rem;
+}
+.btn {
+  background-color: var(--primary);
+  color: var(--secondary-bg);
+  font-weight: 500;
+  font-size: 14.5px;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.5rem;
+  border: none;
+  transition: opacity 0.35s ease-out;
+}
+.btn:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+.secondaryBtn {
+  color: var(--foreground);
+  background-color: transparent;
+  transition:
+    color 0.35s ease-out,
+    background-color 0.25s ease-out;
+}
+.secondaryBtn:hover {
+  opacity: 1;
+  background-color: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+}
+
+.pageHeader,
+.table {
+  margin-top: 2rem;
+  margin-inline: 10vw;
+}
+.pageHeader {
+  line-height: 1.8rem;
+}
+.pageHeader p {
+  font-size: 14px;
+  color: var(--sidebar-foreground);
+}
+.pageHeader p:first-child {
+  font-size: 12px;
+  letter-spacing: 0.05rem;
+}
+.pageHeader h4 {
+  font-size: 28px;
+  font-weight: 600;
+}
+/*  media queries  */
+
+@media (max-width: 400px) {
+  .nav {
+    padding-inline: 1rem;
+  }
+  .pageHeader,
+  .table {
+    margin-inline: 1rem;
+  }
+}
