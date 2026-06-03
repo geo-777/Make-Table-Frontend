@@ -26,6 +26,9 @@ export default function Timetable({
   mode = "class",
   isLoading = false,
 }) {
+
+  if(!entries) return null;
+
   return (
     <div className={styles.wrapper}>
       <table className={styles.table}>
@@ -47,7 +50,7 @@ export default function Timetable({
               style={{ animationDelay: `${rowIndex * 60}ms` }}
             >
               <td className={styles.dayTd}>{day}</td>
-              {entries[day].map((rawEntry, slotIndex) => {
+              {entries[day]?.map((rawEntry, slotIndex) => {
                 const entry = normaliseEntry(rawEntry, mode);
                 return (
                   <td key={slotIndex} className={styles.entryTd}>

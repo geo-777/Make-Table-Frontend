@@ -211,8 +211,13 @@ export default function DashboardSelected() {
     [selectedTimetableData],
   );
 
-  const classEntries = classTimetables.flatMap((tt) => tt.entries);
-  const teacherEntries = teacherTimetables.flatMap((tt) => tt.entries);
+  const classEntries = Array.isArray(classTimetables)
+    ? classTimetables.flatMap((tt) => tt.entries)
+    : [];
+
+  const teacherEntries = Array.isArray(teacherTimetables)
+    ? teacherTimetables.flatMap((tt) => tt.entries)
+    : [];
 
   return (
     <div className="App">
@@ -248,13 +253,15 @@ export default function DashboardSelected() {
                   onChange={handleClassChange}
                 />
 
-                <Table
-                  entries={classEntries}
-                  slotCount={selectedTimetableData?.slots ?? 0}
-                  days={selectedTimetableData?.days ?? []}
-                  mode="class"
-                  isLoading={loading.class}
-                />
+                {classEntries.length > 0 && (
+                  <Table
+                    entries={classEntries}
+                    slotCount={selectedTimetableData?.slots ?? 0}
+                    days={selectedTimetableData?.days ?? []}
+                    mode="class"
+                    isLoading={loading.class}
+                  />
+                )}
               </>
             )}
 
@@ -266,14 +273,16 @@ export default function DashboardSelected() {
                   placeholder="Select a Teacher"
                   onChange={handleTeacherChange}
                 />
-
-                <Table
-                  entries={teacherEntries}
-                  slotCount={selectedTimetableData?.slots ?? 0}
-                  days={selectedTimetableData?.days ?? []}
-                  mode="teacher"
-                  isLoading={loading.teacher}
-                />
+                
+                {teacherEntries.length > 0 && (
+                  <Table
+                    entries={teacherEntries}
+                    slotCount={selectedTimetableData?.slots ?? 0}
+                    days={selectedTimetableData?.days ?? []}
+                    mode="teacher"
+                    isLoading={loading.teacher}
+                  />
+                )}
               </>
             )}
           </div>
