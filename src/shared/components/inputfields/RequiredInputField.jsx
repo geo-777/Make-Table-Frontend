@@ -11,6 +11,7 @@ const RequiredInputField = ({
   label,
   errorState,
   min,
+  disabled,
 }) => {
   const [triggerShake, setTriggerShake] = useState(false);
 
@@ -36,6 +37,7 @@ const RequiredInputField = ({
       <input
         type={type}
         id={id}
+        disabled={disabled}
         autoComplete="off"
         min={min}
         placeholder={placeholder}
