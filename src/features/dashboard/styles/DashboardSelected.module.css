@@ -134,6 +134,8 @@
   width: 100%;
   display: flex;
   padding: 2rem;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .row {

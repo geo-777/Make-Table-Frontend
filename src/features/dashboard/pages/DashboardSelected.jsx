@@ -13,6 +13,7 @@ import Table from "../components/timeTables/Table";
 import { generate_POST } from "../../../api/generations.api";
 import { toast } from "react-toastify";
 import { useTimetableEntry } from "../hooks/useTimetableEntry";
+import ViolationsPanel from "../components/violationsPanel/ViolationsPanel";
 
 const Header = ({
   name,
@@ -125,6 +126,7 @@ export default function DashboardSelected() {
   const {
     classTimetables,
     teacherTimetables,
+    violations,
     loading,
     fetchClassTimetable,
     fetchTeacherTimetable,
@@ -342,7 +344,11 @@ export default function DashboardSelected() {
               </>
             )}
           </div>
-          <div className={styles.right}></div>
+          <div className={styles.right}>
+            <ViolationsPanel 
+              violations={violations}
+            />
+          </div>
         </div>
       </div>
     </div>
