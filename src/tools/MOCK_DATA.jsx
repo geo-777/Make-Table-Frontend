@@ -290,7 +290,7 @@ export const MOCK_DATA = {
       class_id: 1,
       subject_id: 2,
       role: "Subject_Teacher",
-      morning_class_days: ["Wed", "Thu"],
+      morning_class_days: null,
     },
     {
       teacher_id: 3,
@@ -311,14 +311,14 @@ export const MOCK_DATA = {
       class_id: 1,
       subject_id: 5,
       role: "Subject_Teacher",
-      morning_class_days: ["Fri"],
+      morning_class_days: null,
     },
     {
       teacher_id: 6,
       class_id: 1,
       subject_id: 6,
       role: "Subject_Teacher",
-      morning_class_days: ["Mon", "Tue"],
+      morning_class_days: null,
     },
     {
       teacher_id: 7,
@@ -332,7 +332,7 @@ export const MOCK_DATA = {
       class_id: 1,
       subject_id: 8,
       role: "Subject_Teacher",
-      morning_class_days: ["Wed", "Thu"],
+      morning_class_days: null,
     },
     {
       teacher_id: 9,
@@ -353,14 +353,14 @@ export const MOCK_DATA = {
       class_id: 3,
       subject_id: 11,
       role: "Subject_Teacher",
-      morning_class_days: ["Mon", "Wed"],
+      morning_class_days: null,
     },
     {
       teacher_id: 12,
       class_id: 3,
       subject_id: 12,
       role: "Subject_Teacher",
-      morning_class_days: ["Tue"],
+      morning_class_days: null,
     },
     {
       teacher_id: 13,
