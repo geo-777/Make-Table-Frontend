@@ -219,18 +219,34 @@ export default function DashboardSelected() {
         const result = await generate_POST(selectedTimetableData.id, force);
 
         if (result?.data?.status === "Failed") {
-          toast.error("Timetable Failed to generate.");
+          toast.error("Timetable failed to generate.");
         } else if (result?.data?.status === "Active") {
-          toast.success("Timetable was created successfully.");
+          toast.success("Timetable created successfully.");
+          if (activeTab === "class" && selectedClass) {
+            clearClassTimetables();
+            fetchClassTimetable(selectedClass.id);
+          } else if (activeTab === "teacher" && selectedTeacher) {
+            clearTeacherTimetables();
+            fetchTeacherTimetable(selectedTeacher.id);
+          }
         }
       } catch (err) {
         console.error(err);
-        toast.error("Timetable Failed to generate.");
+        toast.error("Timetable failed to generate.");
       } finally {
         setIsGenerating(false);
       }
     },
-    [selectedTimetableData],
+    [
+      selectedTimetableData,
+      activeTab,
+      selectedClass,
+      selectedTeacher,
+      fetchClassTimetable,
+      fetchTeacherTimetable,
+      clearClassTimetables,
+      clearTeacherTimetables,
+    ],
   );
 
   const handleCopyLink = async (activeTab) => {
@@ -335,7 +351,7 @@ export default function DashboardSelected() {
                   <button
                     className={styles.copyLink}
                     title="Copy Link"
-                    onClick={() => handleCopyLink("class")}
+                    onClick={() => handleCopyLink("teacher")}
                   >
                     {isLinkCopied ? <CheckIcon /> : <Link2 />}
                     {isLinkCopied ? "Copied" : "Copy Link"}
