@@ -232,3 +232,14 @@
   color: var(--card-foreground);
   box-shadow: var(--shadow-card);
 }
+
+.emptyState {
+  width: 100%;
+  padding: 3rem;
+  color: var(--color-grey-500);
+  border-radius: var(--radius);
+  border: 2px dashed var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
   getClassTimetable_GET,
   getTeacherTimetable_GET,
@@ -60,10 +60,6 @@ export function useTimetableEntry() {
     setTeacherTimetables([]);
     setError({ class: null, teacher: null });
   }, []);
-
-  useEffect(() => {
-    console.log(classTimetables);
-  }, [classTimetables])
 
   return {
     classTimetables,

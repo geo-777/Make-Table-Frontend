@@ -47,12 +47,14 @@ export default function ViolationsPanel({ violations = [] }) {
   const [filter, setFilter] = useState("all");
 
   const { severeCount, minorCount, filtered } = useMemo(() => {
-    const severe = violations.filter((v) => v.severity >= SEVERE_THRESHOLD);
-    const minor = violations.filter((v) => v.severity < SEVERE_THRESHOLD);
+    const severe = violations?.filter((v) => v.severity >= SEVERE_THRESHOLD);
+    const minor = violations?.filter((v) => v.severity < SEVERE_THRESHOLD);
     const filtered =
       filter === "severe" ? severe : filter === "minor" ? minor : violations;
-    return { severeCount: severe.length, minorCount: minor.length, filtered };
+    return { severeCount: severe?.length, minorCount: minor?.length, filtered };
   }, [violations, filter]);
+
+  if(!violations) return null;
 
   return (
     <div className={styles.panel}>

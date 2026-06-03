@@ -300,14 +300,24 @@ export default function DashboardSelected() {
                   </button>
                 </div>
 
-                {selectedClass && (
-                  <Table
-                    entries={classEntries}
-                    slotCount={selectedTimetableData?.slots ?? 0}
-                    days={selectedTimetableData?.days ?? []}
-                    mode="class"
-                    isLoading={loading.class}
-                  />
+                {selectedClass &&
+                  classEntries &&
+                  Object.keys(classEntries).length > 0 && (
+                    <Table
+                      entries={classEntries}
+                      slotCount={selectedTimetableData?.slots ?? 0}
+                      days={selectedTimetableData?.days ?? []}
+                      mode="class"
+                      isLoading={loading.class}
+                    />
+                  )}
+
+                {Object.keys(classEntries).length === 0 && (
+                  <div className={styles.emptyState}>
+                    <p>
+                      No generated timetable yet. Click Generate to create one.
+                    </p>
+                  </div>
                 )}
               </>
             )}
@@ -332,22 +342,30 @@ export default function DashboardSelected() {
                   </button>
                 </div>
 
-                {selectedTeacher && (
-                  <Table
-                    entries={teacherEntries}
-                    slotCount={selectedTimetableData?.slots ?? 0}
-                    days={selectedTimetableData?.days ?? []}
-                    mode="teacher"
-                    isLoading={loading.teacher}
-                  />
+                {selectedTeacher &&
+                  teacherEntries &&
+                  Object.keys(teacherEntries).length > 0 && (
+                    <Table
+                      entries={teacherEntries}
+                      slotCount={selectedTimetableData?.slots ?? 0}
+                      days={selectedTimetableData?.days ?? []}
+                      mode="teacher"
+                      isLoading={loading.teacher}
+                    />
+                  )}
+
+                {Object.keys(teacherEntries).length === 0 && (
+                  <div className={styles.emptyState}>
+                    <p>
+                      No generated timetable yet. Click Generate to create one.
+                    </p>
+                  </div>
                 )}
               </>
             )}
           </div>
           <div className={styles.right}>
-            <ViolationsPanel 
-              violations={violations}
-            />
+            <ViolationsPanel violations={violations} />
           </div>
         </div>
       </div>
