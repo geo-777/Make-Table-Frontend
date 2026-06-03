@@ -306,14 +306,16 @@ export default function DashboardSelected() {
                     onChange={handleClassChange}
                   />
 
-                  <button
-                    className={styles.copyLink}
-                    title="Copy Link"
-                    onClick={() => handleCopyLink("class")}
-                  >
-                    {isLinkCopied ? <CheckIcon /> : <Link2 />}
-                    {isLinkCopied ? "Copied" : "Copy Link"}
-                  </button>
+                  {selectedTimetableData && selectedTimetableData.view_status === "Public" && (
+                    <button
+                      className={styles.copyLink}
+                      title="Copy Link"
+                      onClick={() => handleCopyLink("class")}
+                    >
+                      {isLinkCopied ? <CheckIcon /> : <Link2 />}
+                      {isLinkCopied ? "Copied" : "Copy Link"}
+                    </button>
+                  )}
                 </div>
 
                 {selectedClass &&
@@ -348,14 +350,16 @@ export default function DashboardSelected() {
                     onChange={handleTeacherChange}
                   />
 
-                  <button
-                    className={styles.copyLink}
-                    title="Copy Link"
-                    onClick={() => handleCopyLink("teacher")}
-                  >
-                    {isLinkCopied ? <CheckIcon /> : <Link2 />}
-                    {isLinkCopied ? "Copied" : "Copy Link"}
-                  </button>
+                  {selectedTimetableData && selectedTimetableData.view_status === "Public" && (
+                    <button
+                      className={styles.copyLink}
+                      title="Copy Link"
+                      onClick={() => handleCopyLink("teacher")}
+                    >
+                      {isLinkCopied ? <CheckIcon /> : <Link2 />}
+                      {isLinkCopied ? "Copied" : "Copy Link"}
+                    </button>
+                  )}
                 </div>
 
                 {selectedTeacher &&
