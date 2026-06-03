@@ -1,10 +1,19 @@
-import { Monitor, Moon, Shield, User } from "lucide-react";
+import {
+  Monitor,
+  Moon,
+  Shield,
+  User,
+  UserRoundPen,
+  Cog,
+  Contact,
+} from "lucide-react";
 import styles from "../styles/Settings.module.css";
 
 const iconMap = {
-  profile: User,
+  profile: Contact,
+  username: UserRoundPen,
   password: Shield,
-  appearance: Monitor,
+  appearance: Cog,
   danger: Moon,
 };
 

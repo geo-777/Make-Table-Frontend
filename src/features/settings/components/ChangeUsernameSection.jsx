@@ -16,7 +16,7 @@ const INITIAL_ERROR_STATE = {
 };
 
 const ChangeUsernameSection = () => {
-  const { userData, setUserData } = useAuth();
+  const { userData, confirmLogin } = useAuth();
   const [form, setForm] = useState(INITIAL_FORM_STATE);
   const [errorState, setErrorState] = useState(INITIAL_ERROR_STATE);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,9 +51,9 @@ const ChangeUsernameSection = () => {
         password: form.password,
       });
 
-      // Update user data in context
+      // Update user context with new username and user data
       if (response?.data) {
-        setUserData(response.data);
+        confirmLogin(response.data.username, response.data);
       }
 
       toast.success("Username updated successfully.");
@@ -71,6 +71,10 @@ const ChangeUsernameSection = () => {
           errors.username = "Username already taken or invalid";
         } else {
           errors.password = "Invalid credentials";
+        }
+      } else if (status === 422) {
+        if (errorData?.detail?.[0]?.loc?.includes("username")) {
+          errors.username = errorData?.detail?.[0]?.msg || "Invalid username";
         }
       } else {
         toast.error(errorData?.detail || "Unknown Error");

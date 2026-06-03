@@ -28,8 +28,14 @@ const AuthProvider = ({ children }) => {
     refreshQueue.current = [];
   };
 
-  const confirmLogin = useCallback((username) => {
+  const confirmLogin = useCallback(async (username, fullUserData = null) => {
     setUser(username);
+    if (fullUserData) {
+      setUserData(fullUserData);
+    } else {
+      const userDataResponse = await fetchCurrentUser();
+      setUserData(userDataResponse);
+    }
   }, []);
 
   const logout = useCallback(async () => {
@@ -39,13 +45,14 @@ const AuthProvider = ({ children }) => {
       console.error("Logout request failed:", error);
     } finally {
       setUser(null);
+      setUserData(null);
     }
   }, []);
 
   const fetchCurrentUser = async () => {
     const response = await checkLoggedIn();
     setUserData(response?.data);
-    return response.data.username;
+    return response.data;
   };
 
   const refreshToken = async () => {
@@ -57,12 +64,12 @@ const AuthProvider = ({ children }) => {
     if (isInitialized.current) return;
     isInitialized.current = true;
     try {
-      const username = await fetchCurrentUser();
-      confirmLogin(username);
+      const userDataResponse = await fetchCurrentUser();
+      confirmLogin(userDataResponse?.username, userDataResponse);
     } catch {
       try {
-        const username = await refreshToken();
-        confirmLogin(username);
+        const userDataResponse = await refreshToken();
+        confirmLogin(userDataResponse?.username, userDataResponse);
       } catch {
         await logout();
         isInitialized.current = false;
@@ -132,6 +139,7 @@ const AuthProvider = ({ children }) => {
     logout,
     refreshToken,
     userData,
+    setUserData,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
