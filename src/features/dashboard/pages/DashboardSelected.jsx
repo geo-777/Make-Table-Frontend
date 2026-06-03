@@ -106,6 +106,15 @@ function Tabs({ onTabChange }) {
   );
 }
 
+function groupEntriesByDay(entries) {
+  return entries.reduce((acc, entry) => {
+    const day = entry.day;
+    if (!acc[day]) acc[day] = [];
+    acc[day].push(entry);
+    return acc;
+  }, {});
+}
+
 export default function DashboardSelected() {
   const { selectedTimetableData } = useTimeTableSelect();
 
@@ -143,9 +152,18 @@ export default function DashboardSelected() {
     }
   }, [teachers, selectedTeacher]);
 
+  const classEntries = groupEntriesByDay(
+    Array.isArray(classTimetables) ? classTimetables : [],
+  );
+
+  const teacherEntries = groupEntriesByDay(
+    Array.isArray(teacherTimetables) ? teacherTimetables : [],
+  );
+
   const handleClassChange = useCallback(
     (className) => {
       const found = classes?.data?.find((c) => c.class_name === className);
+
       if (!found) return;
       setSelectedClass(found);
       clearClassTimetables();
@@ -211,14 +229,6 @@ export default function DashboardSelected() {
     [selectedTimetableData],
   );
 
-  const classEntries = Array.isArray(classTimetables)
-    ? classTimetables.flatMap((tt) => tt.entries)
-    : [];
-
-  const teacherEntries = Array.isArray(teacherTimetables)
-    ? teacherTimetables.flatMap((tt) => tt.entries)
-    : [];
-
   return (
     <div className="App">
       <Topbar page={"Dashboard"} />
@@ -253,7 +263,7 @@ export default function DashboardSelected() {
                   onChange={handleClassChange}
                 />
 
-                {classEntries.length > 0 && (
+                {selectedClass && (
                   <Table
                     entries={classEntries}
                     slotCount={selectedTimetableData?.slots ?? 0}
@@ -273,8 +283,8 @@ export default function DashboardSelected() {
                   placeholder="Select a Teacher"
                   onChange={handleTeacherChange}
                 />
-                
-                {teacherEntries.length > 0 && (
+
+                {selectedTeacher && (
                   <Table
                     entries={teacherEntries}
                     slotCount={selectedTimetableData?.slots ?? 0}

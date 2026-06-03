@@ -1,81 +1,79 @@
-import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
+import { useState, useCallback, useEffect } from "react";
 import {
   getClassTimetable_GET,
   getTeacherTimetable_GET,
 } from "../../../api/timetableEntry.api";
 
-export const useTimetableEntry = create(
-  immer((set) => ({
+export function useTimetableEntry() {
+  const [classTimetables, setClassTimetables] = useState([]);
+  const [teacherTimetables, setTeacherTimetables] = useState([]);
+  const [loading, setLoading] = useState({ class: false, teacher: false });
+  const [error, setError] = useState({ class: null, teacher: null });
 
-    classTimetables: [],
-    teacherTimetables: [],
-    loading: { class: false, teacher: false },
-    error: { class: null, teacher: null },
+  const fetchClassTimetable = useCallback(async (classId) => {
+    setLoading((prev) => ({ ...prev, class: true }));
+    setError((prev) => ({ ...prev, class: null }));
+    try {
+      const res = await getClassTimetable_GET(classId);
 
-    fetchClassTimetable: async (classId) => {
-      set((state) => {
-        state.loading.class = true;
-        state.error.class = null;
-      });
+      console.log(res.entries);
 
-      try {
-        const data = await getClassTimetable_GET(classId);
+      setClassTimetables(res.entries);
+    } catch (err) {
+      setError((prev) => ({
+        ...prev,
+        class: err?.message ?? "Failed to fetch class timetable",
+      }));
+    } finally {
+      setLoading((prev) => ({ ...prev, class: false }));
+    }
+  }, []);
 
-        set((state) => {
-          state.classTimetables = data;
-          state.loading.class = false;
-        });
-      } catch (err) {
-        set((state) => {
-          state.error.class = err?.message ?? "Failed to fetch class timetable";
-          state.loading.class = false;
-        });
-      }
-    },
+  const fetchTeacherTimetable = useCallback(async (teacherId) => {
+    setLoading((prev) => ({ ...prev, teacher: true }));
+    setError((prev) => ({ ...prev, teacher: null }));
+    try {
+      const res = await getTeacherTimetable_GET(teacherId);
+      setTeacherTimetables(res.entries);
+    } catch (err) {
+      setError((prev) => ({
+        ...prev,
+        teacher: err?.message ?? "Failed to fetch teacher timetable",
+      }));
+    } finally {
+      setLoading((prev) => ({ ...prev, teacher: false }));
+    }
+  }, []);
 
-    fetchTeacherTimetable: async (teacherId) => {
-      set((state) => {
-        state.loading.teacher = true;
-        state.error.teacher = null;
-      });
+  const clearClassTimetables = useCallback(() => {
+    setClassTimetables([]);
+    setError((prev) => ({ ...prev, class: null }));
+  }, []);
 
-      try {
-        const data = await getTeacherTimetable_GET(teacherId);
+  const clearTeacherTimetables = useCallback(() => {
+    setTeacherTimetables([]);
+    setError((prev) => ({ ...prev, teacher: null }));
+  }, []);
 
-        set((state) => {
-          state.teacherTimetables = data;
-          state.loading.teacher = false;
-        });
-      } catch (err) {
-        set((state) => {
-          state.error.teacher =
-            err?.message ?? "Failed to fetch teacher timetable";
-          state.loading.teacher = false;
-        });
-      }
-    },
+  const clearAll = useCallback(() => {
+    setClassTimetables([]);
+    setTeacherTimetables([]);
+    setError({ class: null, teacher: null });
+  }, []);
 
-    clearClassTimetables: () => {
-      set((state) => {
-        state.classTimetables = [];
-        state.error.class = null;
-      });
-    },
+  useEffect(() => {
+    console.log(classTimetables);
+  }, [classTimetables])
 
-    clearTeacherTimetables: () => {
-      set((state) => {
-        state.teacherTimetables = [];
-        state.error.teacher = null;
-      });
-    },
-
-    clearAll: () => {
-      set((state) => {
-        state.classTimetables = [];
-        state.teacherTimetables = [];
-        state.error = { class: null, teacher: null };
-      });
-    },
-  })),
-);
+  return {
+    classTimetables,
+    teacherTimetables,
+    loading,
+    error,
+    fetchClassTimetable,
+    fetchTeacherTimetable,
+    clearClassTimetables,
+    clearTeacherTimetables,
+    clearAll,
+  };
+}
