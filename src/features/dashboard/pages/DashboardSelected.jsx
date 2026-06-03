@@ -1,7 +1,7 @@
 import "../../../styles/appLayout.css";
 import styles from "../styles/DashboardSelected.module.css";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import { Play, Zap } from "lucide-react";
+import { Play, Zap, Link2, CheckIcon } from "lucide-react";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useClasses from "../../../features/classes/hooks/useClasses";
 import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
@@ -137,6 +137,8 @@ export default function DashboardSelected() {
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
 
+  const [isLinkCopied, setIsLinkCopied] = useState(false);
+
   useEffect(() => {
     const firstClass = classes?.data?.[0];
     if (firstClass && !selectedClass) {
@@ -229,6 +231,24 @@ export default function DashboardSelected() {
     [selectedTimetableData],
   );
 
+  const handleCopyLink = async (activeTab) => {
+    try {
+      const base = `${window.location.origin}`;
+      const selected = activeTab === "class" ? selectedClass.id : selectedTeacher.id;
+
+      // output format
+      // #1 -> http://localhost:5173/timetable/class/1
+      // #2 -> http://localhost:5173/timetable/teacher/1
+      await navigator.clipboard.writeText(`${base}/timetable/${activeTab}/${selected}`);
+      toast.success("Link copied successfully.");
+      setIsLinkCopied(true);
+      setTimeout(() => setIsLinkCopied(false), 2000);
+    } catch(err) {
+      console.error(err);
+      toast.error("Failed to copy link.");
+    }
+  }
+
   return (
     <div className="App">
       <Topbar page={"Dashboard"} />
@@ -256,12 +276,27 @@ export default function DashboardSelected() {
 
             {activeTab === "class" && (
               <>
-                <Dropdown
-                  options={classes?.data?.map((c) => c.class_name) ?? []}
-                  defaultValue={classes?.data?.[0]?.class_name ?? ""}
-                  placeholder="Select a class"
-                  onChange={handleClassChange}
-                />
+                <div className={styles.row}>
+                  <Dropdown
+                    options={
+                      classes?.data
+                        ?.filter((c) => !c.isLab)
+                        .map((c) => c.class_name) ?? []
+                    }
+                    defaultValue={classes?.data?.[0]?.class_name ?? ""}
+                    placeholder="Select a class"
+                    onChange={handleClassChange}
+                  />
+
+                  <button
+                    className={styles.copyLink}
+                    title="Copy Link"
+                    onClick={() => handleCopyLink("class")}
+                  >
+                    {isLinkCopied ? <CheckIcon /> : <Link2 />}
+                    {isLinkCopied ? "Copied" : "Copy Link"}
+                  </button>
+                </div>
 
                 {selectedClass && (
                   <Table
@@ -277,12 +312,23 @@ export default function DashboardSelected() {
 
             {activeTab === "teacher" && (
               <>
-                <Dropdown
-                  options={teachers?.data?.map((t) => t.name) ?? []}
-                  defaultValue={teachers?.data?.[0]?.name ?? ""}
-                  placeholder="Select a Teacher"
-                  onChange={handleTeacherChange}
-                />
+                <div className={styles.row}>
+                  <Dropdown
+                    options={teachers?.data?.map((t) => t.name) ?? []}
+                    defaultValue={teachers?.data?.[0]?.name ?? ""}
+                    placeholder="Select a Teacher"
+                    onChange={handleTeacherChange}
+                  />
+
+                  <button
+                    className={styles.copyLink}
+                    title="Copy Link"
+                    onClick={() => handleCopyLink("class")}
+                  >
+                    {isLinkCopied ? <CheckIcon /> : <Link2 />}
+                    {isLinkCopied ? "Copied" : "Copy Link"}
+                  </button>
+                </div>
 
                 {selectedTeacher && (
                   <Table

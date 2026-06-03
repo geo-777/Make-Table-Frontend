@@ -15,9 +15,6 @@ export function useTimetableEntry() {
     setError((prev) => ({ ...prev, class: null }));
     try {
       const res = await getClassTimetable_GET(classId);
-
-      console.log(res.entries);
-
       setClassTimetables(res.entries);
     } catch (err) {
       setError((prev) => ({
