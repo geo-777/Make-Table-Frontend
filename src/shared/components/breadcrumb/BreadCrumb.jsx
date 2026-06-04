@@ -14,6 +14,7 @@ const MAIN_LINKS = [
 const OTHER_LINKS = {
   helpsupport: "Help & Support",
   settings: "Settings",
+  myprofile: "My Profile",
 };
 
 const BreadCrumb = () => {

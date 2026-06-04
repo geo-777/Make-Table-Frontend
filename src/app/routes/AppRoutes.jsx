@@ -6,6 +6,7 @@ import PublicRoutes from "./PublicRoutes";
 import Navbar from "../../shared/components/navbar/Navbar";
 import LoaderFull from "../../shared/components/loader/LoaderFull";
 
+const MyProfile = lazy(() => import("../../pages/myprofile/MyProfile"));
 const Login = lazy(() => import("../../features/auth/pages/Login"));
 const Register = lazy(() => import("../../features/auth/pages/Register"));
 
@@ -134,6 +135,15 @@ export default function AppRoutes() {
               <ProtectedRoutes>
                 {" "}
                 <HelpSupport />{" "}
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/myprofile"
+            element={
+              <ProtectedRoutes>
+                {" "}
+                <MyProfile />{" "}
               </ProtectedRoutes>
             }
           />
