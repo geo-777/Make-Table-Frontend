@@ -1,11 +1,13 @@
 .dropdownContainer {
   padding: 0.5rem;
   background-color: var(--secondary-bg);
-  position: absolute;
-  z-index: 100;
+  position: fixed;
+  z-index: 999;
   border-radius: 7px;
   bottom: -9.5rem;
-  right: 0rem;
+  right: 6px;
+  top: 0;
+  height: fit-content;
   min-width: 170px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.04);
   display: flex;

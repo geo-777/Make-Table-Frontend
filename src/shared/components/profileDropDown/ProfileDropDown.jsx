@@ -2,7 +2,7 @@ import styles from "./ProfileDropdown.module.css";
 import { UserRound, Settings, HelpCircle, LogOut } from "lucide-react";
 import { useAuth } from "../../../app/providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
-const ProfileDropdown = ({ isOpen }) => {
+const ProfileDropdown = ({ isOpen, style = {} }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const logoutHandler = async () => {
@@ -13,6 +13,7 @@ const ProfileDropdown = ({ isOpen }) => {
       className={`${styles.dropdownContainer} ${
         isOpen ? styles.active : styles.inactive
       }`}
+      style={style}
     >
       <div className={styles.listItem}>
         <UserRound size={14} />

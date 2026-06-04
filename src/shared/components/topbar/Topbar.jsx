@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import useNavStore from "../../zustand/navStore";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import BreadCrumb from "../breadcrumb/BreadCrumb";
+import { createPortal } from "react-dom";
 const Topbar = ({ page }) => {
   const { toggleNavbar, toggleMobileNav, mobileNavOpen, setMobNav } =
     useNavStore(); //handles navbar collapsing and opening
@@ -13,7 +14,7 @@ const Topbar = ({ page }) => {
   const { user } = useAuth();
   // handles profile icon clicking popup menu
   const [isOpen, setIsOpen] = useState(false);
-  let menuRef = useRef();
+  const menuRef = useRef();
 
   //done to close menu if clicked outside
   useEffect(() => {
@@ -34,7 +35,7 @@ const Topbar = ({ page }) => {
     else toggleMobileNav();
   };
   return (
-    <div className={styles.topbar}>
+    <div className={styles.topbar} id="topbar">
       <div
         style={{
           pointerEvents: mobileNavOpen & (pageWidth < 615) ? "auto" : "none",
@@ -52,7 +53,13 @@ const Topbar = ({ page }) => {
       <div className={styles.right} onClick={() => setIsOpen((prev) => !prev)}>
         <div className={styles.profileIcon} ref={menuRef}>
           {user.slice(0, 2).toUpperCase()}
-          <ProfileDropdown isOpen={isOpen} />
+          {createPortal(
+            <ProfileDropdown 
+              isOpen={isOpen}
+              style={{top: `${(document.getElementById("topbar").getBoundingClientRect().height ?? 62) - 6}px`}}
+            />,
+            document.body
+          )}
         </div>
       </div>
     </div>
