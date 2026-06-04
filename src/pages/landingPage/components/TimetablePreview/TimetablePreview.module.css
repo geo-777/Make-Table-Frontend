@@ -1,0 +1,141 @@
+.wrapper {
+  margin-top: 72px;
+}
+
+.window {
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  box-shadow: var(--shadow-elevated);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 14px 18px;
+
+  border-bottom: 1px solid var(--border);
+
+  background: var(--secondary);
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.path {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.domain {
+  padding: 4px 8px;
+  border-radius: 6px;
+
+  background: var(--background);
+
+  border: 1px solid var(--border);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 120px repeat(6, minmax(0, 1fr));
+  gap: 6px;
+  padding: 16px;
+}
+
+.cornerCell {
+  background: transparent;
+}
+
+.slotHeader,
+.dayLabel {
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+
+.dayLabel {
+  text-align: left;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.subject {
+  padding: 14px 10px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* subjects */
+
+.math {
+  background: rgba(100, 62, 214, 0.12);
+  color: var(--subject-math);
+}
+
+.eng {
+  background: rgba(221, 64, 90, 0.12);
+  color: var(--subject-english);
+}
+
+.sci {
+  background: rgba(25, 162, 230, 0.12);
+  color: var(--subject-science);
+}
+
+.hist {
+  background: rgba(245, 159, 10, 0.12);
+  color: var(--subject-history);
+}
+
+.art {
+  background: rgba(46, 184, 138, 0.12);
+  color: var(--subject-art);
+}
+
+.pe {
+  background: rgba(231, 76, 60, 0.12);
+  color: var(--subject-pe);
+}
+
+.cs {
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--subject-cs);
+}
+
+.mus {
+  background: rgba(168, 85, 247, 0.12);
+  color: var(--subject-music);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    overflow-x: auto;
+    min-width: 700px;
+  }
+}

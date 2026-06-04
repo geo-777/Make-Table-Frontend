@@ -1,0 +1,99 @@
+.section {
+  padding: 140px 24px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.container h2 {
+  font-size: clamp(3rem, 8vw, 6rem);
+
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+
+  font-weight: 600;
+}
+
+.container h2 span {
+  color: var(--primary);
+
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+
+.container p {
+  max-width: 650px;
+
+  margin: 28px auto 0;
+
+  color: var(--muted-foreground);
+
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+
+  margin-top: 40px;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 20px;
+
+  border-radius: var(--radius);
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.primaryBtn {
+  border: none;
+
+  background: var(--primary);
+  color: white;
+}
+
+.primaryBtn:hover {
+  opacity: 0.9;
+}
+
+.secondaryBtn {
+  border: 1px solid var(--border);
+
+  background: var(--card);
+  color: var(--foreground);
+}
+
+.secondaryBtn:hover {
+  background: var(--secondary);
+}
+
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 240px;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,149 @@
+.hero {
+  padding: 80px 24px 96px;
+  border-bottom: 1px solid var(--border);
+  background: var(--gradient-hero);
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.badgeWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 14px;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  background: var(--card);
+
+  text-decoration: none;
+  color: var(--muted-foreground);
+
+  font-size: 12px;
+}
+
+.badge svg {
+  color: var(--primary);
+}
+
+.separator {
+  color: var(--border);
+}
+
+.badgeAction {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.title {
+  margin-top: 32px;
+
+  text-align: center;
+
+  font-size: clamp(3.5rem, 8vw, 6rem);
+
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+
+  font-weight: 600;
+}
+
+.title span {
+  color: var(--primary);
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+
+.description {
+  max-width: 760px;
+
+  margin: 24px auto 0;
+
+  text-align: center;
+
+  color: var(--muted-foreground);
+
+  font-size: 1.15rem;
+  line-height: 1.8;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+
+  margin-top: 40px;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 20px;
+
+  border-radius: var(--radius);
+
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.primaryBtn {
+  border: none;
+  background: var(--primary);
+  color: white;
+}
+
+.primaryBtn:hover {
+  opacity: 0.9;
+}
+
+.secondaryBtn {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
+}
+
+.meta {
+  margin-top: 20px;
+
+  text-align: center;
+
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 220px;
+    justify-content: center;
+  }
+}
+@media (max-width: 420px) {
+  .description {
+    line-height: 1.2rem;
+    font-size: 15px;
+  }
+}
