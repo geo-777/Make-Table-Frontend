@@ -10,6 +10,7 @@
   width: 100%;
   font-size: 0.875rem;
   border-collapse: collapse;
+  background-color: var(--card);
 }
 
 .headRow {
@@ -24,6 +25,7 @@
   color: var(--muted-foreground);
   width: 7rem;
   text-transform: uppercase;
+  background-color: var(--background);
 }
 
 .slotTh {
@@ -33,6 +35,7 @@
   color: var(--muted-foreground);
   min-width: 120px;
   text-transform: uppercase;
+  background-color: var(--background);
 }
 
 .bodyRow {

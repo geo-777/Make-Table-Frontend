@@ -58,8 +58,7 @@ const createSubjectColor = (subjectName) => {
   const hue = theme[hash % theme.length];
 
   const saturation = 65 + (hash % 10);
-  const lightness = 55 + ((hash >> 3) % 10);
-
+  const lightness = 74 + ((hash >> 3) % 8);
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 };
 
