@@ -53,6 +53,12 @@ export default function Dropdown({
     }
   };
 
+  const handleDefault = () => {
+    if(selected) return selected;
+    if(options.length > 0) return options[0];
+    return placeholder
+  };
+
   return (
     <div className={styles.wrapper} ref={containerRef}>
       <button
@@ -63,7 +69,7 @@ export default function Dropdown({
         aria-expanded={isOpen}
         type="button"
       >
-        <span className={styles.triggerLabel}>{selected || placeholder}</span>
+        <span className={styles.triggerLabel}>{handleDefault()}</span>
         {isOpen ? <ChevronUp /> : <ChevronDown/>}
       </button>
 
