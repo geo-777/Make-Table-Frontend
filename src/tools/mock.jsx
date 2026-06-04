@@ -53,6 +53,33 @@ async function handleEntries(label, items, urlFn) {
   return failed;
 }
 
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash);
+}
+
+const createSubjectColor = (subjectName) => {
+  const theme = [210, 250, 280, 160, 30];
+  const hash = hashString(subjectName);
+  const hue = theme[hash % theme.length];
+  const saturation = 65 + (hash % 10);
+  const lightness = 74 + ((hash >> 3) % 8);
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+};
+
+const normalizeSubject = () => {
+  const subjects = MOCK_DATA.subjects;
+
+  subjects.forEach((subject) => {
+    subject["rgb_code"] = createSubjectColor(subject.name);
+  });
+
+  return subjects;
+}
+
 function handleClasses(timetableId) {
   return handleEntries(
     "Classes",
@@ -72,7 +99,7 @@ function handleTeachers(timetableId) {
 function handleSubjects(timetableId) {
   return handleEntries(
     "Subjects",
-    MOCK_DATA.subjects,
+    normalizeSubject(),
     () => `/timetables/${timetableId}/subjects`,
   );
 }
