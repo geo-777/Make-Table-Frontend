@@ -54,11 +54,13 @@ const Topbar = ({ page }) => {
         <div className={styles.profileIcon} ref={menuRef}>
           {user.slice(0, 2).toUpperCase()}
           {createPortal(
-            <ProfileDropdown 
+            <ProfileDropdown
               isOpen={isOpen}
-              style={{top: `${(document.getElementById("topbar").getBoundingClientRect().height ?? 62) - 6}px`}}
+              style={{
+                top: `${(document?.getElementById("topbar")?.getBoundingClientRect()?.height ?? 62) - 6}px`,
+              }}
             />,
-            document.body
+            document.body,
           )}
         </div>
       </div>
