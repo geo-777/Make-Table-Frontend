@@ -9,10 +9,10 @@ import {
   GitBranch,
   CheckCircle,
   Send,
+  Calendar
 } from "lucide-react";
 import styles from "./LandingPage.module.css";
 import logoFull from "../../assets/logo_full_width.png";
-import { Calendar } from "lucide-react";
 
 const FEATURES = [
   {
