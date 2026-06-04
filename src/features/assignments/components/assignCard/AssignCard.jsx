@@ -1,5 +1,5 @@
 import styles from "./AssignCard.module.css";
-import ItemCard from "../../../../shared/components/itemView/itemCard/ItemCard";
+import ItemCard from "../../../../shared/components/itemCard/ItemCard";
 import { TeacherRoles, CLASS_TEACHER } from "../../utils/assignEnums";
 /*
 role possible values : Subject_Teacher and Class_Teacher

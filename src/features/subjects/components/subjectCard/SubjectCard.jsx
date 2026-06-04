@@ -1,5 +1,5 @@
 import styles from "./SubjectCard.module.css";
-import ItemCard from "../../../../shared/components/itemView/itemCard/ItemCard";
+import ItemCard from "../../../../shared/components/itemCard/ItemCard";
 
 export default function SubjectCard({
   subject,
