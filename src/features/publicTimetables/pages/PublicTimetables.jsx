@@ -5,7 +5,16 @@ import usePublicTimetable from "../hooks/usePublicTimetable";
 import { useMemo } from "react";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import Table from "../../dashboard/components/timeTables/Table";
-import { groupEntriesByDay } from "../../dashboard/pages/DashboardSelected";
+
+function groupEntriesByDay(entries) {
+  return entries.reduce((acc, entry) => {
+    const day = entry.day;
+    if (!acc[day]) acc[day] = [];
+    acc[day].push(entry);
+    return acc;
+  }, {});
+}
+
 const PublicTimetables = ({ classTable = false }) => {
   const { id } = useParams();
 

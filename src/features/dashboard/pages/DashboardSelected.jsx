@@ -26,12 +26,12 @@ const Header = ({
   onForce,
 }) => {
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} stagger-children`}>
       <div className={styles.info}>
         <h1 className={styles.title}>{name}</h1>
         <div className={styles.meta}>
           <span
-            className={`${styles.badge} ${isGenerating ? styles.violet : (viewStatus === "Public" ? styles.green : "")}`}
+            className={`${styles.badge} ${isGenerating ? styles.violet : viewStatus === "Public" ? styles.green : ""}`}
           >
             <span className={styles.dot} />
             {viewStatus}
@@ -80,7 +80,7 @@ function Tabs({ onTabChange }) {
 
   return (
     <div
-      className={styles.tabList}
+      className={`${styles.tabList} stagger-children`}
       role="tablist"
       aria-orientation="horizontal"
     >
@@ -107,7 +107,7 @@ function Tabs({ onTabChange }) {
   );
 }
 
-export function groupEntriesByDay(entries) {
+function groupEntriesByDay(entries) {
   return entries.reduce((acc, entry) => {
     const day = entry.day;
     if (!acc[day]) acc[day] = [];
