@@ -8,7 +8,7 @@ export const MOCK_DATA = {
   subjects: [
     {
       name: "Mathematics",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 2,
       min_classes_week: 4,
       max_classes_week: 5,
@@ -21,7 +21,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Physics",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 2,
       min_classes_week: 3,
       max_classes_week: 4,
@@ -34,7 +34,7 @@ export const MOCK_DATA = {
     },
     {
       name: "English",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 1,
       min_classes_week: 3,
       max_classes_week: 4,
@@ -47,7 +47,7 @@ export const MOCK_DATA = {
     },
     {
       name: "History",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 1,
       min_classes_week: 2,
       max_classes_week: 3,
@@ -60,7 +60,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Physical Education",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 1,
       min_classes_week: 2,
       max_classes_week: 3,
@@ -73,7 +73,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Programming Lab",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 2,
       min_classes_week: 4,
       max_classes_week: 6,
@@ -86,7 +86,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Database Systems",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 2,
       min_classes_week: 3,
       max_classes_week: 5,
@@ -99,7 +99,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Networking Lab",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 2,
       min_classes_week: 4,
       max_classes_week: 6,
@@ -112,7 +112,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Computer Architecture",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 1,
       min_classes_week: 2,
       max_classes_week: 3,
@@ -125,7 +125,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Advanced Mathematics",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 2,
       min_classes_week: 5,
       max_classes_week: 6,
@@ -138,7 +138,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Statistics",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 2,
       min_classes_week: 3,
       max_classes_week: 5,
@@ -151,7 +151,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Economics",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 1,
       min_classes_week: 3,
       max_classes_week: 4,
@@ -164,7 +164,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Geography",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 1,
       min_classes_week: 2,
       max_classes_week: 3,
@@ -177,7 +177,7 @@ export const MOCK_DATA = {
     },
     {
       name: "Literature",
-      min_classes_day: 1,
+      min_classes_day: 0,
       max_classes_day: 1,
       min_classes_week: 2,
       max_classes_week: 3,
