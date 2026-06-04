@@ -50,14 +50,14 @@ export default function Timetable({
               style={{ animationDelay: `${rowIndex * 60}ms` }}
             >
               <td className={styles.dayTd}>{day}</td>
-              {entries[day]?.map((rawEntry, slotIndex) => {
-                const entry = normaliseEntry(rawEntry, mode);
+              {Array.from({length: slotCount}, (_, slotIndex) => {
+                const entry = entries[day]?.find((e) => e.slot === slotIndex + 1);
                 return (
                   <td key={slotIndex} className={styles.entryTd}>
                     {entry ? (
-                      <EntryCard entry={entry} />
+                      <EntryCard entry={normaliseEntry(entry, mode)} />
                     ) : (
-                      <div className={styles.emptyCard}>—</div>
+                      <div className={styles.emptyCard}>-</div>
                     )}
                   </td>
                 );
