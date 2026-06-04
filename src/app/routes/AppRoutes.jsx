@@ -30,6 +30,11 @@ const Documentation = lazy(
 const PublicTimetables = lazy(
   () => import("../../features/publicTimetables/pages/PublicTimetables"),
 );
+
+const TermsAndConditions = lazy(
+  () => import("../../pages/legal/TermsAndConditions"),
+);
+const PrivacyPolicy = lazy(() => import("../../pages/legal/PrivacyPolicy"));
 export default function AppRoutes() {
   return (
     <Suspense fallback={<LoaderFull />}>
@@ -72,6 +77,9 @@ export default function AppRoutes() {
           path="/timetable/teacher/:id"
           element={<PublicTimetables classTable={false} />}
         />
+        <Route path="/toc" element={<TermsAndConditions />} />
+
+        <Route path="/privacy" element={<PrivacyPolicy />} />
 
         {/* --- Protected Routes --- */}
         <Route element={<Navbar />}>
