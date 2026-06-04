@@ -10,10 +10,11 @@ import useSubjects from "../../../features/subjects/hooks/useSubjects";
 import { useCallback, useEffect, useState } from "react";
 import Dropdown from "../components/dropDown/Dropdown";
 import Table from "../components/timeTables/Table";
-import { generate_POST } from "../../../api/generations.api";
+import { generate_POST, getTimetableStatus_GET } from "../../../api/generations.api";
 import { toast } from "react-toastify";
 import { useTimetableEntry } from "../hooks/useTimetableEntry";
 import ViolationsPanel from "../components/violationsPanel/ViolationsPanel";
+import { refresh } from "../../../api/auth.api";
 
 const Header = ({
   name,
@@ -214,13 +215,34 @@ export default function DashboardSelected() {
   const handleTimetableGeneration = useCallback(
     async (force = false) => {
       if (!selectedTimetableData) return;
-      try {
-        setIsGenerating(true);
-        const result = await generate_POST(selectedTimetableData.id, force);
+      setIsGenerating(true);
 
-        if (result?.data?.status === "Failed") {
+      try {
+        await generate_POST(selectedTimetableData.id, force);
+
+        const result = await new Promise((resolve) => {
+          const interval = setInterval(async () => {
+            try {
+              const statusResult = await getTimetableStatus_GET(
+                selectedTimetableData.id,
+              );
+              const status = statusResult?.data?.status;
+
+              if (status === "Active" || status === "Failed") {
+                clearInterval(interval);
+                resolve(status);
+              }
+            } catch (err) {
+              console.log(err);
+              clearInterval(interval);
+              resolve("Failed");
+            }
+          }, 2000);
+        });
+
+        if (result === "Failed") {
           toast.error("Timetable failed to generate.");
-        } else if (result?.data?.status === "Active") {
+        } else {
           toast.success("Timetable created successfully.");
           if (activeTab === "class" && selectedClass) {
             clearClassTimetables();
@@ -234,6 +256,7 @@ export default function DashboardSelected() {
         console.error(err);
         toast.error("Timetable failed to generate.");
       } finally {
+        refresh();
         setIsGenerating(false);
       }
     },
