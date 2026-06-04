@@ -12,33 +12,7 @@ import "../../../styles/appLayout.css";
 
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
-const COLUMNS = [
-  {
-    key: "teacher_name",
-    label: "Teacher",
-    render: (value) => value,
-  },
-  {
-    key: "class_name",
-    label: "Class",
-    render: (value) => value,
-  },
-  {
-    key: "subject_name",
-    label: "Subject",
-    render: (value) => value,
-  },
-  {
-    key: "role",
-    label: "Role",
-    render: (value) => value,
-  },
-  {
-    key: "morning_class_days",
-    label: "Morning Days",
-    render: (value) => value,
-  },
-];
+
 const Assignments = () => {
   const { selectedTimetableData } = useTimeTableSelect();
   const { activeView, setActiveView } = useAssignmentsView();
@@ -61,7 +35,7 @@ const Assignments = () => {
   //query data from hook
   const { data, isPending, isSuccess, isError, deleteListing } =
     useAssignments();
-  let assignData = data?.data ?? [];
+  const assignData = data?.data ?? [];
 
   if (!selectedTimetableData) {
     return (
@@ -103,7 +77,7 @@ const Assignments = () => {
           {activeView === "list" && isSuccess && (
             <ListView
               data={assignData}
-              deleteFn={async (id) => await deleteListing.mutateAsync(id)}
+              deleteFn={(id) => deleteListing.mutateAsync(id)}
               editFn={(data) => openEditDialog(data)}
             />
           )}
@@ -119,7 +93,7 @@ const Assignments = () => {
                   <AssignCard
                     key={e.id}
                     data={e}
-                    deleteFn={async (id) => await deleteListing.mutateAsync(id)}
+                    deleteFn={(id) => deleteListing.mutateAsync(id)}
                     editFn={(data) => openEditDialog(data)}
                   />
                 )) ?? []}
