@@ -65,7 +65,7 @@
 
 .links h4 {
   margin-bottom: 16px;
-
+  color: var(--foreground);
   font-size: 14px;
   font-weight: 600;
 }

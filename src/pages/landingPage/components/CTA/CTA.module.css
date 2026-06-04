@@ -1,5 +1,6 @@
 .section {
   padding: 140px 24px;
+  background-color: var(--secondary-bg);
 }
 
 .container {
@@ -10,7 +11,7 @@
 
 .container h2 {
   font-size: clamp(3rem, 8vw, 6rem);
-
+  color: var(--foreground);
   line-height: 0.95;
   letter-spacing: -0.05em;
 

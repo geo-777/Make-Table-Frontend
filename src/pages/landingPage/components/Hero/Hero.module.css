@@ -48,7 +48,7 @@
 
 .title {
   margin-top: 32px;
-
+  color: var(--foreground);
   text-align: center;
 
   font-size: clamp(3.5rem, 8vw, 6rem);
