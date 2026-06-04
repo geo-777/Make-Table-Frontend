@@ -1,13 +1,21 @@
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import styles from "./CTA.module.css";
+import { easeOut } from "../../LandingPage";
 
 const CTA = () => {
   const navigate = useNavigate();
 
   return (
     <section className={styles.section}>
-      <div className={styles.container}>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: easeOut }}
+        className={styles.container}
+      >
         <h2>
           Your next timetable
           <br />
@@ -36,7 +44,7 @@ const CTA = () => {
             Read the docs
           </button>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

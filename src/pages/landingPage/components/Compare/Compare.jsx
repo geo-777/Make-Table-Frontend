@@ -1,5 +1,7 @@
 import { Check, X } from "lucide-react";
 import styles from "./Compare.module.css";
+import { motion } from "framer-motion";
+import { easeOut } from "../../LandingPage";
 const oldWay = [
   "Hours spent arranging schedules manually",
   "Finding conflicts takes time",
@@ -20,7 +22,12 @@ const Compare = () => {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        <div className={styles.header}>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className={styles.header}
+        >
           <span className={styles.label}>Why switch</span>
 
           <h2>
@@ -28,10 +35,16 @@ const Compare = () => {
             <br />
             More school.
           </h2>
-        </div>
+        </motion.div>
 
         <div className={styles.compareGrid}>
-          <div className={styles.oldCard}>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: easeOut }}
+            className={styles.oldCard}
+          >
             <div className={styles.cardLabel}>The old way</div>
 
             <ul>
@@ -42,9 +55,15 @@ const Compare = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          <div className={styles.newCard}>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: easeOut }}
+            className={styles.newCard}
+          >
             <div className={styles.cardLabel}>With MakeTable</div>
 
             <ul>
@@ -56,7 +75,7 @@ const Compare = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

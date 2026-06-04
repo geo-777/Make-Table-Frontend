@@ -2,12 +2,19 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import styles from "./Workflow.module.css";
 import { STEPS } from "../../data/landingData";
-
+import { motion } from "framer-motion";
+import { easeOut } from "../../LandingPage";
 const Workflow = () => {
   return (
     <section id="how" className={styles.section}>
       <div className={styles.container}>
-        <div className={styles.header}>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className={styles.header}
+        >
           <div className={styles.heading}>
             <span className={styles.label}>Workflow</span>
 
@@ -22,17 +29,24 @@ const Workflow = () => {
             See the full guide
             <ArrowRight size={14} />
           </Link>
-        </div>
+        </motion.div>
 
         <div className={styles.grid}>
-          {STEPS.map((step) => (
-            <div key={step.n} className={styles.card}>
+          {STEPS.map((step, i) => (
+            <motion.div
+              key={step.n}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.6, ease: easeOut }}
+              className={styles.card}
+            >
               <div className={styles.number}>{step.n}</div>
 
               <h3>{step.t}</h3>
 
               <p>{step.d}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

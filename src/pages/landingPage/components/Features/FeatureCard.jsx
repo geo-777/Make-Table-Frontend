@@ -1,8 +1,16 @@
 import styles from "./FeatureCard.module.css";
+import { motion } from "framer-motion";
+import { easeOut } from "../../LandingPage";
 
-const FeatureCard = ({ icon: Icon, title, desc }) => {
+const FeatureCard = ({ icon: Icon, title, desc, idx: i }) => {
   return (
-    <div className={styles.card}>
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ delay: (i % 3) * 0.08, duration: 0.6, ease: easeOut }}
+      className={styles.card}
+    >
       <div className={styles.iconWrapper}>
         <Icon size={18} />
       </div>
@@ -10,7 +18,7 @@ const FeatureCard = ({ icon: Icon, title, desc }) => {
       <h3>{title}</h3>
 
       <p>{desc}</p>
-    </div>
+    </motion.div>
   );
 };
 

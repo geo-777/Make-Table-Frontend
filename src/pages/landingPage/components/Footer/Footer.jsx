@@ -29,7 +29,7 @@ const Footer = () => {
             </div>
 
             <div>
-              <h4>TOC</h4>
+              <h4>Legal</h4>
 
               <Link to="/privacy">Privacy</Link>
               <Link to="/terms">Terms</Link>
@@ -43,7 +43,10 @@ const Footer = () => {
           </p>
 
           <div className={styles.socials}>
-            <a href="#">
+            <a
+              href="https://github.com/geo-777/Make-Table-Frontend"
+              target="_blank"
+            >
               <Github size={16} />
             </a>
 

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import styles from "./TimetablePreview.module.css";
-
+import { easeOut } from "../../LandingPage";
+import { motion } from "framer-motion";
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const SLOTS = ["Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5", "Slot 6"];
 
@@ -15,7 +16,12 @@ const DATA = [
 
 const TimetablePreview = () => {
   return (
-    <div className={styles.wrapper}>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: 0.4, ease: easeOut }}
+      className={styles.wrapper}
+    >
       <div className={styles.window}>
         <div className={styles.topbar}>
           <div className={styles.dots}>
@@ -55,7 +61,7 @@ const TimetablePreview = () => {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
