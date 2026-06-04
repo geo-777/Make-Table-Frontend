@@ -23,6 +23,7 @@
   font-weight: 500;
   color: var(--muted-foreground);
   width: 7rem;
+  text-transform: uppercase;
 }
 
 .slotTh {
@@ -31,6 +32,7 @@
   font-weight: 500;
   color: var(--muted-foreground);
   min-width: 120px;
+  text-transform: uppercase;
 }
 
 .bodyRow {
@@ -46,6 +48,7 @@
   padding: 0.75rem 1rem;
   font-weight: 500;
   color: var(--foreground);
+  text-transform: uppercase;
 }
 
 .entryTd {

@@ -20,9 +20,9 @@
 }
 
 .title {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
@@ -35,8 +35,6 @@
 
 .badgeCount {
   font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
   padding: 2px 7px;
   border-radius: 20px;
   line-height: 1.6;
@@ -65,10 +63,8 @@
 
 .filterBtn {
   flex: 1;
-  padding: 5px 8px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  padding: 8px;
+  font-size: 12px;
   text-transform: uppercase;
   border: 1px solid transparent;
   border-radius: calc(var(--radius) - 4px);

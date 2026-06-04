@@ -169,6 +169,7 @@
   height: 90%;
   cursor: pointer;
   transition: all 0.18s ease;
+  color: var(--foreground)
 }
 
 .copyLink:hover {

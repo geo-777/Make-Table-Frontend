@@ -31,7 +31,7 @@ const Header = ({
         <h1 className={styles.title}>{name}</h1>
         <div className={styles.meta}>
           <span
-            className={`${styles.badge} ${isGenerating ? styles.violet : ""}`}
+            className={`${styles.badge} ${isGenerating ? styles.violet : (viewStatus === "Public" ? styles.green : "")}`}
           >
             <span className={styles.dot} />
             {viewStatus}
