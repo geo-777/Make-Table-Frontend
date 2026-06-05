@@ -9,6 +9,15 @@
   font-weight: 600;
   color: var(--foreground);
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
 }
 
 .badge {

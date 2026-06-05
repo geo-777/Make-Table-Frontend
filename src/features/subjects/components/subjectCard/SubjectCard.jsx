@@ -10,7 +10,10 @@ export default function SubjectCard({
   return (
     <ItemCard onEdit={onEdit} onDelete={() => onDelete(subject.id)}>
       <div className={styles.header}>
-        <div className={styles.name}>{subject.name}</div>
+        <div className={styles.name}>
+          <div className={styles.dot} style={{backgroundColor: subject.rgb_code}}></div>
+          {subject.name}
+        </div>
         <div style={{ marginLeft: "auto", display: "flex", gap: "6px" }}>
           {subject.isLab && (
             <button

@@ -1,6 +1,7 @@
 import "../../../styles/appLayout.css";
 import styles from "../styles/Subjects.module.css";
 import { useMemo, useState } from "react";
+import createColor from "../../../shared/utils/hashColor";
 
 import { AlertTriangle } from "lucide-react";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
@@ -40,27 +41,6 @@ import SubjectCard from "../components/subjectCard/SubjectCard";
     ]
   }
 */
-
-function hashString(str) {
-  let hash = 0;
-
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  return Math.abs(hash);
-}
-
-const createSubjectColor = (subjectName) => {
-  const theme = [210, 250, 280, 160, 30];
-  const hash = hashString(subjectName);
-
-  const hue = theme[hash % theme.length];
-
-  const saturation = 65 + (hash % 10);
-  const lightness = 74 + ((hash >> 3) % 8);
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-};
 
 export default function Subjects() {
   const { selectedTimetableData } = useTimeTableSelect();
@@ -113,7 +93,7 @@ export default function Subjects() {
       isLab: data.isLab,
       lab_classes: data.lab_classes?.length > 0 ? data.lab_classes : null,
       hardness: data.hardness,
-      rgb_code: createSubjectColor(data.name),
+      rgb_code: createColor(data.name),
     };
 
     await createSubject.mutateAsync({

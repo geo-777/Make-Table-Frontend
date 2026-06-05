@@ -9,6 +9,7 @@
 //    #7. remove import from the main.jsx file (this is to ensure that it only execute once. otherwise there will be conflicts)
 
 import axiosInstance from "../api/axiosInstance";
+import createColor from "../shared/utils/hashColor";
 import { MOCK_DATA } from "./MOCK_DATA";
 
 async function handleEntries(label, items, urlFn) {
@@ -53,28 +54,11 @@ async function handleEntries(label, items, urlFn) {
   return failed;
 }
 
-function hashString(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return Math.abs(hash);
-}
-
-const createSubjectColor = (subjectName) => {
-  const theme = [210, 250, 280, 160, 30];
-  const hash = hashString(subjectName);
-  const hue = theme[hash % theme.length];
-  const saturation = 65 + (hash % 10);
-  const lightness = 74 + ((hash >> 3) % 8);
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-};
-
 const normalizeSubject = () => {
   const subjects = MOCK_DATA.subjects;
 
   subjects.forEach((subject) => {
-    subject["rgb_code"] = createSubjectColor(subject.name);
+    subject["rgb_code"] = createColor(subject.name);
   });
 
   return subjects;
