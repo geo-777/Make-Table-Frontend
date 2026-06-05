@@ -3,7 +3,6 @@ import styles from "../styles/Subjects.module.css";
 import { useMemo, useState } from "react";
 import createColor from "../../../shared/utils/hashColor";
 
-import { AlertTriangle } from "lucide-react";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import Topbar from "../../../shared/components/topbar/Topbar";

@@ -1,6 +1,6 @@
 import styles from "./SubjectCard.module.css";
 import ItemCard from "../../../../shared/components/itemCard/ItemCard";
-import { Shapes, Badge } from "lucide-react";
+import { Badge } from "lucide-react";
 
 export default function SubjectCard({
   subject,

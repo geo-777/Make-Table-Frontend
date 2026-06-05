@@ -2,37 +2,7 @@ import { useState } from "react";
 import { Pencil, Trash2, Check, X } from "lucide-react";
 import styles from "./SubjectList.module.css";
 import LabClassesTooltip from "../labClassesTooltip/LabClassesTooltip";
-
-const MOCK_CLASSES = [
-  {
-    id: 1,
-    class_name: "Class 10-A",
-    room_name: "Lab Room 1",
-    isLab: true,
-    created_at: "2026-05-28T10:43:09.891Z",
-  },
-  {
-    id: 2,
-    class_name: "Class 10-B",
-    room_name: "Lab Room 1",
-    isLab: true,
-    created_at: "2026-05-28T10:43:09.891Z",
-  },
-  {
-    id: 3,
-    class_name: "Class 11-Science",
-    room_name: "Lab Room 2",
-    isLab: true,
-    created_at: "2026-05-28T10:43:09.891Z",
-  },
-  {
-    id: 4,
-    class_name: "Class 9-A",
-    room_name: "Lab Room 3",
-    isLab: true,
-    created_at: "2026-05-28T10:43:09.891Z",
-  },
-];
+import useClasses from "../../../classes/hooks/useClasses";
 
 const HARDNESS_CLASS = { Low: "low", Med: "med", High: "high" };
 
@@ -78,7 +48,10 @@ function RangeInput({ minVal, maxVal, minField, maxField, onChange }) {
 export default function SubjectList({ subjects = [], onEdit, onDelete }) {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
-  const labClasses = MOCK_CLASSES.filter((c) => c.isLab);
+
+  const { data: classes } = useClasses();
+
+  const labClasses = (classes && typeof classes.filter === "function") ? classes?.filter((c) => c.isLab) : [];
 
   const handleEditClick = (subject) => {
     setEditingId(subject.id);
