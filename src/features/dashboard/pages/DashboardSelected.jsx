@@ -346,9 +346,8 @@ export default function DashboardSelected() {
                 </div>
 
                 {selectedClass &&
-                  classEntries &&
-                  success?.class &&
-                  Object.keys(classEntries).length > 0 && (
+                  selectedTimetableData?.slots > 0 &&
+                  selectedTimetableData?.days?.length > 0 && (
                     <Table
                       entries={classEntries}
                       slotCount={selectedTimetableData?.slots ?? 0}
@@ -357,11 +356,6 @@ export default function DashboardSelected() {
                       isLoading={loading.class}
                     />
                   )}
-                {loading?.class && (
-                  <div className={styles.emptyState}>
-                    <Loader />
-                  </div>
-                )}
 
                 {!loading?.class && Object.keys(classEntries).length === 0 && (
                   <div className={styles.emptyState}>
@@ -397,9 +391,8 @@ export default function DashboardSelected() {
                 </div>
 
                 {selectedTeacher &&
-                  teacherEntries &&
-                  success?.teacher &&
-                  Object.keys(teacherEntries).length > 0 && (
+                  selectedTimetableData?.slots > 0 &&
+                  selectedTimetableData?.days?.length > 0 && (
                     <Table
                       entries={teacherEntries}
                       slotCount={selectedTimetableData?.slots ?? 0}
@@ -408,11 +401,7 @@ export default function DashboardSelected() {
                       isLoading={loading.teacher}
                     />
                   )}
-                {loading?.teacher && (
-                  <div className={styles.emptyState}>
-                    <Loader />
-                  </div>
-                )}
+
                 {!loading?.teacher &&
                   Object.keys(teacherEntries).length === 0 && (
                     <div className={styles.emptyState}>

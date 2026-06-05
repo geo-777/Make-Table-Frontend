@@ -7,6 +7,9 @@
 
   --popover: hsl(0 0% 100%);
   --popover-foreground: hsl(230 25% 10%);
+  /* Shimmer variables */
+  --shimmer-base: #f7f7f7;
+  --shimmer-highlight: rgba(255, 255, 255, 0.6);
   --light-violet: hsl(263, 92%, 90%);
   --primary: hsl(255 65% 54%);
   --primary-foreground: rgb(255, 255, 255);
@@ -118,6 +121,9 @@
   /* RGB fallbacks for dark theme */
   --primary-rgb: 143 112 235;
   --muted-rgb: 45 49 64;
+  /* Dark-theme shimmer  */
+  --shimmer-base: rgba(var(--muted-rgb), 0.12);
+  --shimmer-highlight: rgba(255, 255, 255, 0.06);
 
   --secondary: hsl(230 15% 16%);
   --secondary-foreground: hsl(225 15% 92%);

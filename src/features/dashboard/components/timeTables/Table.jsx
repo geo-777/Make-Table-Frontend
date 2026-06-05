@@ -19,13 +19,11 @@ function normaliseEntry(entry, mode) {
 
 export default function Timetable({
   slotCount,
-  entries,
-  days,
+  entries = {},
+  days = [],
   mode = "class",
   isLoading = false,
 }) {
-  if (!entries && isLoading) return null;
-
   return (
     <div className={styles.wrapper}>
       <table className={styles.table}>
@@ -55,6 +53,8 @@ export default function Timetable({
                   <td key={slotIndex} className={styles.entryTd}>
                     {entry ? (
                       <EntryCard entry={normaliseEntry(entry, mode)} />
+                    ) : isLoading ? (
+                      <div className={`${styles.shimmer_sizing} shimmer`}></div>
                     ) : (
                       <div className={styles.emptyCard}>-</div>
                     )}
