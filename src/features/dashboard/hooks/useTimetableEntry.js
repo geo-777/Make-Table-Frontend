@@ -79,8 +79,6 @@ export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
       queryKey: ["timetables", "teacher"],
     });
   };
-
-  console.log(error);
   return {
     classTimetables,
     teacherTimetables,

@@ -7,6 +7,7 @@ import useClasses from "../../../features/classes/hooks/useClasses";
 import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
 import useTeachers from "../../../features/teachers/hooks/useTeachers";
 import useSubjects from "../../../features/subjects/hooks/useSubjects";
+import useTimetableListing from "../hooks/useTimetableListing";
 import { useCallback, useEffect, useState } from "react";
 import Dropdown from "../components/dropDown/Dropdown";
 import Table from "../components/timeTables/Table";
@@ -122,7 +123,7 @@ function groupEntriesByDay(entries) {
 
 export default function DashboardSelected() {
   const { selectedTimetableData } = useTimeTableSelect();
-
+  const { invalidateTimeTableListings } = useTimetableListing();
   const { data: classes } = useClasses();
   const { data: teachers } = useTeachers();
   const { data: subjects } = useSubjects();
@@ -259,6 +260,7 @@ export default function DashboardSelected() {
       } finally {
         refresh();
         setIsGenerating(false);
+        invalidateTimeTableListings(); //for violations to get updated properly..
       }
     },
     [

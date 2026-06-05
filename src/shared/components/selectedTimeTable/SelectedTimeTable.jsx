@@ -36,6 +36,15 @@ const SelectedTimeTable = () => {
   const { timetables, isFetchPending, isFetchError, isFetchSuccess } =
     useTimetableData();
 
+  //updating selectedData on refetches
+  useEffect(() => {
+    if (selectedTimetableData) {
+      selectTimeTableData(
+        timetables.find((e) => e?.id === selectedTimetableData?.id) ?? null,
+      );
+    }
+  }, [timetables]);
+
   const handleMenuToggle = () => {
     if (isFetchPending || isFetchError) return;
     if (isFetchSuccess && timetables?.length === 0) return;
