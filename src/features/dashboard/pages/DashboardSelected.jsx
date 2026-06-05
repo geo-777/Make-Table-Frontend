@@ -127,7 +127,6 @@ export default function DashboardSelected() {
   const {
     classTimetables,
     teacherTimetables,
-    violations,
     loading,
     fetchClassTimetable,
     fetchTeacherTimetable,
@@ -411,7 +410,7 @@ export default function DashboardSelected() {
             )}
           </div>
           <div className={styles.right}>
-            <ViolationsPanel violations={violations} />
+            <ViolationsPanel violations={selectedTimetableData.violations} />
           </div>
         </div>
       </div>

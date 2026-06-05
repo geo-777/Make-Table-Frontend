@@ -7,7 +7,6 @@ import {
 export function useTimetableEntry() {
   const [classTimetables, setClassTimetables] = useState([]);
   const [teacherTimetables, setTeacherTimetables] = useState([]);
-  const [violations, setViolations] = useState([]);
   const [loading, setLoading] = useState({ class: false, teacher: false });
   const [error, setError] = useState({ class: null, teacher: null });
 
@@ -17,7 +16,6 @@ export function useTimetableEntry() {
     try {
       const res = await getClassTimetable_GET(classId);
       setClassTimetables(res.entries);
-      setViolations(res.timetable.violations);
     } catch (err) {
       setError((prev) => ({
         ...prev,
@@ -34,7 +32,6 @@ export function useTimetableEntry() {
     try {
       const res = await getTeacherTimetable_GET(teacherId);
       setTeacherTimetables(res.entries);
-      setViolations(res.timetable.violations);
     } catch (err) {
       setError((prev) => ({
         ...prev,
@@ -64,7 +61,6 @@ export function useTimetableEntry() {
   return {
     classTimetables,
     teacherTimetables,
-    violations,
     loading,
     error,
     fetchClassTimetable,
