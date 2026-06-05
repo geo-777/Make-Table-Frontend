@@ -65,31 +65,34 @@
 }
 .actionBtns {
   display: flex;
+  align-items: center;
   gap: 0.4rem;
 }
 .actionBtns button {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  justify-content: center;
   border-radius: 0.6rem;
   cursor: pointer;
 }
 .primaryBtn {
-  /* background-color: var(--accent-greener-fg); */
-  background-color: var(--green-btn);
+  background: linear-gradient(135deg, var(--green-btn) 50%, color-mix(in srgb, var(--green-btn) 50%, #eddd53));
+  background-size: 120%;
   color: var(--sidebar-background);
-  border: 1.5px solid var(--green-btn);
-  padding-inline: 1rem;
+  border: none;
+  padding-inline: 1.5rem;
+  height: 80%;
   font-weight: 500;
   transition: 0.2s ease-in-out;
 }
 .publishedBtn:hover {
   background-color: var(--accent-greener-fg);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
 }
 .unpublishBtn {
   color: var(--accent-yellow-fg);
-  background-color: var(--accent-yellow-bg);
+  background: var(--accent-yellow-bg);
   border: 1.5px solid var(--accent-yellow-fg);
 }
 .unpublishBtn:hover {
