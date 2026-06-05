@@ -1,5 +1,6 @@
 import styles from "./SubjectCard.module.css";
 import ItemCard from "../../../../shared/components/itemCard/ItemCard";
+import { Shapes, Badge } from "lucide-react";
 
 export default function SubjectCard({
   subject,
@@ -11,14 +12,17 @@ export default function SubjectCard({
     <ItemCard onEdit={onEdit} onDelete={() => onDelete(subject.id)}>
       <div className={styles.header}>
         <div className={styles.name}>
-          <div className={styles.dot} style={{backgroundColor: subject.rgb_code}}></div>
+          <Badge
+            size={24}
+            style={{ fill: subject.rgb_code, stroke: subject.rgb_code }}
+          />
           {subject.name}
         </div>
         <div style={{ marginLeft: "auto", display: "flex", gap: "6px" }}>
           {subject.isLab && (
             <button
               className={`${styles.badge} ${styles.primary}`}
-              style={{ border: "none"}}
+              style={{ border: "none" }}
             >
               {`${subject.lab_classes.length} ${subject.lab_classes.length > 1 ? "classes" : "class"}`}
             </button>

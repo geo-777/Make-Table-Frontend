@@ -1,20 +1,26 @@
 import styles from "../../styles/Classes.module.css";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Badge } from "lucide-react";
 import useClasses from "../../hooks/useClasses";
 import ClassPopup from "../popups/ClassPopup";
 import { useState } from "react";
 import StatusWrapper from "../../../../shared/components/statusWrapper/StatusWrapper";
+import createColor from "../../../../shared/utils/hashColor";
 // individual grid items.
 const GridItem = ({ data, openEditPopup }) => {
   const actionbtnSize = 16;
   const actionbtnStroke = 1.75;
   const { deleteListing } = useClasses();
 
+  const color = createColor(data.class_name);
+
   return (
     <div className={styles.gridItem}>
       <div className={styles.gridItem__header}>
         <div className={styles.gridItem__info}>
-          <h6>{data.class_name}</h6>
+          <div style={{ display: "flex", gap: "6px" }}>
+            <Badge size={24} style={{ fill: color, stroke: color }}/>
+            <h6>{data.class_name}</h6>
+          </div>
           <p>{data.room_name}</p>
         </div>
         <span
@@ -34,7 +40,7 @@ const GridItem = ({ data, openEditPopup }) => {
         </button>
         <button
           className={`${styles.actionBtn} ${styles.deleteBtn}`}
-          onClick={async () => deleteListing.mutateAsync(data.id)}
+          onClick={() => deleteListing.mutateAsync(data.id)}
         >
           <Trash2 size={actionbtnSize} strokeWidth={actionbtnStroke} />
           <p>Delete</p>

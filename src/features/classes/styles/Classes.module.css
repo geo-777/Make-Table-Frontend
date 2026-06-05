@@ -57,6 +57,11 @@
 .gridItem__info p {
   font-size: 15px;
   color: var(--color-grey-500);
+  margin-left: calc(24px + 6px);
+  /*
+    24px -> width of badge, 
+    6px -> gap b/w badge and text
+  */
 }
 .typeLabel {
   border-radius: 999px;

@@ -14,12 +14,6 @@
   gap: 6px;
 }
 
-.dot {
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-}
-
 .badge {
   border-radius: 999px;
   background-color: var(--color-grey-100);
