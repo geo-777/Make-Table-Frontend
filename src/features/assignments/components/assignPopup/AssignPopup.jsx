@@ -85,12 +85,21 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
     );
   };
 
+  const isClassTeacher = form.role === ROLE_OPTIONS[1].value;
+
   const submitEnabled = useMemo(() => {
     if (isEditMode) return isPatched;
 
     if (!form.teacher_id || !form.class_id || !form.subject_id) return false;
+    if (isClassTeacher && selectedDays.length === 0) return false;
     return true;
-  }, [form, selectedDays, isEditMode, isPatched]);
+  }, [form, selectedDays, isEditMode, isPatched, isClassTeacher]);
+
+  useEffect(() => {
+    if (form.role !== ROLE_OPTIONS[1].value) {
+      setSelectedDays([]);
+    }
+  }, [form.role]);
 
   useEffect(() => {
     if (!isEditMode || !existingData) {
@@ -109,13 +118,13 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
   }, [form.role, selectedDays, existingData, isEditMode]);
 
   const handleSubmit = async () => {
+    const payload = {
+      ...form,
+      ...(isClassTeacher && { morning_class_days: selectedDays }),
+    };
+
     if (isEditMode) {
       if (!isPatched) return;
-      const payload = {
-        role: form.role,
-        morning_class_days: selectedDays,
-      };
-
       await patchListing.mutateAsync({
         id: existingData.id,
         data: payload,
@@ -123,11 +132,6 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
       closePopup();
       return;
     }
-
-    const payload = {
-      ...form,
-      morning_class_days: selectedDays,
-    };
 
     await createListing.mutateAsync(payload);
     closePopup();
@@ -202,13 +206,15 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
           />
         </div>
 
-        <div className={styles.field}>
-          <DaySelector
-            label="Morning Class Days"
-            selectedDays={selectedDays}
-            toggleDay={toggleDay}
-          />
-        </div>
+        {isClassTeacher && (
+          <div className={styles.field}>
+            <DaySelector
+              label="Morning Class Days"
+              selectedDays={selectedDays}
+              toggleDay={toggleDay}
+            />
+          </div>
+        )}
       </div>
     </PopupBox>
   );
