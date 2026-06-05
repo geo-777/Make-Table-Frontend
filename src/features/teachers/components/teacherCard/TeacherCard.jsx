@@ -1,5 +1,6 @@
 import styles from "./TeacherCard.module.css";
 import ItemCard from "../../../../shared/components/itemCard/ItemCard";
+import createColor from "../../../../shared/utils/hashColor"
 
 export default function TeacherCard({
   id,
@@ -17,14 +18,25 @@ export default function TeacherCard({
     .slice(0, 2)
     .toUpperCase();
 
+  const color = createColor(name);
+
   return (
-    <ItemCard
-      onEdit={onEdit}
-      onDelete={() => onDelete(id)}
-    >
-       <div className={styles.header}>
-        <div className={styles.avatar}>
-          <span className={styles.avatarText}>{initials}</span>
+    <ItemCard onEdit={onEdit} onDelete={() => onDelete(id)}>
+      <div className={styles.header}>
+        <div
+          className={styles.avatar}
+          style={{
+            backgroundColor: `color-mix(in srgb, ${color} 20%, transparent)`,
+          }}
+        >
+          <span
+            className={styles.avatarText}
+            style={{
+              color: `color-mix(in srgb, ${color} 70%, var(--foreground))`,
+            }}
+          >
+            {initials}
+          </span>
         </div>
         <h3 className={styles.name}>{name}</h3>
       </div>
