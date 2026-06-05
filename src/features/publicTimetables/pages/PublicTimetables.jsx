@@ -40,8 +40,16 @@ const PublicTimetables = ({ classTable = false }) => {
               {data?.timetable?.name.toUpperCase() ?? "TIMETABLE"} ·{" "}
               {classTable ? "CLASS" : "TEACHER"}
             </p>
-            <h4>{data?.class_?.name ?? "CLASS"}</h4>
-            <p>{classTable ? "Room no" : "Teacher Schedule"}</p>
+            <h4>
+              {classTable
+                ? (data?.class_name ?? "CLASS")
+                : (data?.name ?? "TEACHER")}
+            </h4>
+            <p>
+              {classTable
+                ? (data?.room_name ?? "Room name")
+                : "Teacher Schedule"}
+            </p>
           </div>
           <div className={styles.table}>
             {entriesGrouped && Object.keys(entriesGrouped).length > 0 && (
