@@ -7,10 +7,9 @@ import { AlertTriangle } from "lucide-react";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import Loader from "../../../shared/components/loader/Loader";
 import SubjectList from "../components/subjectList/SubjectList";
 import SubjectDialog from "../components/dialog/SubjectDialog";
-
+import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import { useSubjectsView } from "../../../shared/zustand/listingsViewStore";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useSubjects from "../hooks/useSubjects";
@@ -48,9 +47,11 @@ export default function Subjects() {
 
   const {
     data,
-    isLoading,
-    isError,
 
+    isPending,
+    isError,
+    error,
+    isSuccess,
     createSubject,
     deleteSubject,
     updateSubject,
@@ -102,54 +103,15 @@ export default function Subjects() {
     });
   };
 
-  if (isLoading) {
-    return (
-      <div className="App">
-        <Topbar page={"Subjects"} />
-        <div className="mainPlaceholder">
-          <div className={styles.inactiveState}>
-            <Loader />
-            <p>Fetching subjects...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="App">
-        <Topbar page={"Subjects"} />
-        <div className="mainPlaceholder">
-          <div className={styles.inactiveState}>
-            <div className={styles.largeIcon}>
-              <AlertTriangle size={24} />
-            </div>
-            <h4>Something went wrong.</h4>
-            <p>
-              We couldn't load subject details. Check your connection and try
-              refreshing — if it keeps happening, the server might be down.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (!selectedTimetableData) {
     return (
-      <div className="App">
-        <Topbar page={"Subjects"} />
-        <div className="mainPlaceholder">
-          <div className={styles.inactiveState}>
-            <h4>No timetable selected.</h4>
-            <p>
-              Pick a timetable from the workspace selector at the top to start
-              managing subject details.
-            </p>
-          </div>
+      <>
+        <Topbar page={"Teachers"} />
+        <div className={"inactiveState"}>
+          <h4>No timetable selected yet</h4>
+          <p>Select a timetable from the workspace selector above.</p>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -172,8 +134,9 @@ export default function Subjects() {
           }}
           onBulkImport={() => setOpenImportDialog(true)}
         />
+        {isPending && <StatusWrapper loader={true} />}
 
-        {!subjects.length && (
+        {!subjects.length && isSuccess && (
           <div className={styles.inactiveState}>
             <h4>No Subjects defined.</h4>
             <p>
@@ -183,7 +146,7 @@ export default function Subjects() {
           </div>
         )}
 
-        {!!subjects.length && activeView === "list" && (
+        {!!subjects.length && activeView === "list" && isSuccess && (
           <SubjectList
             subjects={subjects}
             onEdit={handleUpdateSubject}
@@ -191,7 +154,7 @@ export default function Subjects() {
           />
         )}
 
-        {!!subjects.length && activeView === "grid" && (
+        {!!subjects.length && activeView === "grid" && isSuccess && (
           <div
             className={`stagger-children fast grid-fast-stagger ${styles.gridContainer}`}
           >
@@ -208,6 +171,8 @@ export default function Subjects() {
             ))}
           </div>
         )}
+
+        {isError && <StatusWrapper isError={true} error={error} />}
 
         {/* Add Subject */}
         <SubjectDialog

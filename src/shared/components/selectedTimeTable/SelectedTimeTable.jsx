@@ -38,20 +38,29 @@ const SelectedTimeTable = () => {
 
   const handleMenuToggle = () => {
     if (isFetchPending || isFetchError) return;
+    if (isFetchSuccess && timetables?.length === 0) return;
 
     setMenuVisible((prev) => !prev);
   };
   // for updating ui state according to selected timetable
   useEffect(() => {
     if (!selectedTimetableData) {
-      setUiData(UI_RESET);
+      // If no timetables exist and fetch is successful, show empty tagline
+      if (isFetchSuccess && timetables?.length === 0) {
+        setUiData({
+          header: "No timetable",
+          tagline: "Create now",
+        });
+      } else {
+        setUiData(UI_RESET);
+      }
     } else {
       setUiData({
         header: selectedTimetableData.name,
         tagline: selectedTimetableData.view_status,
       });
     }
-  }, [selectedTimetableData]);
+  }, [selectedTimetableData, isFetchSuccess, timetables]);
 
   const handleSelect = (target) => {
     // i.e null
@@ -59,6 +68,11 @@ const SelectedTimeTable = () => {
     setMenuVisible(false);
   };
   const Menu = () => {
+    // Don't show menu if no timetables exist and fetch is successful
+    if (isFetchSuccess && timetables?.length === 0) {
+      return null;
+    }
+
     return (
       <DropDownMenu
         visible={menuVisible}

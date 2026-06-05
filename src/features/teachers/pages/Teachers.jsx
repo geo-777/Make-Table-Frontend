@@ -10,7 +10,7 @@ import TeacherCard from "../components/teacherCard/TeacherCard";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import Loader from "../../../shared/components/loader/Loader";
 import TeacherList from "../components/teacherList/TeacherList";
-
+import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useTeachers from "../hooks/useTeachers";
 import { useTeachersView } from "../../../shared/zustand/listingsViewStore";
@@ -32,9 +32,10 @@ const Teachers = () => {
 
   const {
     data,
-    isLoading,
+    isPending,
     isError,
-
+    error,
+    isSuccess,
     createTeacher,
     deleteTeacher,
     updateTeacher,
@@ -75,57 +76,17 @@ const Teachers = () => {
     setOpenUpdateTeacherDialog(false);
   };
 
-  if (isLoading) {
-    return (
-      <div className="App">
-        <Topbar page={"Teachers"} />
-        <div className="mainPlaceholder">
-          <div className={styles.inactiveState}>
-            <Loader />
-            <p>Fetching teachers...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="App">
-        <Topbar page={"Teachers"} />
-        <div className="mainPlaceholder">
-          <div className={styles.inactiveState}>
-            <div className={styles.largeIcon}>
-              <AlertTriangle size={24} />
-            </div>
-            <h4>Something went wrong.</h4>
-            <p>
-              We couldn't load teacher details. Check your connection and try
-              refreshing — if it keeps happening, the server might be down.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (!selectedTimetableData) {
     return (
-      <div className="App">
+      <>
         <Topbar page={"Teachers"} />
-        <div className="mainPlaceholder">
-          <div className={styles.inactiveState}>
-            <h4>No timetable selected.</h4>
-            <p>
-              Pick a timetable from the workspace selector at the top to start
-              managing teacher details.
-            </p>
-          </div>
+        <div className={"inactiveState"}>
+          <h4>No timetable selected yet</h4>
+          <p>Select a timetable from the workspace selector above.</p>
         </div>
-      </div>
+      </>
     );
   }
-
   return (
     <div className="App">
       <Topbar page={"Teachers"} />
@@ -148,7 +109,7 @@ const Teachers = () => {
           }}
         />
 
-        {!teachers.length && (
+        {!teachers.length && isSuccess && (
           <div className={styles.inactiveState}>
             <h4>No Teachers defined.</h4>
             <p>
@@ -158,7 +119,7 @@ const Teachers = () => {
           </div>
         )}
 
-        {!!teachers.length && activeView == "list" && (
+        {!!teachers.length && activeView == "list" && isSuccess && (
           <TeacherList
             teachers={teachers}
             onEdit={handleUpdateTeacher}
@@ -166,7 +127,7 @@ const Teachers = () => {
           />
         )}
 
-        {activeView === "grid" && (
+        {activeView === "grid" && isSuccess && (
           <div
             className={`stagger-children fast grid-fast-stagger ${styles.gridContainer}`}
           >
@@ -187,6 +148,10 @@ const Teachers = () => {
             ))}
           </div>
         )}
+
+        {/* Status handlers for both loading and error states. */}
+        {isPending && <StatusWrapper loader={true} />}
+        {isError && <StatusWrapper isError={true} error={error} />}
 
         {/* Add Teacher */}
         <TeacherDialog

@@ -41,7 +41,7 @@ const Assignments = () => {
     return (
       <>
         <Topbar page={"Assignments"} />
-        <div className={styles.inactiveState}>
+        <div className={"inactiveState"}>
           <h4>No timetable selected yet</h4>
           <p>Select a timetable from the workspace selector above.</p>
         </div>
