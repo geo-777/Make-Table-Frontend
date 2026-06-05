@@ -49,7 +49,6 @@ const Row = ({ data, deleteFn, editFn }) => {
 };
 
 const ListView = ({ data = [], deleteFn, editFn }) => {
-  console.log(data);
   return (
     <div className={`fadeInUp fast ${styles.listview__Container}`}>
       <div className={styles.listHeading__item}>Teacher</div>

@@ -28,8 +28,6 @@ const PublicTimetables = ({ classTable = false }) => {
     [data?.entries],
   );
 
-  console.log("public timetable data:", data);
-
   return (
     <div className={styles.main}>
       <NavigationBar />

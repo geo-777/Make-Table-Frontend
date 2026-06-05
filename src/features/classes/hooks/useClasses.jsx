@@ -40,7 +40,6 @@ const useClasses = () => {
 
   const createListing = useMutation({
     mutationFn: (data) => {
-      console.log(data);
       return postClass(timetableId, data);
     },
 

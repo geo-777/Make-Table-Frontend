@@ -88,8 +88,7 @@ export default function SubjectDialog({
             lab_classes: changedFields.lab_classes.map((c) => c.id),
           }
         : changedFields;
-
-      console.log(changedFields);
+        
       onUpdate({id: initialData.id, ...changedFields});
     }
     

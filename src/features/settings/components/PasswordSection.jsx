@@ -68,7 +68,6 @@ const PasswordSection = () => {
       resetForm();
     } catch (e) {
       const status = e?.response?.status;
-      console.log(status, e?.response);
 
       const errors = INITIAL_ERROR_STATE;
 

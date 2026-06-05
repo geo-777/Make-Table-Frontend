@@ -37,7 +37,6 @@ const Row = ({ data, editClass, deleteClass }) => {
   }, [editForm]);
 
   const editClassHandler = async () => {
-    console.log(data?.id, payload);
     await editClass(data?.id, payload);
     closeEditMode();
   };

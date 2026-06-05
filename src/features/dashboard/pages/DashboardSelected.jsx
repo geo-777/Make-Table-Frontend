@@ -233,7 +233,7 @@ export default function DashboardSelected() {
                 resolve(status);
               }
             } catch (err) {
-              console.log(err);
+              console.error(err);
               clearInterval(interval);
               resolve("Failed");
             }

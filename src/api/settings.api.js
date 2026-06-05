@@ -1,7 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
 export const changePassword__PATCH = (data) => {
-  console.log(data);
   return axiosInstance.patch("/change-password", data);
 };
 
