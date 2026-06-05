@@ -316,7 +316,6 @@ export default function DashboardSelected() {
         <div className={styles.body}>
           <div className={styles.left}>
             <Tabs onTabChange={handleTabChange} />
-
             {activeTab === "class" && (
               <>
                 <div className={styles.row}>
@@ -326,7 +325,7 @@ export default function DashboardSelected() {
                         ?.filter((c) => !c.isLab)
                         .map((c) => c.class_name) ?? []
                     }
-                    defaultValue={classes?.data?.[0]?.class_name ?? ""}
+                    defaultValue={selectedClass?.class_name ?? ""}
                     placeholder="Select a class"
                     onChange={handleClassChange}
                   />
@@ -346,6 +345,7 @@ export default function DashboardSelected() {
 
                 {selectedClass &&
                   classEntries &&
+                  success?.class &&
                   Object.keys(classEntries).length > 0 && (
                     <Table
                       entries={classEntries}
@@ -376,7 +376,7 @@ export default function DashboardSelected() {
                 <div className={styles.row}>
                   <Dropdown
                     options={teachers?.data?.map((t) => t.name) ?? []}
-                    defaultValue={teachers?.data?.[0]?.name ?? ""}
+                    defaultValue={selectedTeacher?.name ?? ""}
                     placeholder="Select a Teacher"
                     onChange={handleTeacherChange}
                   />
@@ -396,6 +396,7 @@ export default function DashboardSelected() {
 
                 {selectedTeacher &&
                   teacherEntries &&
+                  success?.teacher &&
                   Object.keys(teacherEntries).length > 0 && (
                     <Table
                       entries={teacherEntries}
