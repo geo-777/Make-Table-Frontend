@@ -69,7 +69,9 @@
   font-size: 0.75rem;
   border-width: 1px;
   border-style: solid;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
 }
 
 .entryCard:hover {

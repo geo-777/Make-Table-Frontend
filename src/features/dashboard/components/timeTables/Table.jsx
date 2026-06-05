@@ -1,7 +1,5 @@
 import styles from "./Timetable.module.css";
-import {
-  Microscope
-} from "lucide-react";
+import { Microscope } from "lucide-react";
 
 function normaliseEntry(entry, mode) {
   if (!entry) return null;
@@ -26,8 +24,7 @@ export default function Timetable({
   mode = "class",
   isLoading = false,
 }) {
-
-  if(!entries) return null;
+  if (!entries && isLoading) return null;
 
   return (
     <div className={styles.wrapper}>
@@ -50,8 +47,10 @@ export default function Timetable({
               style={{ animationDelay: `${rowIndex * 60}ms` }}
             >
               <td className={styles.dayTd}>{day}</td>
-              {Array.from({length: slotCount}, (_, slotIndex) => {
-                const entry = entries[day]?.find((e) => e.slot === slotIndex + 1);
+              {Array.from({ length: slotCount }, (_, slotIndex) => {
+                const entry = entries[day]?.find(
+                  (e) => e.slot === slotIndex + 1,
+                );
                 return (
                   <td key={slotIndex} className={styles.entryTd}>
                     {entry ? (
@@ -88,8 +87,7 @@ function EntryCard({ entry }) {
       <span className={styles.entryName}>{subjectName}</span>
       {meta && (
         <span className={styles.entryMeta}>
-          {isLab ? <Microscope size={10} /> : ""}{" "}
-          {meta}
+          {isLab ? <Microscope size={10} /> : ""} {meta}
           {role === "Class_Teacher" ? " · CT" : ""}
         </span>
       )}

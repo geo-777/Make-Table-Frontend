@@ -10,12 +10,15 @@ import useSubjects from "../../../features/subjects/hooks/useSubjects";
 import { useCallback, useEffect, useState } from "react";
 import Dropdown from "../components/dropDown/Dropdown";
 import Table from "../components/timeTables/Table";
-import { generate_POST, getTimetableStatus_GET } from "../../../api/generations.api";
+import {
+  generate_POST,
+  getTimetableStatus_GET,
+} from "../../../api/generations.api";
 import { toast } from "react-toastify";
 import { useTimetableEntry } from "../hooks/useTimetableEntry";
 import ViolationsPanel from "../components/violationsPanel/ViolationsPanel";
 import { refresh } from "../../../api/auth.api";
-
+import Loader from "../../../shared/components/loader/Loader";
 const Header = ({
   name,
   days,
@@ -124,21 +127,24 @@ export default function DashboardSelected() {
   const { data: teachers } = useTeachers();
   const { data: subjects } = useSubjects();
 
-  const {
-    classTimetables,
-    teacherTimetables,
-    violations,
-    loading,
-    fetchClassTimetable,
-    fetchTeacherTimetable,
-    clearClassTimetables,
-    clearTeacherTimetables,
-  } = useTimetableEntry();
+  const violations = selectedTimetableData?.violations ?? [];
 
   const [activeTab, setActiveTab] = useState("class");
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const {
+    classTimetables,
+    teacherTimetables,
+    loading,
+    fetchClassTimetable,
+    fetchTeacherTimetable,
+    refetchTimetables,
+    success,
+  } = useTimetableEntry({
+    selectedClassId: selectedClass?.id,
+    selectedTeacherId: selectedTeacher?.id,
+  });
 
   const [isLinkCopied, setIsLinkCopied] = useState(false);
 
@@ -146,9 +152,8 @@ export default function DashboardSelected() {
     const firstClass = classes?.data?.[0];
     if (firstClass && !selectedClass) {
       setSelectedClass(firstClass);
-      fetchClassTimetable(firstClass.id);
     }
-  }, [classes, fetchClassTimetable, selectedClass]);
+  }, [classes, selectedClass, activeTab]);
 
   useEffect(() => {
     const firstTeacher = teachers?.data?.[0];
@@ -171,10 +176,8 @@ export default function DashboardSelected() {
 
       if (!found) return;
       setSelectedClass(found);
-      clearClassTimetables();
-      fetchClassTimetable(found.id);
     },
-    [classes, fetchClassTimetable, clearClassTimetables],
+    [classes],
   );
 
   const handleTeacherChange = useCallback(
@@ -182,10 +185,9 @@ export default function DashboardSelected() {
       const found = teachers?.data?.find((t) => t.name === teacherName);
       if (!found) return;
       setSelectedTeacher(found);
-      clearTeacherTimetables();
-      fetchTeacherTimetable(found.id);
+      fetchTeacherTimetable();
     },
-    [teachers, fetchTeacherTimetable, clearTeacherTimetables],
+    [teachers, fetchTeacherTimetable],
   );
 
   const handleTabChange = useCallback(
@@ -196,10 +198,10 @@ export default function DashboardSelected() {
         selectedTeacher &&
         teacherTimetables.length === 0
       ) {
-        fetchTeacherTimetable(selectedTeacher.id);
+        fetchTeacherTimetable();
       }
       if (tab === "class" && selectedClass && classTimetables.length === 0) {
-        fetchClassTimetable(selectedClass.id);
+        fetchClassTimetable();
       }
     },
     [
@@ -245,12 +247,11 @@ export default function DashboardSelected() {
         } else {
           toast.success("Timetable created successfully.");
           if (activeTab === "class" && selectedClass) {
-            clearClassTimetables();
-            fetchClassTimetable(selectedClass.id);
+            fetchClassTimetable();
           } else if (activeTab === "teacher" && selectedTeacher) {
-            clearTeacherTimetables();
-            fetchTeacherTimetable(selectedTeacher.id);
+            fetchTeacherTimetable();
           }
+          refetchTimetables(); //invalidatees all of data if data already exists in cache
         }
       } catch (err) {
         console.error(err);
@@ -267,8 +268,6 @@ export default function DashboardSelected() {
       selectedTeacher,
       fetchClassTimetable,
       fetchTeacherTimetable,
-      clearClassTimetables,
-      clearTeacherTimetables,
     ],
   );
 
@@ -332,16 +331,17 @@ export default function DashboardSelected() {
                     onChange={handleClassChange}
                   />
 
-                  {selectedTimetableData && selectedTimetableData.view_status === "Public" && (
-                    <button
-                      className={styles.copyLink}
-                      title="Copy Link"
-                      onClick={() => handleCopyLink("class")}
-                    >
-                      {isLinkCopied ? <CheckIcon /> : <Link2 />}
-                      {isLinkCopied ? "Copied" : "Copy Link"}
-                    </button>
-                  )}
+                  {selectedTimetableData &&
+                    selectedTimetableData.view_status === "Public" && (
+                      <button
+                        className={styles.copyLink}
+                        title="Copy Link"
+                        onClick={() => handleCopyLink("class")}
+                      >
+                        {isLinkCopied ? <CheckIcon /> : <Link2 />}
+                        {isLinkCopied ? "Copied" : "Copy Link"}
+                      </button>
+                    )}
                 </div>
 
                 {selectedClass &&
@@ -355,8 +355,13 @@ export default function DashboardSelected() {
                       isLoading={loading.class}
                     />
                   )}
+                {loading?.class && (
+                  <div className={styles.emptyState}>
+                    <Loader />
+                  </div>
+                )}
 
-                {Object.keys(classEntries).length === 0 && (
+                {success?.class && Object.keys(classEntries).length === 0 && (
                   <div className={styles.emptyState}>
                     <p>
                       No generated timetable yet. Click Generate to create one.
@@ -376,16 +381,17 @@ export default function DashboardSelected() {
                     onChange={handleTeacherChange}
                   />
 
-                  {selectedTimetableData && selectedTimetableData.view_status === "Public" && (
-                    <button
-                      className={styles.copyLink}
-                      title="Copy Link"
-                      onClick={() => handleCopyLink("teacher")}
-                    >
-                      {isLinkCopied ? <CheckIcon /> : <Link2 />}
-                      {isLinkCopied ? "Copied" : "Copy Link"}
-                    </button>
-                  )}
+                  {selectedTimetableData &&
+                    selectedTimetableData.view_status === "Public" && (
+                      <button
+                        className={styles.copyLink}
+                        title="Copy Link"
+                        onClick={() => handleCopyLink("teacher")}
+                      >
+                        {isLinkCopied ? <CheckIcon /> : <Link2 />}
+                        {isLinkCopied ? "Copied" : "Copy Link"}
+                      </button>
+                    )}
                 </div>
 
                 {selectedTeacher &&
@@ -399,14 +405,20 @@ export default function DashboardSelected() {
                       isLoading={loading.teacher}
                     />
                   )}
-
-                {Object.keys(teacherEntries).length === 0 && (
+                {loading?.teacher && (
                   <div className={styles.emptyState}>
-                    <p>
-                      No generated timetable yet. Click Generate to create one.
-                    </p>
+                    <Loader />
                   </div>
                 )}
+                {success?.teacher &&
+                  Object.keys(teacherEntries).length === 0 && (
+                    <div className={styles.emptyState}>
+                      <p>
+                        No generated timetable yet. Click Generate to create
+                        one.
+                      </p>
+                    </div>
+                  )}
               </>
             )}
           </div>
