@@ -4,6 +4,9 @@
   border-radius: 0.5rem;
   transition: opacity 0.15s ease;
   position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
   display: flex;
   padding: 0.25rem;
   flex-direction: column;

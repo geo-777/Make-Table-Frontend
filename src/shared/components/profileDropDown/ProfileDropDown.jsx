@@ -2,19 +2,14 @@ import styles from "./ProfileDropdown.module.css";
 import { UserRound, Settings, HelpCircle, LogOut } from "lucide-react";
 import { useAuth } from "../../../app/providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
-const ProfileDropdown = ({ isOpen, style = {} }) => {
+import DropDownMenu from "../dropDownMenu/DropDownMenu";
+
+const ProfileDropdown = ({ isOpen }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
-  const logoutHandler = async () => {
-    await logout();
-  };
+
   return (
-    <div
-      className={`${styles.dropdownContainer} ${
-        isOpen ? styles.active : styles.inactive
-      }`}
-      style={style}
-    >
+    <DropDownMenu visible={isOpen}>
       <div className={styles.listItem} onClick={() => navigate("/myprofile")}>
         <UserRound size={14} />
         My Profile
@@ -29,12 +24,12 @@ const ProfileDropdown = ({ isOpen, style = {} }) => {
       </div>
       <div
         className={`${styles.listItem} ${styles.logoutBtn}`}
-        onClick={logoutHandler}
+        onClick={logout}
       >
         <LogOut size={16} />
         Logout
       </div>
-    </div>
+    </DropDownMenu>
   );
 };
 

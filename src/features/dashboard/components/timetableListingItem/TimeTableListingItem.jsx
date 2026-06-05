@@ -125,8 +125,6 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
             <DropDownMenu
               key={`${listingData.id}-dropdown`}
               visible={menuVisible}
-              top={"2.6rem"}
-              right={"1rem"}
             >
               <div
                 className={styles.dropDownItem}

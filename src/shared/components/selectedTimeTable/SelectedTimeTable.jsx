@@ -76,8 +76,10 @@ const SelectedTimeTable = () => {
     return (
       <DropDownMenu
         visible={menuVisible}
-        right={width < 615 ? "0rem" : "-10.5rem"}
-        top={width > 615 ? "0rem" : "3.5rem"}
+        style={{
+          right: width < 615 ? "0rem" : "-10.5rem",
+          top: width > 615 ? "0rem" : "3.5rem",
+        }}
       >
         {isFetchSuccess &&
           timetables.map((e, i) => {
