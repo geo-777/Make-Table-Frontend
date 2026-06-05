@@ -361,7 +361,7 @@ export default function DashboardSelected() {
                   </div>
                 )}
 
-                {success?.class && Object.keys(classEntries).length === 0 && (
+                {!loading?.class && Object.keys(classEntries).length === 0 && (
                   <div className={styles.emptyState}>
                     <p>
                       No generated timetable yet. Click Generate to create one.
@@ -411,7 +411,7 @@ export default function DashboardSelected() {
                     <Loader />
                   </div>
                 )}
-                {success?.teacher &&
+                {!loading?.teacher &&
                   Object.keys(teacherEntries).length === 0 && (
                     <div className={styles.emptyState}>
                       <p>

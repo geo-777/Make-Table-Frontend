@@ -16,7 +16,7 @@ export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
   const {
     data: classTimetablesData,
     error: classError,
-    isPending: isClassPending,
+    isLoading: isClassPending,
     isSuccess: isClassSuccess,
   } = useQuery({
     queryKey: ["timetables", "class", selectedClassId],
@@ -29,7 +29,7 @@ export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
   const {
     data: teacherTimetableData,
     error: teacherError,
-    isPending: isTeacherPending,
+    isLoading: isTeacherPending,
     isSuccess: isTeacherSuccess,
   } = useQuery({
     queryKey: ["timetables", "teacher", selectedTeacherId],
@@ -79,6 +79,8 @@ export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
       queryKey: ["timetables", "teacher"],
     });
   };
+
+  console.log(error);
   return {
     classTimetables,
     teacherTimetables,
