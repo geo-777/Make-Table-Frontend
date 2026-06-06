@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import {
   createTeacher_POST,
-  fetchTeacher_GET,
   fetchAllTeachers_GET,
   updateTeachers_PATCH,
   deleteTeacher_DELETE,
@@ -34,20 +33,6 @@ const handleError = (error) => {
   toast.error(error?.response?.data?.message ?? "Something went wrong.");
 };
 
-// --- Hydration helper --------------------------------------------
-const hydrateTeachers = async (teachers, queryClient) => {
-  const results = await Promise.all(
-    teachers.map((teacher) =>
-      queryClient.fetchQuery({
-        queryKey: teacherKeys.single(teacher.id),
-        queryFn: () => fetchTeacher_GET(teacher.id),
-        staleTime: 5 * 60 * 1000,
-      }),
-    ),
-  );
-  return results.map((r) => r?.data ?? r);
-};
-
 // --- Hook --------------------------------------------
 const useTeachers = () => {
   const queryClient = useQueryClient();
@@ -56,16 +41,7 @@ const useTeachers = () => {
 
   const teacherQuery = useQuery({
     queryKey: teacherKeys.timetable(timetableId),
-    queryFn: async () => {
-      const listResponse = await fetchAllTeachers_GET(timetableId);
-      const teachers = listResponse?.data ?? listResponse ?? [];
-
-      
-      const hydrated = await hydrateTeachers(teachers, queryClient);
-
-      
-      return { ...listResponse, data: hydrated };
-    },
+    queryFn: () => fetchAllTeachers_GET(timetableId),
     enabled: Boolean(timetableId),
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -78,7 +54,6 @@ const useTeachers = () => {
     onSuccess: (response, variables) => {
       const newTeacher = response?.data;
 
-      
       queryClient.setQueryData(teacherKeys.single(newTeacher.id), newTeacher);
 
       queryClient.setQueryData(
@@ -123,7 +98,6 @@ const useTeachers = () => {
       handleError(error);
     },
     onSuccess: (_, id) => {
-     
       queryClient.removeQueries({ queryKey: teacherKeys.single(id) });
       toast.success("Teacher deleted successfully.");
     },
