@@ -131,6 +131,12 @@ const useTimetableListing = () => {
     },
   });
 
+  const invalidateTimeTableListings = () => {
+    queryClient.invalidateQueries({
+      queryKey: TIMETABLE_KEY,
+    });
+  };
+
   const readListings = () => ({ ...query });
 
   return {
@@ -139,6 +145,7 @@ const useTimetableListing = () => {
     deleteListing,
     patchListing,
     setViewStatus,
+    invalidateTimeTableListings,
   };
 };
 

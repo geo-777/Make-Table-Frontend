@@ -29,8 +29,8 @@ const DetailsGridTimetable = ({ classes, teachers, subjects }) => {
     <div
       className={`${styles.detailsGrid} stagger-children ${styles.deteilsGridTimetable}`}
     >
-      {details.map((item) => (
-        <div className={styles.gridItem}>
+      {details.map((item, i) => (
+        <div key={i} className={styles.gridItem}>
           <div className={`${styles.detailsGrid__icon} ${item.style}`}>
             <item.icon size={iconSize} strokeWidth={iconStrokeWidth} />
           </div>
