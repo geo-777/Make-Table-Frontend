@@ -17,13 +17,13 @@ const useClasses = () => {
   const { selectedTimetableData } = useTimeTableSelect();
 
   const timetableId = selectedTimetableData?.id;
-
+  const CLASS_KEY = ["classes", timetableId];
   const queryClient = useQueryClient();
 
   /*QUERY*/
 
   const query = useQuery({
-    queryKey: ["classesListings", timetableId],
+    queryKey: CLASS_KEY,
 
     queryFn: () => fetchAllClasses(timetableId),
 
@@ -48,7 +48,7 @@ const useClasses = () => {
 
       updateQueryCache({
         queryClient,
-        queryKey: ["classesListings", timetableId],
+        queryKey: CLASS_KEY,
         updateFn: (oldData) => ({
           ...oldData,
           data: [...oldData.data, newClass],
@@ -71,7 +71,7 @@ const useClasses = () => {
     onSuccess: (_, classId) => {
       updateQueryCache({
         queryClient,
-        queryKey: ["classesListings", timetableId],
+        queryKey: CLASS_KEY,
         updateFn: (oldData) => ({
           ...oldData,
           data: oldData.data.filter((e) => e.id !== classId),
@@ -94,7 +94,7 @@ const useClasses = () => {
       const updatedClass = response.data;
       updateQueryCache({
         queryClient,
-        queryKey: ["classesListings", timetableId],
+        queryKey: CLASS_KEY,
         updateFn: (oldData) => ({
           ...oldData,
           data: oldData.data.map((e) => (e.id === classId ? updatedClass : e)),

@@ -9,7 +9,7 @@ import TeacherCard from "../components/teacherCard/TeacherCard";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import TeacherList from "../components/teacherList/TeacherList";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
-import Shimmer from "../../../shared/components/shimmer/Shimmer";
+import GridSkelton from "../../../shared/components/skeltonLoading/GridSkelton";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useTeachers from "../hooks/useTeachers";
 import { useTeachersView } from "../../../shared/zustand/listingsViewStore";
@@ -131,7 +131,7 @@ const Teachers = () => {
           {activeView === "grid" && (
             <>
               {isPending && (
-                <Shimmer count={6} height={140} columns={3} gap={18} />
+                <GridSkelton count={12} height={140} columns={5} gap={18} />
               )}
 
               {isSuccess && (

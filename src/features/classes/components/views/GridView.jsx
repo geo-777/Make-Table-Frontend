@@ -4,7 +4,7 @@ import useClasses from "../../hooks/useClasses";
 import ClassPopup from "../popups/ClassPopup";
 import { useState } from "react";
 import StatusWrapper from "../../../../shared/components/statusWrapper/StatusWrapper";
-import Shimmer from "../../../../shared/components/shimmer/Shimmer";
+import GridSkelton from "../../../../shared/components/skeltonLoading/GridSkelton";
 import createColor from "../../../../shared/utils/hashColor";
 // individual grid items.
 const GridItem = ({ data, openEditPopup }) => {
@@ -89,7 +89,7 @@ const GridView = ({ data, isLoading = false }) => {
       )}
 
       {isLoading ? (
-        <Shimmer count={12} height={120} columns={5} gap={16} />
+        <GridSkelton count={12} height={120} columns={5} gap={16} />
       ) : (
         <div
           className={`${styles.gridContainer} stagger-children fast grid-fast-stagger `}

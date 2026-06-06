@@ -12,8 +12,7 @@ import "../../../styles/appLayout.css";
 
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
-import Shimmer from "../../../shared/components/shimmer/Shimmer";
-
+import GridSkelton from "../../../shared/components/skeltonLoading/GridSkelton";
 const Assignments = () => {
   const { selectedTimetableData } = useTimeTableSelect();
   const { activeView, setActiveView } = useAssignmentsView();
@@ -86,7 +85,7 @@ const Assignments = () => {
           {activeView === "grid" && (
             <>
               {isPending && (
-                <Shimmer count={12} height={130} columns={5} gap={18} />
+                <GridSkelton count={12} height={130} columns={5} gap={18} />
               )}
 
               {isSuccess &&

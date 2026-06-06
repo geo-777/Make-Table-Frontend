@@ -9,12 +9,11 @@ import Topbar from "../../../shared/components/topbar/Topbar";
 import SubjectList from "../components/subjectList/SubjectList";
 import SubjectDialog from "../components/dialog/SubjectDialog";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
-import Shimmer from "../../../shared/components/shimmer/Shimmer";
 import { useSubjectsView } from "../../../shared/zustand/listingsViewStore";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useSubjects from "../hooks/useSubjects";
 import SubjectCard from "../components/subjectCard/SubjectCard";
-
+import GridSkelton from "../../../shared/components/skeltonLoading/GridSkelton";
 /*
   {
     id: number,
@@ -158,7 +157,7 @@ export default function Subjects() {
           {activeView === "grid" && (
             <>
               {isPending && (
-                <Shimmer count={12} height={140} columns={5} gap={18} />
+                <GridSkelton count={12} height={140} columns={5} gap={18} />
               )}
 
               {isSuccess && (

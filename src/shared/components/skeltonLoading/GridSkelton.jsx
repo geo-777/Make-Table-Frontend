@@ -1,8 +1,6 @@
-// Reusable shimmer placeholder grid component
-// Thisss is for setting up
-
-// note: columns here is not always accurate.
-export default function Shimmer({
+// Reusable grid skeleton placeholder component
+// Uses the `.shimmer` class from `src/styles/global.css`.
+export default function GridSkelton({
   count = 6,
   height = 120,
   columns = 3,
