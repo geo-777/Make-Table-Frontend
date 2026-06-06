@@ -2,7 +2,110 @@ import { useState } from "react";
 import { Pencil, Trash2, Check, X } from "lucide-react";
 import styles from "./TeacherList.module.css";
 
-export default function TeacherList({ teachers = [], onEdit, onDelete }) {
+const EditRow = ({
+  editForm,
+  handleChange,
+  handleSave,
+  handleCancel,
+}) => {
+  return (
+    <tr className={styles.editingRow}>
+      <td>
+        <input
+          className={styles.nameInput}
+          type="text"
+          value={editForm.name}
+          onChange={(e) => handleChange("name", e.target.value)}
+          autoFocus
+        />
+      </td>
+      <td>
+        <input
+          className={styles.numberInput}
+          type="number"
+          value={editForm.max_classes_day}
+          onChange={(e) => handleChange("max_classes_day", e.target.value)}
+          min={1}
+        />
+      </td>
+      <td>
+        <input
+          className={styles.numberInput}
+          type="number"
+          value={editForm.max_classes_week}
+          onChange={(e) => handleChange("max_classes_week", e.target.value)}
+          min={1}
+        />
+      </td>
+      <td>
+        <input
+          className={styles.numberInput}
+          type="number"
+          value={editForm.max_classes_consecutive}
+          onChange={(e) =>
+            handleChange("max_classes_consecutive", e.target.value)
+          }
+          min={1}
+        />
+      </td>
+      <td className={styles.actionsCell}>
+        <button
+          className={`${styles.actionBtn} ${styles.saveBtn}`}
+          onClick={handleSave}
+          aria-label="Save"
+        >
+          <Check size={16} />
+        </button>
+        <button
+          className={`${styles.actionBtn} ${styles.cancelBtn}`}
+          onClick={handleCancel}
+          aria-label="Cancel"
+        >
+          <X size={16} />
+        </button>
+      </td>
+    </tr>
+  );
+};
+
+const TeacherRow = ({ teacher, handleEditClick, onDelete }) => {
+  return (
+    <tr>
+      <td className={styles.nameCell}>{teacher.name}</td>
+      <td>{teacher.max_classes_day}</td>
+      <td>{teacher.max_classes_week}</td>
+      <td>{teacher.max_classes_consecutive}</td>
+      <td className={styles.actionsCell}>
+        <button
+          className={`${styles.actionBtn} ${styles.editBtn}`}
+          onClick={() => handleEditClick(teacher)}
+          aria-label={`Edit ${teacher.name}`}
+        >
+          <Pencil size={14} />
+        </button>
+        <button
+          className={`${styles.actionBtn} ${styles.deleteBtn}`}
+          onClick={() => onDelete && onDelete(teacher.id)}
+          aria-label={`Delete ${teacher.name}`}
+        >
+          <Trash2 size={14} />
+        </button>
+      </td>
+    </tr>
+  );
+};
+
+const LoadingRow = () => {
+  return (
+    <tr>
+      <td>
+        {/* Skeleton loading goes here */}
+      </td>
+    </tr>
+  );
+}
+
+export default function TeacherList({ teachers = [], isLoading, onEdit, onDelete }) {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
 
@@ -59,91 +162,24 @@ export default function TeacherList({ teachers = [], onEdit, onDelete }) {
           </tr>
         </thead>
         <tbody>
-          {teachers.map((teacher) =>
+          {isLoading && <LoadingRow />}
+
+          {!isLoading && teachers.map((teacher) =>
             editingId === teacher.id ? (
-              <tr key={teacher.id} className={styles.editingRow}>
-                <td>
-                  <input
-                    className={styles.nameInput}
-                    type="text"
-                    value={editForm.name}
-                    onChange={(e) => handleChange("name", e.target.value)}
-                    autoFocus
-                  />
-                </td>
-                <td>
-                  <input
-                    className={styles.numberInput}
-                    type="number"
-                    value={editForm.max_classes_day}
-                    onChange={(e) =>
-                      handleChange("max_classes_day", e.target.value)
-                    }
-                    min={1}
-                  />
-                </td>
-                <td>
-                  <input
-                    className={styles.numberInput}
-                    type="number"
-                    value={editForm.max_classes_week}
-                    onChange={(e) =>
-                      handleChange("max_classes_week", e.target.value)
-                    }
-                    min={1}
-                  />
-                </td>
-                <td>
-                  <input
-                    className={styles.numberInput}
-                    type="number"
-                    value={editForm.max_classes_consecutive}
-                    onChange={(e) =>
-                      handleChange("max_classes_consecutive", e.target.value)
-                    }
-                    min={1}
-                  />
-                </td>
-                <td className={styles.actionsCell}>
-                  <button
-                    className={`${styles.actionBtn} ${styles.saveBtn}`}
-                    onClick={handleSave}
-                    aria-label="Save"
-                  >
-                    <Check size={16} />
-                  </button>
-                  <button
-                    className={`${styles.actionBtn} ${styles.cancelBtn}`}
-                    onClick={handleCancel}
-                    aria-label="Cancel"
-                  >
-                    <X size={16} />
-                  </button>
-                </td>
-              </tr>
+              <EditRow 
+                key={teacher.id}
+                editForm={editForm}
+                handleChange={handleChange}
+                handleSave={handleSave}
+                handleCancel={handleCancel}
+              />
             ) : (
-              <tr key={teacher.id}>
-                <td className={styles.nameCell}>{teacher.name}</td>
-                <td>{teacher.max_classes_day}</td>
-                <td>{teacher.max_classes_week}</td>
-                <td>{teacher.max_classes_consecutive}</td>
-                <td className={styles.actionsCell}>
-                  <button
-                    className={`${styles.actionBtn} ${styles.editBtn}`}
-                    onClick={() => handleEditClick(teacher)}
-                    aria-label={`Edit ${teacher.name}`}
-                  >
-                    <Pencil size={14} />
-                  </button>
-                  <button
-                    className={`${styles.actionBtn} ${styles.deleteBtn}`}
-                    onClick={() => onDelete && onDelete(teacher.id)}
-                    aria-label={`Delete ${teacher.name}`}
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </td>
-              </tr>
+              <TeacherRow 
+                key={teacher.id}
+                teacher={teacher}
+                handleEditClick={handleEditClick}
+                onDelete={onDelete}
+              />
             ),
           )}
         </tbody>

@@ -2,13 +2,11 @@ import "../../../styles/appLayout.css";
 import styles from "../styles/Teachers.module.css";
 
 import { useMemo, useState } from "react";
-import { AlertTriangle } from "lucide-react";
 import Topbar from "../../../shared/components/topbar/Topbar";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import TeacherDialog from "../components/teacherDialog/TeacherDialog";
 import TeacherCard from "../components/teacherCard/TeacherCard";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
-import Loader from "../../../shared/components/loader/Loader";
 import TeacherList from "../components/teacherList/TeacherList";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
@@ -34,6 +32,7 @@ const Teachers = () => {
     data,
     isPending,
     isError,
+    isLoading,
     error,
     isSuccess,
     createTeacher,
@@ -124,6 +123,7 @@ const Teachers = () => {
             teachers={teachers}
             onEdit={handleUpdateTeacher}
             onDelete={handleDeleteTeacher}
+            isLoading={isLoading}
           />
         )}
 
