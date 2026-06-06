@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 import { useTimetableEntry } from "../hooks/useTimetableEntry";
 import ViolationsPanel from "../components/violationsPanel/ViolationsPanel";
 import { refresh } from "../../../api/auth.api";
-import Loader from "../../../shared/components/loader/Loader";
+
 const Header = ({
   name,
   days,
@@ -128,8 +128,6 @@ export default function DashboardSelected() {
   const { data: teachers } = useTeachers();
   const { data: subjects } = useSubjects();
 
-  const violations = selectedTimetableData?.violations ?? [];
-
   const [activeTab, setActiveTab] = useState("class");
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
@@ -141,7 +139,6 @@ export default function DashboardSelected() {
     fetchClassTimetable,
     fetchTeacherTimetable,
     refetchTimetables,
-    success,
   } = useTimetableEntry({
     selectedClassId: selectedClass?.id,
     selectedTeacherId: selectedTeacher?.id,
@@ -270,6 +267,8 @@ export default function DashboardSelected() {
       selectedTeacher,
       fetchClassTimetable,
       fetchTeacherTimetable,
+      invalidateTimeTableListings,
+      refetchTimetables,
     ],
   );
 

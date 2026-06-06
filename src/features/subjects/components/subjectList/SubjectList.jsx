@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Pencil, Trash2, Check, X } from "lucide-react";
 import styles from "./SubjectList.module.css";
 import LabClassesTooltip from "../labClassesTooltip/LabClassesTooltip";
-import useClasses from "../../../classes/hooks/useClasses";
+import useLabClasses from "../../../../shared/hooks/useLabClasses";
 
 const HARDNESS_CLASS = { Low: "low", Med: "med", High: "high" };
 
@@ -49,9 +49,7 @@ export default function SubjectList({ subjects = [], onEdit, onDelete }) {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
 
-  const { data: classes } = useClasses();
-
-  const labClasses = (classes && typeof classes.filter === "function") ? classes?.filter((c) => c.isLab) : [];
+  const labClasses = useLabClasses();
 
   const handleEditClick = (subject) => {
     setEditingId(subject.id);
