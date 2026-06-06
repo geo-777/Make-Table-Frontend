@@ -18,21 +18,11 @@ export default function SubjectCard({
           />
           {subject.name}
         </div>
-        <div style={{ marginLeft: "auto", display: "flex", gap: "6px" }}>
-          {subject.isLab && (
-            <button
-              className={`${styles.badge} ${styles.primary}`}
-              style={{ border: "none" }}
-            >
-              {`${subject.lab_classes.length} ${subject.lab_classes.length > 1 ? "classes" : "class"}`}
-            </button>
-          )}
-
-          <div
-            className={`${styles.badge} ${subject.isLab ? styles.primary : ""}`}
-          >
-            {subject.isLab ? "Lab" : "Theory"}
-          </div>
+        <div
+          className={`${styles.badge} ${subject.isLab ? styles.primary : ""}`}
+          style={{ marginLeft: "auto" }}
+        >
+          {subject.isLab ? "Lab" : "Theory"}
         </div>
       </div>
 

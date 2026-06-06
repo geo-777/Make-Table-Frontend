@@ -4,10 +4,6 @@ export const fetchAllTeachers_GET = (id) => {
   return axiosInstance.get(`/timetables/${id}/teachers`);
 };
 
-export const fetchTeacher_GET = (id) => {
-  return axiosInstance.get(`/teachers/${id}`);
-};
-
 export const createTeacher_POST = (id, data) => {
   return axiosInstance.post(`/timetables/${id}/teachers`, data);
 };
