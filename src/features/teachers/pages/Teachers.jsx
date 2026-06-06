@@ -9,6 +9,7 @@ import TeacherCard from "../components/teacherCard/TeacherCard";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import TeacherList from "../components/teacherList/TeacherList";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
+import Shimmer from "../../../shared/components/shimmer/Shimmer";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useTeachers from "../hooks/useTeachers";
 import { useTeachersView } from "../../../shared/zustand/listingsViewStore";
@@ -108,82 +109,91 @@ const Teachers = () => {
           }}
         />
 
-        {!teachers.length && isSuccess && (
-          <div className={styles.inactiveState}>
-            <h4>No Teachers defined.</h4>
-            <p>
-              Add your first teacher to start defining constraints for this
-              timetable.
-            </p>
-          </div>
-        )}
+        <div className="main">
+          {!teachers.length && isSuccess && (
+            <div className={styles.inactiveState}>
+              <h4>No Teachers defined.</h4>
+              <p>
+                Add your first teacher to start defining constraints for this
+                timetable.
+              </p>
+            </div>
+          )}
 
-        {!!teachers.length && activeView == "list" && isSuccess && (
-          <TeacherList
-            teachers={teachers}
-            onEdit={handleUpdateTeacher}
-            onDelete={handleDeleteTeacher}
-            isLoading={isLoading}
+          {!!teachers.length && activeView == "list" && isSuccess && (
+            <TeacherList
+              teachers={teachers}
+              onEdit={handleUpdateTeacher}
+              onDelete={handleDeleteTeacher}
+              isLoading={isLoading}
+            />
+          )}
+          {activeView === "grid" && (
+            <>
+              {isPending && (
+                <Shimmer count={6} height={140} columns={3} gap={18} />
+              )}
+
+              {isSuccess && (
+                <div
+                  className={`stagger-children fast grid-fast-stagger ${styles.gridContainer}`}
+                >
+                  {teachers.map((teacher) => (
+                    <TeacherCard
+                      key={teacher.id}
+                      id={teacher.id}
+                      name={teacher.name}
+                      maxPerDay={teacher.max_classes_day}
+                      maxPerWeek={teacher.max_classes_week}
+                      consecutive={teacher.max}
+                      onEdit={() => {
+                        setSelectedTeacher(teacher);
+                        setOpenUpdateTeacherDialog(true);
+                      }}
+                      onDelete={handleDeleteTeacher}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Status handlers for both loading and error states. */}
+          {/* {isPending && <StatusWrapper loader={true} />} */}
+          {isError && <StatusWrapper isError={true} error={error} />}
+
+          {/* Add Teacher */}
+          <TeacherDialog
+            open={openAddTeacherDialog}
+            onClose={() => {
+              setOpenAddTeacherDialog(false);
+            }}
+            onSubmit={handleCreateTeacher}
           />
-        )}
 
-        {activeView === "grid" && isSuccess && (
-          <div
-            className={`stagger-children fast grid-fast-stagger ${styles.gridContainer}`}
-          >
-            {teachers.map((teacher) => (
-              <TeacherCard
-                key={teacher.id}
-                id={teacher.id}
-                name={teacher.name}
-                maxPerDay={teacher.max_classes_day}
-                maxPerWeek={teacher.max_classes_week}
-                consecutive={teacher.max}
-                onEdit={() => {
-                  setSelectedTeacher(teacher);
-                  setOpenUpdateTeacherDialog(true);
-                }}
-                onDelete={handleDeleteTeacher}
-              />
-            ))}
-          </div>
-        )}
+          {/* Update Teacher */}
+          <TeacherDialog
+            open={openUpdateTeacherDialog}
+            teacher={selectedTeacher}
+            onClose={() => {
+              setOpenUpdateTeacherDialog(false);
+            }}
+            onSubmit={handleUpdateTeacher}
+          />
 
-        {/* Status handlers for both loading and error states. */}
-        {isPending && <StatusWrapper loader={true} />}
-        {isError && <StatusWrapper isError={true} error={error} />}
-
-        {/* Add Teacher */}
-        <TeacherDialog
-          open={openAddTeacherDialog}
-          onClose={() => {
-            setOpenAddTeacherDialog(false);
-          }}
-          onSubmit={handleCreateTeacher}
-        />
-
-        {/* Update Teacher */}
-        <TeacherDialog
-          open={openUpdateTeacherDialog}
-          teacher={selectedTeacher}
-          onClose={() => {
-            setOpenUpdateTeacherDialog(false);
-          }}
-          onSubmit={handleUpdateTeacher}
-        />
-
-        {/* Import Teacher Details */}
-        <ImportDialog
-          open={openImportDialog}
-          title={"Import Teachers"}
-          description={"Add all teachers that need to be scheduled."}
-          onClose={() => {
-            setOpenImportDialog(false);
-          }}
-          onSelectCSV={() => {}}
-          onSelectText={() => {}}
-          onSelectTimetable={() => {}}
-        />
+          {/* Import Teacher Details */}
+          <ImportDialog
+            open={openImportDialog}
+            title={"Import Teachers"}
+            description={"Add all teachers that need to be scheduled."}
+            onClose={() => {
+              setOpenImportDialog(false);
+            }}
+            onSelectCSV={() => {}}
+            onSelectText={() => {}}
+            onSelectTimetable={() => {}}
+          />
+        </div>
       </div>
     </div>
   );

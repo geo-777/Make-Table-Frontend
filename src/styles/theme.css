@@ -8,7 +8,7 @@
   --popover: hsl(0 0% 100%);
   --popover-foreground: hsl(230 25% 10%);
   /* Shimmer variables */
-  --shimmer-base: #f7f7f7;
+  --shimmer-base: #f2f2f2;
   --shimmer-highlight: rgba(255, 255, 255, 0.6);
   --light-violet: hsl(263, 92%, 90%);
   --primary: hsl(255 65% 54%);

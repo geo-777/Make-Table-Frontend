@@ -4,7 +4,6 @@
   border-radius: var(--radius);
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  margin: 2rem 2rem 0 2rem;
 }
 
 .table {
@@ -62,7 +61,9 @@
   color: var(--foreground);
   background-color: var(--secondary-bg);
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .nameInput:focus {
@@ -80,7 +81,9 @@
   background-color: var(--secondary-bg);
   outline: none;
   text-align: center;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .numberInput:focus {
@@ -104,7 +107,9 @@
   background: transparent;
   cursor: pointer;
   color: var(--muted-foreground);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .editBtn:hover {

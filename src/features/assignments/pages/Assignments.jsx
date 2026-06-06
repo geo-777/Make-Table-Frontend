@@ -12,6 +12,7 @@ import "../../../styles/appLayout.css";
 
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
+import Shimmer from "../../../shared/components/shimmer/Shimmer";
 
 const Assignments = () => {
   const { selectedTimetableData } = useTimeTableSelect();
@@ -72,7 +73,7 @@ const Assignments = () => {
           }}
         />
         <div className="main">
-          {isPending && <StatusWrapper loader={true} />}
+          {/* {isPending && <StatusWrapper loader={true} />} */}
 
           {activeView === "list" && isSuccess && (
             <ListView
@@ -81,34 +82,40 @@ const Assignments = () => {
               editFn={(data) => openEditDialog(data)}
             />
           )}
-
           {/* grid view*/}
-          {activeView === "grid" &&
-            isSuccess &&
-            (assignData?.length > 0 ? (
-              <div
-                className={`${styles.gridContainer} stagger-children fast grid-fast-stagger `}
-              >
-                {assignData?.map((e) => (
-                  <AssignCard
-                    key={e.id}
-                    data={e}
-                    deleteFn={(id) => deleteListing.mutateAsync(id)}
-                    editFn={(data) => openEditDialog(data)}
-                  />
-                )) ?? []}
-              </div>
-            ) : (
-              <StatusWrapper isError={true}>
-                <div className={styles.error404}>
-                  <h4>No assignments created yet</h4>
-                  <p>
-                    Start by creating your first class to organize your
-                    schedule.
-                  </p>
-                </div>
-              </StatusWrapper>
-            ))}
+          {activeView === "grid" && (
+            <>
+              {isPending && (
+                <Shimmer count={12} height={130} columns={5} gap={18} />
+              )}
+
+              {isSuccess &&
+                (assignData?.length > 0 ? (
+                  <div
+                    className={`${styles.gridContainer} stagger-children fast grid-fast-stagger`}
+                  >
+                    {assignData.map((e) => (
+                      <AssignCard
+                        key={e.id}
+                        data={e}
+                        deleteFn={(id) => deleteListing.mutateAsync(id)}
+                        editFn={(data) => openEditDialog(data)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <StatusWrapper isError>
+                    <div className={styles.error404}>
+                      <h4>No assignments created yet</h4>
+                      <p>
+                        Start by creating your first class to organize your
+                        schedule.
+                      </p>
+                    </div>
+                  </StatusWrapper>
+                ))}
+            </>
+          )}
         </div>
 
         {/* create popup */}

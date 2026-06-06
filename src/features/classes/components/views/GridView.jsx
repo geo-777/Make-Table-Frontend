@@ -4,6 +4,7 @@ import useClasses from "../../hooks/useClasses";
 import ClassPopup from "../popups/ClassPopup";
 import { useState } from "react";
 import StatusWrapper from "../../../../shared/components/statusWrapper/StatusWrapper";
+import Shimmer from "../../../../shared/components/shimmer/Shimmer";
 import createColor from "../../../../shared/utils/hashColor";
 // individual grid items.
 const GridItem = ({ data, openEditPopup }) => {
@@ -18,7 +19,7 @@ const GridItem = ({ data, openEditPopup }) => {
       <div className={styles.gridItem__header}>
         <div className={styles.gridItem__info}>
           <div style={{ display: "flex", gap: "6px" }}>
-            <Badge size={24} style={{ fill: color, stroke: color }}/>
+            <Badge size={24} style={{ fill: color, stroke: color }} />
             <h6>{data.class_name}</h6>
           </div>
           <p>{data.room_name}</p>
@@ -58,7 +59,7 @@ data object structure :
       isLab: false,
       created_at: "2026-04-10T10:44:53.876Z",
 */
-const GridView = ({ data }) => {
+const GridView = ({ data, isLoading = false }) => {
   const [existingData, setExistingData] = useState({});
   const [editPopupOpen, setEditPopupOpen] = useState(false);
   const openEditPopup = (id) => {
@@ -78,7 +79,7 @@ const GridView = ({ data }) => {
           setExistingData({});
         }}
       />
-      {data.length == 0 && (
+      {data.length == 0 && !isLoading && (
         <StatusWrapper isError={true}>
           <div className={styles.error404}>
             <h4>No classes created yet</h4>
@@ -86,13 +87,18 @@ const GridView = ({ data }) => {
           </div>
         </StatusWrapper>
       )}
-      <div
-        className={`${styles.gridContainer} stagger-children fast grid-fast-stagger `}
-      >
-        {data.map((e, i) => (
-          <GridItem openEditPopup={openEditPopup} data={e} key={i} />
-        ))}
-      </div>
+
+      {isLoading ? (
+        <Shimmer count={12} height={120} columns={5} gap={16} />
+      ) : (
+        <div
+          className={`${styles.gridContainer} stagger-children fast grid-fast-stagger `}
+        >
+          {data.map((e, i) => (
+            <GridItem openEditPopup={openEditPopup} data={e} key={i} />
+          ))}
+        </div>
+      )}
     </>
   );
 };

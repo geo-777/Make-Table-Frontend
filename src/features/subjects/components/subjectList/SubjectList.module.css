@@ -5,7 +5,6 @@
   box-shadow: var(--shadow-card);
   background: var(--card);
   font-family: inherit;
-  margin: 2rem;
 }
 
 .table {
@@ -211,7 +210,9 @@
   border: none;
   cursor: pointer;
   background: transparent;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   color: var(--muted-foreground);
 }
 

@@ -9,6 +9,7 @@ import Topbar from "../../../shared/components/topbar/Topbar";
 import SubjectList from "../components/subjectList/SubjectList";
 import SubjectDialog from "../components/dialog/SubjectDialog";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
+import Shimmer from "../../../shared/components/shimmer/Shimmer";
 import { useSubjectsView } from "../../../shared/zustand/listingsViewStore";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useSubjects from "../hooks/useSubjects";
@@ -133,73 +134,83 @@ export default function Subjects() {
           }}
           onBulkImport={() => setOpenImportDialog(true)}
         />
-        {isPending && <StatusWrapper loader={true} />}
+        <div className="main">
+          {/* {isPending && <StatusWrapper loader={true} />} */}
 
-        {!subjects.length && isSuccess && (
-          <div className={styles.inactiveState}>
-            <h4>No Subjects defined.</h4>
-            <p>
-              Add your first subject to start defining constraints for this
-              timetable.
-            </p>
-          </div>
-        )}
+          {!subjects.length && isSuccess && (
+            <div className={styles.inactiveState}>
+              <h4>No Subjects defined.</h4>
+              <p>
+                Add your first subject to start defining constraints for this
+                timetable.
+              </p>
+            </div>
+          )}
 
-        {!!subjects.length && activeView === "list" && isSuccess && (
-          <SubjectList
-            subjects={subjects}
-            onEdit={handleUpdateSubject}
-            onDelete={handleDeleteSubject}
+          {!!subjects.length && activeView === "list" && isSuccess && (
+            <SubjectList
+              subjects={subjects}
+              onEdit={handleUpdateSubject}
+              onDelete={handleDeleteSubject}
+            />
+          )}
+
+          {activeView === "grid" && (
+            <>
+              {isPending && (
+                <Shimmer count={12} height={140} columns={5} gap={18} />
+              )}
+
+              {isSuccess && (
+                <div
+                  className={`stagger-children fast grid-fast-stagger ${styles.gridContainer}`}
+                >
+                  {subjects.map((subject) => (
+                    <SubjectCard
+                      key={subject.id}
+                      subject={subject}
+                      onEdit={() => {
+                        setSelectedSubject(subject);
+                        setOpenUpdateSubjectDialog(true);
+                      }}
+                      onDelete={handleDeleteSubject}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {isError && <StatusWrapper isError={true} error={error} />}
+
+          {/* Add Subject */}
+          <SubjectDialog
+            open={openAddSubjectDialog}
+            onClose={() => setOpenAddSubjectDialog(false)}
+            onCreate={handleCreateSubject}
           />
-        )}
 
-        {!!subjects.length && activeView === "grid" && isSuccess && (
-          <div
-            className={`stagger-children fast grid-fast-stagger ${styles.gridContainer}`}
-          >
-            {subjects.map((subject) => (
-              <SubjectCard
-                key={subject.id}
-                subject={subject}
-                onEdit={() => {
-                  setSelectedSubject(subject);
-                  setOpenUpdateSubjectDialog(true);
-                }}
-                onDelete={handleDeleteSubject}
-              />
-            ))}
-          </div>
-        )}
+          {/* Update Subject */}
+          <SubjectDialog
+            open={openUpdateSubjectDialog}
+            onClose={() => setOpenUpdateSubjectDialog(false)}
+            initialData={selectedSubject}
+            onUpdate={handleUpdateSubject}
+          />
 
-        {isError && <StatusWrapper isError={true} error={error} />}
-
-        {/* Add Subject */}
-        <SubjectDialog
-          open={openAddSubjectDialog}
-          onClose={() => setOpenAddSubjectDialog(false)}
-          onCreate={handleCreateSubject}
-        />
-
-        {/* Update Subject */}
-        <SubjectDialog
-          open={openUpdateSubjectDialog}
-          onClose={() => setOpenUpdateSubjectDialog(false)}
-          initialData={selectedSubject}
-          onUpdate={handleUpdateSubject}
-        />
-
-        {/* Import Subject Details */}
-        <ImportDialog
-          open={openImportDialog}
-          title={"Import Subjects"}
-          description={"Add all subject that need to be scheduled"}
-          onClose={() => {
-            setOpenImportDialog(false);
-          }}
-          onSelectCSV={() => {}}
-          onSelectText={() => {}}
-          onSelectTimetable={() => {}}
-        />
+          {/* Import Subject Details */}
+          <ImportDialog
+            open={openImportDialog}
+            title={"Import Subjects"}
+            description={"Add all subject that need to be scheduled"}
+            onClose={() => {
+              setOpenImportDialog(false);
+            }}
+            onSelectCSV={() => {}}
+            onSelectText={() => {}}
+            onSelectTimetable={() => {}}
+          />
+        </div>
       </div>
     </div>
   );
