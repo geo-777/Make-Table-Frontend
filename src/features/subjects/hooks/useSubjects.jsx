@@ -4,7 +4,6 @@ import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 
 import {
   createSubject_POST,
-  fetchSubject_GET,
   fetchAllSubjects_GET,
   updateSubject_PATCH,
   deleteSubject_DELETE,
@@ -35,23 +34,6 @@ const handleError = (error) => {
   toast.error(error?.response?.data?.message ?? "Something went wrong.");
 };
 
-// --- Hydration helper --------------------------------------------
-const hydrateSubjects = async (subjects, queryClient) => {
-  const results = await Promise.all(
-    subjects.map((subject) =>
-      queryClient.fetchQuery({
-        queryKey: subjectKeys.single(subject.id),
-        queryFn: () => fetchSubject_GET(subject.id),
-        staleTime: 5 * 60 * 1000,
-      }),
-    ),
-  );
-  return results.map((r) => {
-    if (r && typeof r === "object" && "data" in r) return r.data;
-    return r;
-  });
-};
-
 // --- Hook --------------------------------------------
 const useSubjects = () => {
   const queryClient = useQueryClient();
@@ -60,14 +42,7 @@ const useSubjects = () => {
 
   const subjectQuery = useQuery({
     queryKey: subjectKeys.timetable(timetableId),
-    queryFn: async () => {
-      const listResponse = await fetchAllSubjects_GET(timetableId);
-      const subjects = listResponse?.data ?? listResponse ?? [];
-
-      const hydrated = await hydrateSubjects(subjects, queryClient);
-
-      return { ...listResponse, data: hydrated };
-    },
+    queryFn: () => fetchAllSubjects_GET(timetableId),
     enabled: Boolean(timetableId),
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,

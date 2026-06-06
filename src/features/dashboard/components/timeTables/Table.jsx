@@ -24,6 +24,9 @@ export default function Timetable({
   mode = "class",
   isLoading = false,
 }) {
+
+  if(!isLoading && Object.entries(entries).length === 0) return;
+
   return (
     <div className={styles.wrapper}>
       <table className={styles.table}>

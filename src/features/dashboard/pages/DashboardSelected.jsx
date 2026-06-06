@@ -344,17 +344,19 @@ export default function DashboardSelected() {
                     )}
                 </div>
 
-                {selectedClass &&
+                { selectedClass &&
                   selectedTimetableData?.slots > 0 &&
-                  selectedTimetableData?.days?.length > 0 && (
-                    <Table
-                      entries={classEntries}
-                      slotCount={selectedTimetableData?.slots ?? 0}
-                      days={selectedTimetableData?.days ?? []}
-                      mode="class"
-                      isLoading={loading.class}
-                    />
-                  )}
+                  selectedTimetableData?.days?.length > 0 &&
+                    (
+                      <Table
+                        entries={classEntries}
+                        slotCount={selectedTimetableData?.slots ?? 0}
+                        days={selectedTimetableData?.days ?? []}
+                        mode="class"
+                        isLoading={loading.class}
+                      />
+                    )
+                }
 
                 {!loading?.class && Object.keys(classEntries).length === 0 && (
                   <div className={styles.emptyState}>
@@ -389,9 +391,10 @@ export default function DashboardSelected() {
                     )}
                 </div>
 
-                {selectedTeacher &&
+                { selectedTeacher &&
                   selectedTimetableData?.slots > 0 &&
-                  selectedTimetableData?.days?.length > 0 && (
+                  selectedTimetableData?.days?.length > 0 &&
+                  (
                     <Table
                       entries={teacherEntries}
                       slotCount={selectedTimetableData?.slots ?? 0}
@@ -399,7 +402,8 @@ export default function DashboardSelected() {
                       mode="teacher"
                       isLoading={loading.teacher}
                     />
-                  )}
+                  )
+                }
 
                 {!loading?.teacher &&
                   Object.keys(teacherEntries).length === 0 && (
