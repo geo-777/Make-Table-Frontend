@@ -1,0 +1,138 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 2rem;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  background-color: var(--color-grey-50);
+  color: color-mix(in srgb, var(--color-grey-500) 90%, var(--color-grey-50));
+}
+
+.badge.green {
+  background-color: var(--accent-green-bg);
+  color: var(--accent-green-fg);
+}
+
+.badge.violet {
+  background-color: var(--accent-violet-bg);
+  color: var(--accent-violet-fg);
+}
+
+.dot {
+  display: block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: color-mix(in srgb, var(--color-grey-500) 90%, var(--color-grey-50));
+}
+
+.badge.green .dot {
+  background-color: var(--accent-green-fg);
+}
+
+.badge.violet .dot {
+  background-color: var(--accent-violet-fg);
+}
+
+.metaText {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btnOutline,
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 500;
+  height: 2.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease, color 0.15s ease;
+  outline: none;
+  border: none;
+  color: var(--foreground)
+}
+
+.btnOutline:focus-visible,
+.btnPrimary:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring), 0 0 0 4px transparent;
+}
+
+.btnOutline:disabled,
+.btnPrimary:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.btnOutline {
+  background-color: var(--card);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+}
+
+.btnOutline:hover {
+  background-color: var(--hover-main);
+  color: var(--foreground);
+}
+
+.btnPrimary {
+  background: var(--gradient-primary);
+  color: var(--primary-foreground);
+  border: none;
+  box-shadow: var(--shadow-card);
+}
+
+[data-theme="dark"] .btnPrimary {
+  color: var(--foreground);
+}
+
+.btnPrimary:hover {
+  opacity: 0.9;
+}

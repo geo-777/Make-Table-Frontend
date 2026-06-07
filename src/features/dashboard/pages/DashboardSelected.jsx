@@ -1,7 +1,7 @@
 import "../../../styles/appLayout.css";
 import styles from "../styles/DashboardSelected.module.css";
 import Topbar from "../../../shared/components/topbar/Topbar";
-import { Play, Zap, Link2, CheckIcon } from "lucide-react";
+import { Link2, CheckIcon } from "lucide-react";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useClasses from "../../../features/classes/hooks/useClasses";
 import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
@@ -19,56 +19,7 @@ import { toast } from "react-toastify";
 import { useTimetableEntry } from "../hooks/useTimetableEntry";
 import ViolationsPanel from "../components/violationsPanel/ViolationsPanel";
 import { refresh } from "../../../api/auth.api";
-
-const Header = ({
-  name,
-  days,
-  slots,
-  classes,
-  viewStatus,
-  isGenerating,
-  onGenerate,
-  onForce,
-}) => {
-  return (
-    <div className={`${styles.wrapper} stagger-children`}>
-      <div className={styles.info}>
-        <h1 className={styles.title}>{name}</h1>
-        <div className={styles.meta}>
-          <span
-            className={`${styles.badge} ${isGenerating ? styles.violet : viewStatus === "Public" ? styles.green : ""}`}
-          >
-            <span className={styles.dot} />
-            {viewStatus}
-          </span>
-          <span className={styles.metaText}>
-            {days} days · {slots} slots/day · {classes} classes
-          </span>
-        </div>
-      </div>
-
-      <div className={styles.actions}>
-        <button
-          className={styles.btnPrimary}
-          onClick={onGenerate}
-          disabled={isGenerating}
-        >
-          <Play size={16} />
-          {isGenerating ? "Generating..." : "Generate"}
-        </button>
-
-        <button
-          className={styles.btnOutline}
-          disabled={isGenerating}
-          onClick={onForce}
-        >
-          <Zap size={16} />
-          Force
-        </button>
-      </div>
-    </div>
-  );
-};
+import Header from "../components/timetableHeader/Header";
 
 const TABS = [
   { id: "class", label: "Class Timetables" },
