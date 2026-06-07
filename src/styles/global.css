@@ -12,6 +12,27 @@ body {
   scroll-padding: 350px;
 }
 
+/* Firefox */
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-color: var(--muted-foreground);
+  }
+}
+
+/* Chromium */
+::-webkit-scrollbar {
+  width: 14px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--muted-foreground);
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--muted-foreground) 70%, var(--foreground));
+}
+::-webkit-scrollbar-thumb:active {
+  background-color: color-mix(in srgb, var(--muted-foreground) 50%, var(--foreground));
+}
+
 body,
 button,
 input {

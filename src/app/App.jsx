@@ -1,6 +1,6 @@
 //global styles
-import "../styles/global.css";
 import "../styles/theme.css";
+import "../styles/global.css";
 import LoaderFull from "../shared/components/loader/LoaderFull";
 import { useAuth } from "./providers/AuthProvider";
 import AppRoutes from "./routes/AppRoutes";
