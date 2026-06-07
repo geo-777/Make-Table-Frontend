@@ -123,7 +123,7 @@ const useTeachers = () => {
 
   // -------------------------------------------------------------------
   const updateTeacherMutation = useMutation({
-    mutationFn: ({ id, data }) => updateTeachers_PATCH(timetableId, id, data),
+    mutationFn: ({ id, data }) => updateTeachers_PATCH(id, data),
     onMutate: async ({ id, data }) => {
       await queryClient.cancelQueries({
         queryKey: teacherKeys.timetable(timetableId),

@@ -12,9 +12,6 @@ export const deleteTeacher_DELETE = (id) => {
   return axiosInstance.delete(`/teachers/${id}`);
 };
 
-export const updateTeachers_PATCH = (timetableId, teacherId, data) => {
-  return axiosInstance.patch(
-    `/timetables/${timetableId}/teachers/${teacherId}`,
-    data,
-  );
-}
+export const updateTeachers_PATCH = (teacherId, data) => {
+  return axiosInstance.patch(`/teachers/${teacherId}`, data);
+};

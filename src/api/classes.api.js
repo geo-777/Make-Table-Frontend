@@ -11,9 +11,6 @@ export const deleteClass = async (id) => {
   return axiosInstance.delete(`/classes/${id}`);
 };
 
-export const patchClass = async (timetableId, classId, data) => {
-  return axiosInstance.patch(
-    `/timetables/${timetableId}/classes/${classId}`,
-    data,
-  );
+export const patchClass = async (classId, data) => {
+  return axiosInstance.patch(`/classes/${classId}`, data);
 };

@@ -14,9 +14,9 @@ import { updateQueryCache } from "../../../shared/utils/queryCacheHelper";
 import { useToast } from "../../../shared/components/toast/Toast";
 
 const useClasses = () => {
-  const { selectedTimetableData } = useTimeTableSelect();
-
-  const timetableId = selectedTimetableData?.id;
+  const timetableId = useTimeTableSelect(
+    (state) => state.selectedTimetableData?.id,
+  );
   const CLASS_KEY = ["classes", timetableId];
   const queryClient = useQueryClient();
   const { addToast } = useToast();
@@ -93,14 +93,14 @@ const useClasses = () => {
     },
 
     onError: (error) => {
-      apiErrorHandler(error?.response?.stus, Component_Type.CLASSES);
+      apiErrorHandler(error?.response?.status, Component_Type.CLASSES);
     },
   });
 
   /*PATCH*/
 
   const patchListing = useMutation({
-    mutationFn: ({ classId, data }) => patchClass(timetableId, classId, data),
+    mutationFn: ({ classId, data }) => patchClass(classId, data),
     onSuccess: (response, { classId }) => {
       const updatedClass = response.data;
       updateQueryCache({
@@ -120,7 +120,7 @@ const useClasses = () => {
       });
     },
     onError: (error) => {
-      apiErrorHandler(error?.response?.stus, Component_Type.CLASSES);
+      apiErrorHandler(error?.response?.status, Component_Type.CLASSES);
     },
   });
 

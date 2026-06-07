@@ -12,9 +12,6 @@ export const deleteSubject_DELETE = (id) => {
   return axiosInstance.delete(`/subjects/${id}`);
 };
 
-export const updateSubject_PATCH = (timetableId, subjectId, data) => {
-  return axiosInstance.patch(
-    `/timetables/${timetableId}/subjects/${subjectId}`,
-    data,
-  );
+export const updateSubject_PATCH = (subjectId, data) => {
+  return axiosInstance.patch(`/subjects/${subjectId}`, data);
 };

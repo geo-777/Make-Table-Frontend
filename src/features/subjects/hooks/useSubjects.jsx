@@ -19,7 +19,6 @@ export const subjectKeys = {
 
 // --- Error Handling --------------------------------------------
 const handleError = (error) => {
-  
   const status = error?.response?.status;
   if (!status) {
     toast.error("Unknown error occurred.");
@@ -125,7 +124,7 @@ const useSubjects = () => {
 
   // -------------------------------------------------------------------
   const updateSubjectMutation = useMutation({
-    mutationFn: ({ id, data }) => updateSubject_PATCH(timetableId, id, data),
+    mutationFn: ({ id, data }) => updateSubject_PATCH(id, data),
     onMutate: async ({ id, data }) => {
       await queryClient.cancelQueries({
         queryKey: subjectKeys.timetable(timetableId),
