@@ -24,6 +24,7 @@
   max-height: 88vh;
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--border);
   background-color: var(--sidebar-background);
   border-radius: 0.75rem;
   box-shadow:

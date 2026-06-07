@@ -16,8 +16,13 @@ function App() {
   const { theme } = useThemeStore();
   // applying theme class to the root html element
   useEffect(() => {
-    document.documentElement.classList.remove("light", "dark");
-    document.documentElement.classList.add(theme);
+    // in most cases `documentElement` will be `<html>` rather than `<div #root>` or `<body>`
+    // document.getElementById("root").classList.remove("light", "dark");
+    // document.getElementById("root").classList.add(theme);
+
+    const root = document.body;
+
+    root.setAttribute("data-theme", theme);
   }, [theme]);
 
   if (isLoading) {

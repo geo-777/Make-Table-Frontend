@@ -95,6 +95,7 @@
   transition: background-color 0.15s ease, opacity 0.15s ease, color 0.15s ease;
   outline: none;
   border: none;
+  color: var(--foreground)
 }
 
 .btnOutline:focus-visible,
@@ -124,6 +125,10 @@
   color: var(--primary-foreground);
   border: none;
   box-shadow: var(--shadow-card);
+}
+
+[data-theme="dark"] .btnPrimary {
+  color: var(--foreground);
 }
 
 .btnPrimary:hover {

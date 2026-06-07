@@ -17,7 +17,7 @@
   max-width: 560px;
   max-height: 90vh;
   overflow: hidden;
-  background-color: var(--secondary-bg);
+  background-color: var(--sidebar-background);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.5rem;
