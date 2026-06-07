@@ -129,13 +129,20 @@ const useTimetableListing = () => {
         }),
       });
 
+      const title =
+        editedTimetable.view_status === "Public"
+          ? "Timetable is now public."
+          : "Timetable is now private.";
+
+      const message =
+        editedTimetable.view_status === "Public"
+          ? "Public timetables are visible to anyone with the link."
+          : "Private timetables are only visible to you.";
+
       addToast({
         type: "success",
-        title:
-          editedTimetable.view_status === "Public"
-            ? "Timetable is now public."
-            : "Timetable is now private.",
-        message: "",
+        title,
+        message,
         duration: 2000,
       });
       

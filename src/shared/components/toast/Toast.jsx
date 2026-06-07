@@ -11,6 +11,7 @@ import {
   CheckIcon,
   CircleAlert,
   TriangleAlert,
+  X,
 } from "lucide-react";
 
 /*
@@ -101,19 +102,7 @@ function ToastItem({ toast, onRemove }) {
         onClick={startLeave}
         aria-label="Dismiss notification"
       >
-        <svg
-          viewBox="0 0 14 14"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M2 2l10 10M12 2L2 12"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            stroke="currentColor"
-          />
-        </svg>
+        <X size={24} strokeWidth={2}/>
       </button>
 
       <div
