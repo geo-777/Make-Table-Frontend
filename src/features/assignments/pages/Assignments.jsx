@@ -13,6 +13,8 @@ import "../../../styles/appLayout.css";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import GridSkelton from "../../../shared/components/skeltonLoading/GridSkelton";
+import ListSkeleton from "../../../shared/components/skeltonLoading/ListSkeleton";
+
 const Assignments = () => {
   const { selectedTimetableData } = useTimeTableSelect();
   const { activeView, setActiveView } = useAssignmentsView();
@@ -72,15 +74,23 @@ const Assignments = () => {
           }}
         />
         <div className="main">
-          {/* {isPending && <StatusWrapper loader={true} />} */}
+          {/* list view */}
+          {activeView === "list" && (
+            <>
+              {isPending && (
+                <ListSkeleton />
+              )}
 
-          {activeView === "list" && isSuccess && (
-            <ListView
-              data={assignData}
-              deleteFn={(id) => deleteListing.mutateAsync(id)}
-              editFn={(data) => openEditDialog(data)}
-            />
+              {isSuccess && (
+                <ListView
+                  data={assignData}
+                  deleteFn={(id) => deleteListing.mutateAsync(id)}
+                  editFn={(data) => openEditDialog(data)}
+                />
+              )}
+            </>
           )}
+
           {/* grid view*/}
           {activeView === "grid" && (
             <>

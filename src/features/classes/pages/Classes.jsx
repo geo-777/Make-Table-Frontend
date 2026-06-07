@@ -73,9 +73,8 @@ const Classes = () => {
         />
 
         <div className={`main `}>
-          {/* {isPending && <StatusWrapper loader={true} />} */}
-          {activeView === "list" && isSuccess && (
-            <ListView data={listings?.data || []} />
+          {activeView === "list" && (
+            <ListView data={listings?.data || []} isLoading={isPending} />
           )}
           {activeView === "grid" && (
             <GridView data={listings?.data || []} isLoading={isPending} />

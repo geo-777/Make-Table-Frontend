@@ -4,6 +4,7 @@ import { Pencil, Trash2, X, Check } from "lucide-react";
 import CircularCheckBox from "../../../../shared/components/specialButtons/CircularCheckBox";
 import useClasses from "../../hooks/useClasses";
 import StatusWrapper from "../../../../shared/components/statusWrapper/StatusWrapper";
+import ListSkeleton from "../../../../shared/components/skeltonLoading/ListSkeleton";
 
 const Row = ({ data, editClass, deleteClass }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -115,7 +116,7 @@ const Row = ({ data, editClass, deleteClass }) => {
         </button>
         <button
           className={`${styles.actionBtn__list} ${styles.actionBtn__delete}`}
-          onClick={async () => await deleteClass(data?.id)}
+          onClick={() => deleteClass(data?.id)}
         >
           <Trash2 size={actionbtnSize} strokeWidth={actionbtnStroke} />
         </button>
@@ -124,8 +125,10 @@ const Row = ({ data, editClass, deleteClass }) => {
   );
 };
 
-const ListView = ({ data }) => {
+const ListView = ({ data, isLoading = false }) => {
   const { patchListing, deleteListing } = useClasses();
+  
+  if(isLoading) return <ListSkeleton />;
 
   const editClass = async (id, data) => {
     await patchListing.mutateAsync({

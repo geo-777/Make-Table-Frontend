@@ -14,6 +14,7 @@ import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useSubjects from "../hooks/useSubjects";
 import SubjectCard from "../components/subjectCard/SubjectCard";
 import GridSkelton from "../../../shared/components/skeltonLoading/GridSkelton";
+import ListSkeleton from "../../../shared/components/skeltonLoading/ListSkeleton";
 /*
   {
     id: number,
@@ -134,7 +135,6 @@ export default function Subjects() {
           onBulkImport={() => setOpenImportDialog(true)}
         />
         <div className="main">
-          {/* {isPending && <StatusWrapper loader={true} />} */}
 
           {!subjects.length && isSuccess && (
             <div className={styles.inactiveState}>
@@ -146,12 +146,20 @@ export default function Subjects() {
             </div>
           )}
 
-          {!!subjects.length && activeView === "list" && isSuccess && (
-            <SubjectList
-              subjects={subjects}
-              onEdit={handleUpdateSubject}
-              onDelete={handleDeleteSubject}
-            />
+          {activeView === "list" && (
+            <>
+              {isPending && (
+                <ListSkeleton />
+              )}
+
+              {isSuccess && subjects?.length > 0 && (
+                <SubjectList
+                  subjects={subjects}
+                  onEdit={handleUpdateSubject}
+                  onDelete={handleDeleteSubject}
+                />
+              )}
+            </>
           )}
 
           {activeView === "grid" && (
