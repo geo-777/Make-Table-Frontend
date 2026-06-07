@@ -73,6 +73,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-wrap: nowrap;
+  color: var(--foreground);
 }
 .typeLab {
   background-color: var(--accent-violet-bg);
