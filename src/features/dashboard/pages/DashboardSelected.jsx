@@ -1,25 +1,33 @@
 import "../../../styles/appLayout.css";
 import styles from "../styles/DashboardSelected.module.css";
-import Topbar from "../../../shared/components/topbar/Topbar";
+
 import { Link2, CheckIcon } from "lucide-react";
-import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
-import useClasses from "../../../features/classes/hooks/useClasses";
-import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
-import useTeachers from "../../../features/teachers/hooks/useTeachers";
-import useSubjects from "../../../features/subjects/hooks/useSubjects";
-import useTimetableListing from "../hooks/useTimetableListing";
 import { useCallback, useEffect, useState } from "react";
-import Dropdown from "../components/dropDown/Dropdown";
+import { toast } from "react-toastify";
+
+import Topbar from "../../../shared/components/topbar/Topbar";
+import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
 import Table from "../components/timeTables/Table";
+import Dropdown from "../components/dropDown/Dropdown";
+import ViolationsPanel from "../components/violationsPanel/ViolationsPanel";
+import Header from "../components/timetableHeader/Header";
+
+import useTimetableListing from "../hooks/useTimetableListing";
+import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
+
+import useClasses from "../../../features/classes/hooks/useClasses";
+import useSubjects from "../../../features/subjects/hooks/useSubjects";
+import useTeachers from "../../../features/teachers/hooks/useTeachers";
+
+import { useTimetableEntry } from "../hooks/useTimetableEntry";
+
 import {
   generate_POST,
   getTimetableStatus_GET,
 } from "../../../api/generations.api";
-import { toast } from "react-toastify";
-import { useTimetableEntry } from "../hooks/useTimetableEntry";
-import ViolationsPanel from "../components/violationsPanel/ViolationsPanel";
 import { refresh } from "../../../api/auth.api";
-import Header from "../components/timetableHeader/Header";
+
+//-------------------------------------------------------------------------------------------------
 
 const TABS = [
   { id: "class", label: "Class Timetables" },
@@ -71,6 +79,8 @@ function groupEntriesByDay(entries) {
     return acc;
   }, {});
 }
+
+//-------------------------------------------------------------------------------------------------
 
 export default function DashboardSelected() {
   const { selectedTimetableData } = useTimeTableSelect();
@@ -244,6 +254,8 @@ export default function DashboardSelected() {
     }
   };
 
+  //-------------------------------------------------------------------------------------------------
+
   return (
     <div className="App">
       <Topbar page={"Dashboard"} />
@@ -295,19 +307,17 @@ export default function DashboardSelected() {
                     )}
                 </div>
 
-                { selectedClass &&
+                {selectedClass &&
                   selectedTimetableData?.slots > 0 &&
-                  selectedTimetableData?.days?.length > 0 &&
-                    (
-                      <Table
-                        entries={classEntries}
-                        slotCount={selectedTimetableData?.slots ?? 0}
-                        days={selectedTimetableData?.days ?? []}
-                        mode="class"
-                        isLoading={loading.class}
-                      />
-                    )
-                }
+                  selectedTimetableData?.days?.length > 0 && (
+                    <Table
+                      entries={classEntries}
+                      slotCount={selectedTimetableData?.slots ?? 0}
+                      days={selectedTimetableData?.days ?? []}
+                      mode="class"
+                      isLoading={loading.class}
+                    />
+                  )}
 
                 {!loading?.class && Object.keys(classEntries).length === 0 && (
                   <div className={styles.emptyState}>
@@ -342,10 +352,9 @@ export default function DashboardSelected() {
                     )}
                 </div>
 
-                { selectedTeacher &&
+                {selectedTeacher &&
                   selectedTimetableData?.slots > 0 &&
-                  selectedTimetableData?.days?.length > 0 &&
-                  (
+                  selectedTimetableData?.days?.length > 0 && (
                     <Table
                       entries={teacherEntries}
                       slotCount={selectedTimetableData?.slots ?? 0}
@@ -353,8 +362,7 @@ export default function DashboardSelected() {
                       mode="teacher"
                       isLoading={loading.teacher}
                     />
-                  )
-                }
+                  )}
 
                 {!loading?.teacher &&
                   Object.keys(teacherEntries).length === 0 && (
