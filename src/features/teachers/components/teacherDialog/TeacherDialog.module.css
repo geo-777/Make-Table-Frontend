@@ -51,7 +51,9 @@
   background: transparent;
   color: var(--muted-foreground);
   cursor: pointer;
-  transition: background 150ms ease, color 150ms ease;
+  transition:
+    background 150ms ease,
+    color 150ms ease;
 }
 
 .closeBtn:hover {
@@ -102,7 +104,9 @@
   padding: 0 0.75rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
   outline: none;
   appearance: textfield;
   -moz-appearance: textfield;
@@ -144,7 +148,9 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: opacity 150ms ease, box-shadow 150ms ease;
+  transition:
+    opacity 150ms ease,
+    box-shadow 150ms ease;
   box-shadow: 0 1px 4px hsl(255 65% 54% / 0.3);
 }
 
@@ -165,4 +171,15 @@
 .submitBtn:disabled {
   pointer-events: none;
   opacity: 0.5;
+}
+
+.errorBox {
+  display: flex;
+  margin-top: 1rem;
+  color: var(--color-danger);
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+.hidden {
+  display: none;
 }
