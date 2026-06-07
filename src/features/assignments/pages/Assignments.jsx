@@ -35,8 +35,7 @@ const Assignments = () => {
   };
 
   //query data from hook
-  const { data, isPending, isSuccess, isError, deleteListing } =
-    useAssignments();
+  const { data, isLoading, isSuccess, deleteListing } = useAssignments();
   const assignData = data?.data ?? [];
 
   if (!selectedTimetableData) {
@@ -55,7 +54,6 @@ const Assignments = () => {
     <div className="App">
       <Topbar page={"Assignments"} />
       <div className="mainPlaceholder">
-
         <PageHeader
           title={"Assignments"}
           description={
@@ -77,9 +75,7 @@ const Assignments = () => {
           {/* list view */}
           {activeView === "list" && (
             <>
-              {isPending && (
-                <ListSkeleton />
-              )}
+              {isLoading && <ListSkeleton />}
 
               {isSuccess && (
                 <ListView
@@ -94,7 +90,7 @@ const Assignments = () => {
           {/* grid view*/}
           {activeView === "grid" && (
             <>
-              {isPending && (
+              {isLoading && (
                 <GridSkelton count={12} height={130} columns={5} gap={18} />
               )}
 

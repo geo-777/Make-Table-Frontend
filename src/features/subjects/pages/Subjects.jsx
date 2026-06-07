@@ -48,7 +48,7 @@ export default function Subjects() {
   const {
     data,
 
-    isPending,
+    isLoading,
     isError,
     error,
     isSuccess,
@@ -135,7 +135,6 @@ export default function Subjects() {
           onBulkImport={() => setOpenImportDialog(true)}
         />
         <div className="main">
-
           {!subjects.length && isSuccess && (
             <div className={styles.inactiveState}>
               <h4>No Subjects defined.</h4>
@@ -148,9 +147,7 @@ export default function Subjects() {
 
           {activeView === "list" && (
             <>
-              {isPending && (
-                <ListSkeleton />
-              )}
+              {isLoading && <ListSkeleton />}
 
               {isSuccess && subjects?.length > 0 && (
                 <SubjectList
@@ -164,7 +161,7 @@ export default function Subjects() {
 
           {activeView === "grid" && (
             <>
-              {isPending && (
+              {isLoading && (
                 <GridSkelton count={12} height={140} columns={5} gap={18} />
               )}
 

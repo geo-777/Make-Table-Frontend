@@ -1,6 +1,5 @@
 import Topbar from "../../../shared/components/topbar/Topbar";
 import "../../../styles/appLayout.css";
-import styles from "../styles/Classes.module.css";
 import { useClassesView } from "../../../shared/zustand/listingsViewStore";
 import GridView from "../components/views/GridView";
 import ListView from "../components/views/ListView";
@@ -19,7 +18,7 @@ const Classes = () => {
 
   const { selectedTimetableData } = useTimeTableSelect();
 
-  const { data: listings, isPending, isError, isSuccess, error } = useClasses();
+  const { data: listings, isLoading, isError, error } = useClasses();
 
   if (!selectedTimetableData) {
     return (
@@ -74,10 +73,10 @@ const Classes = () => {
 
         <div className={`main `}>
           {activeView === "list" && (
-            <ListView data={listings?.data || []} isLoading={isPending} />
+            <ListView data={listings?.data || []} isLoading={isLoading} />
           )}
           {activeView === "grid" && (
-            <GridView data={listings?.data || []} isLoading={isPending} />
+            <GridView data={listings?.data || []} isLoading={isLoading} />
           )}
           {isError && <StatusWrapper isError={true} error={error} />}
         </div>

@@ -32,7 +32,7 @@ const Teachers = () => {
 
   const {
     data,
-    isPending,
+    isLoading,
     isError,
     error,
     isSuccess,
@@ -122,7 +122,7 @@ const Teachers = () => {
 
           {activeView === "list" && (
             <>
-              {isPending && <ListSkeleton />}
+              {isLoading && <ListSkeleton />}
 
               {!!teachers.length && isSuccess && (
                 <TeacherList
@@ -136,7 +136,7 @@ const Teachers = () => {
 
           {activeView === "grid" && (
             <>
-              {isPending && (
+              {isLoading && (
                 <GridSkelton count={12} height={200} columns={4} gap={18} />
               )}
 

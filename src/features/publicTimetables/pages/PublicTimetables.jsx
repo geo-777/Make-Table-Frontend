@@ -18,20 +18,19 @@ function groupEntriesByDay(entries) {
 const PublicTimetables = ({ classTable = false }) => {
   const { id } = useParams();
 
-  const { data, isPending, error, isError, isSuccess } = usePublicTimetable({
+  const { data, isLoading, error, isError, isSuccess } = usePublicTimetable({
     id,
     isClass: classTable,
   });
 
   const entriesGrouped = useMemo(
-    () => groupEntriesByDay(Array.isArray(data?.entries) ? data.entries : []),
+    () => groupEntriesByDay(data?.entries ?? []),
     [data?.entries],
   );
-
   return (
     <div className={styles.main}>
       <NavigationBar />
-      {isPending && <StatusWrapper loader={true} />}
+      {isLoading && <StatusWrapper loader={true} />}
       {isError && <StatusWrapper isError={true} error={error} />}
       {isSuccess && (
         <>

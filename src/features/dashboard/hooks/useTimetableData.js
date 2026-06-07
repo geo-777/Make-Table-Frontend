@@ -28,7 +28,7 @@ export const useTimetableData = () => {
     publishedTimeTables,
 
     // Status
-    isFetchPending: query.isPending,
+    isFetchPending: query.isLoading,
     isFetchError: query.isError,
     isFetchSuccess: query.isSuccess,
     listingFetchError: query.error,
