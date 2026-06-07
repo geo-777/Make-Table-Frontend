@@ -9,10 +9,11 @@ import TeacherCard from "../components/teacherCard/TeacherCard";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
 import TeacherList from "../components/teacherList/TeacherList";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
-import GridSkelton from "../../../shared/components/skeltonLoading/GridSkelton";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import useTeachers from "../hooks/useTeachers";
 import { useTeachersView } from "../../../shared/zustand/listingsViewStore";
+import ListSkeleton from "../../../shared/components/skeltonLoading/ListSkeleton";
+import GridSkelton from "../../../shared/components/skeltonLoading/GridSkelton";
 
 /*
   {
@@ -33,7 +34,6 @@ const Teachers = () => {
     data,
     isPending,
     isError,
-    isLoading,
     error,
     isSuccess,
     createTeacher,
@@ -120,18 +120,24 @@ const Teachers = () => {
             </div>
           )}
 
-          {!!teachers.length && activeView == "list" && isSuccess && (
-            <TeacherList
-              teachers={teachers}
-              onEdit={handleUpdateTeacher}
-              onDelete={handleDeleteTeacher}
-              isLoading={isLoading}
-            />
+          {activeView === "list" && (
+            <>
+              {isPending && <ListSkeleton />}
+
+              {!!teachers.length && isSuccess && (
+                <TeacherList
+                  teachers={teachers}
+                  onEdit={handleUpdateTeacher}
+                  onDelete={handleDeleteTeacher}
+                />
+              )}
+            </>
           )}
+
           {activeView === "grid" && (
             <>
               {isPending && (
-                <GridSkelton count={12} height={140} columns={5} gap={18} />
+                <GridSkelton count={12} height={200} columns={4} gap={18} />
               )}
 
               {isSuccess && (
@@ -158,8 +164,6 @@ const Teachers = () => {
             </>
           )}
 
-          {/* Status handlers for both loading and error states. */}
-          {/* {isPending && <StatusWrapper loader={true} />} */}
           {isError && <StatusWrapper isError={true} error={error} />}
 
           {/* Add Teacher */}

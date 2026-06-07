@@ -95,17 +95,7 @@ const TeacherRow = ({ teacher, handleEditClick, onDelete }) => {
   );
 };
 
-const LoadingRow = () => {
-  return (
-    <tr>
-      <td>
-        {/* Skeleton loading goes here */}
-      </td>
-    </tr>
-  );
-}
-
-export default function TeacherList({ teachers = [], isLoading, onEdit, onDelete }) {
+export default function TeacherList({ teachers = [], onEdit, onDelete }) {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
 
@@ -162,9 +152,8 @@ export default function TeacherList({ teachers = [], isLoading, onEdit, onDelete
           </tr>
         </thead>
         <tbody>
-          {isLoading && <LoadingRow />}
 
-          {!isLoading && teachers.map((teacher) =>
+          {teachers.map((teacher) =>
             editingId === teacher.id ? (
               <EditRow 
                 key={teacher.id}
