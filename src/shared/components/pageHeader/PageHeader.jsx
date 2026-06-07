@@ -32,13 +32,13 @@ export default function PageHeader({
               <Grid2x2 size={18} strokeWidth={2} />
             </span>
           </div>
-          <button
+          {/* <button
             className={`${styles.secondaryBtn} fadeInUp fast`}
             onClick={onBulkImport}
           >
             {" "}
             <Download strokeWidth={1.7} size={18} /> <p>Import</p>{" "}
-          </button>
+          </button> */}
         </div>
 
         <button

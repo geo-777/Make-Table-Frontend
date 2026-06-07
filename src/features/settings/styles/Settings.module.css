@@ -205,6 +205,10 @@
   background-image: var(--gradient-primary);
 }
 
+[data-theme="dark"] .btnPrimary {
+  color: var(--foreground);
+}
+
 .btnSecondary {
   color: var(--foreground);
   background: transparent;
