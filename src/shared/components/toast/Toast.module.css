@@ -1,0 +1,237 @@
+/* ─── Container ──────────────────────────────────────────────────────────────── */
+
+.container {
+  --toast-radius: var(--radius, 8px);
+  --toast-shadow: 0 4px 24px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
+  --toast-width: 360px;
+  --toast-gap: 10px;
+
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: var(--toast-gap);
+  pointer-events: none;
+  width: var(--toast-width);
+  max-width: calc(100vw - 48px);
+}
+
+/* ─── Toast Base ────────────────────────────────────────────────────────────── */
+
+.toast {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 14px 14px 16px;
+  border-radius: var(--toast-radius);
+  box-shadow: var(--toast-shadow);
+  font-family: inherit;
+  pointer-events: all;
+  overflow: hidden;
+  cursor: default;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--card-foreground);
+
+  transform: translateX(calc(100% + 32px));
+  opacity: 0;
+  transition:
+    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+
+.toast.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast.leaving {
+  transform: translateX(calc(100% + 32px));
+  opacity: 0;
+}
+
+/* ─── Variants ──────────────────────────────────────────────────────────────── */
+
+/* Success */
+.success {
+  background-color: color-mix(in srgb, var(--accent-green-fg) 10%, var(--card));
+  border-color: color-mix(in srgb, var(--accent-green-fg) 30%, var(--border));
+}
+
+.success .icon {
+  color: var(--accent-green-fg);
+}
+
+.success .progress {
+  background-color: var(--accent-green-fg);
+}
+
+/* Error */
+.error {
+  background-color: color-mix(in srgb, var(--destructive) 10%, var(--card));
+  border-color: color-mix(in srgb, var(--destructive) 30%, var(--border));
+}
+
+.error .icon {
+  color: var(--destructive);
+}
+
+.error .progress {
+  background-color: var(--destructive);
+}
+
+/* Warning */
+.warning {
+  background-color: color-mix(in srgb, var(--accent-yellow-fg) 10%, var(--card));
+  border-color: color-mix(in srgb, var(--accent-yellow-fg) 30%, var(--border));
+}
+
+.warning .icon {
+  color: var(--accent-yellow-fg);
+}
+
+.warning .progress {
+  background-color: var(--accent-yellow-fg);
+}
+
+/* Info */
+.info {
+  background-color: color-mix(in srgb, var(--primary) 10%, var(--card));
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--border));
+}
+
+.info .icon {
+  color: var(--primary);
+}
+
+.info .progress {
+  background-color: var(--primary);
+}
+
+/* ─── Icon ──────────────────────────────────────────────────────────────────── */
+
+.icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ─── Body ──────────────────────────────────────────────────────────────────── */
+
+.body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--card-foreground);
+}
+
+.message {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+/* ─── Close Button ──────────────────────────────────────────────────────────── */
+
+.close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: calc(var(--radius, 8px) - 2px);
+  border: none;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.18s ease;
+  padding: 0;
+}
+
+.close:hover {
+  opacity: 1;
+  background-color: var(--hover-main);
+  transform: translateY(0);
+}
+
+.close svg {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+/* ─── Progress Bar ──────────────────────────────────────────────────────────── */
+
+.progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2.5px;
+  width: 100%;
+  border-radius: 0 0 var(--toast-radius) var(--toast-radius);
+  transform-origin: left center;
+  animation: shrink linear forwards;
+  opacity: 0.55;
+}
+
+@keyframes shrink {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* ─── Responsive ────────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .container {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .toast {
+    transform: translateY(calc(100% + 24px));
+  }
+
+  .toast.visible {
+    transform: translateY(0);
+  }
+
+  .toast.leaving {
+    transform: translateY(calc(100% + 24px));
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    top: 24px;
+  }
+
+  .close, .icon {
+    margin-block: auto;
+  }
+}

@@ -1,9 +1,9 @@
 import styles from "../styles/Auth.module.css";
 import RequiredInputField from "../components/inputFieldAuth/RequiredInputField";
 import { useState } from "react";
-import { Calendar, Github } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { useAuth } from "../../../app/providers/AuthProvider";
-import { toast } from "react-toastify";
+import { useToast } from "../../../shared/components/toast/Toast";
 import { Link } from "react-router-dom";
 import useValidate from "../hooks/useValidate";
 import loginHelper from "../api/loginHelper";
@@ -22,6 +22,7 @@ const Login = () => {
     password: null,
   });
   const [submitLoading, setSubmitLoading] = useState(false);
+  const { addToast } = useToast();
 
   const loginHandler = async (e) => {
     e.preventDefault();
@@ -42,7 +43,12 @@ const Login = () => {
           password: "Incorrect username or password",
         });
       } else {
-        toast.error("Unknown Error occured!");
+        addToast({
+          type: "error",
+          title: "Unknown Error occured!",
+          message: "",
+          duration: 3000,
+        });
       }
     } finally {
       setSubmitLoading(false);

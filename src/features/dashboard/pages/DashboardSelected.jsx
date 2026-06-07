@@ -3,7 +3,7 @@ import styles from "../styles/DashboardSelected.module.css";
 
 import { Link2, CheckIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useToast } from "../../../shared/components/toast/Toast";
 
 import Topbar from "../../../shared/components/topbar/Topbar";
 import DetailsGridTimetable from "../components/detailsGrid/DetailsGridTimetable";
@@ -88,6 +88,7 @@ export default function DashboardSelected() {
   const { data: classes } = useClasses();
   const { data: teachers } = useTeachers();
   const { data: subjects } = useSubjects();
+  const { addToast } = useToast();
 
   const [activeTab, setActiveTab] = useState("class");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -202,9 +203,19 @@ export default function DashboardSelected() {
         });
 
         if (result === "Failed") {
-          toast.error("Timetable failed to generate.");
+          addToast({
+            type: "error",
+            title: "Timetable failed to generate.",
+            message: "",
+            duration: 3000,
+          });
         } else {
-          toast.success("Timetable created successfully.");
+          addToast({
+            type: "success",
+            title: "Timetable created successfully.",
+            message: "",
+            duration: 2000,
+          });
           if (activeTab === "class" && selectedClass) {
             fetchClassTimetable();
           } else if (activeTab === "teacher" && selectedTeacher) {
@@ -214,7 +225,12 @@ export default function DashboardSelected() {
         }
       } catch (err) {
         console.error(err);
-        toast.error("Timetable failed to generate.");
+        addToast({
+          type: "error",
+          title: "Timetable failed to generate.",
+          message: "",
+          duration: 3000,
+        });
       } finally {
         refresh();
         setIsGenerating(false);
@@ -230,6 +246,7 @@ export default function DashboardSelected() {
       fetchTeacherTimetable,
       invalidateTimeTableListings,
       refetchTimetables,
+      addToast,
     ],
   );
 
@@ -245,12 +262,22 @@ export default function DashboardSelected() {
       await navigator.clipboard.writeText(
         `${base}/timetable/${activeTab}/${selected}`,
       );
-      toast.success("Link copied successfully.");
+      addToast({
+        type: "success",
+        title: "Link copied successfully.",
+        message: "",
+        duration: 2000,
+      });
       setIsLinkCopied(true);
       setTimeout(() => setIsLinkCopied(false), 2000);
     } catch (err) {
       console.error(err);
-      toast.error("Failed to copy link.");
+      addToast({
+        type: "error",
+        title: "Failed to copy link.",
+        message: "",
+        duration: 3000,
+      });
     }
   };
 

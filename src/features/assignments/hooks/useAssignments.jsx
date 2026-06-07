@@ -4,7 +4,8 @@ import apiErrorHandler, {
 } from "../../../shared/utils/apiErrorHandler";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import { updateQueryCache } from "../../../shared/utils/queryCacheHelper";
-import { toast } from "react-toastify";
+import { useToast } from "../../../shared/components/toast/Toast";
+
 import {
   fetchAllAssignments,
   postAssignment,
@@ -19,7 +20,8 @@ const useAssignments = () => {
   const timetableId = selectedTimetableData?.id;
   const ASSIGN_KEY = useMemo(() => ["assignments", timetableId], [timetableId]);
   const queryClient = useQueryClient();
-
+  
+  const { addToast } = useToast();
   /*QUERY*/
 
   const query = useQuery({
@@ -52,7 +54,12 @@ const useAssignments = () => {
         }),
       });
 
-      toast.success("Assignment created successfully.");
+      addToast({
+        type: "success",
+        title: "Assignment created successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
 
     onError: (error) => {
@@ -74,7 +81,12 @@ const useAssignments = () => {
         }),
       });
 
-      toast.success("Assignment deleted.");
+      addToast({
+        type: "success",
+        title: "Assignment deleted successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
 
     onError: (error) => {
@@ -96,7 +108,13 @@ const useAssignments = () => {
           data: oldData.data.map((e) => (e.id === id ? updatedAssignment : e)),
         }),
       });
-      toast.success("Assignment updated.");
+
+      addToast({
+        type: "success",
+        title: "Assignment updated successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
     onError: (error) => {
       apiErrorHandler(error?.response?.stus, Component_Type.CLASSES);
