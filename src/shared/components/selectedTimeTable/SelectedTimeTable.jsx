@@ -6,21 +6,21 @@ import { useTimetableData } from "../../../features/dashboard/hooks/useTimetable
 import { useRef, useState, useEffect } from "react";
 import DropDownMenu from "../dropDownMenu/DropDownMenu";
 import useTimeTableSelect from "../../zustand/timetableSelectStore";
+
+const UI_RESET = {
+  header: "No timetable",
+  tagline: "Click to select",
+};
+
 const SelectedTimeTable = () => {
-  const UI_RESET = {
-    header: "No timetable ",
-    tagline: "Click to select",
-  };
   const { navbarCollapsed } = useNavStore();
   const { width } = useWindowDimensions();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
-
-  const [uiData, setUiData] = useState({});
-
+  const [uiData, setUiData] = useState(UI_RESET);
   const { selectedTimetableData, selectTimeTableData } = useTimeTableSelect();
+  const { timetables, isFetchPending, isFetchError, isFetchSuccess } = useTimetableData();
 
-  //handling clicking out of menu to close menu
   useEffect(() => {
     const handler = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -28,41 +28,23 @@ const SelectedTimeTable = () => {
       }
     };
     document.addEventListener("click", handler);
-    return () => {
-      document.removeEventListener("click", handler);
-    };
+    return () => document.removeEventListener("click", handler);
   }, []);
 
-  const { timetables, isFetchPending, isFetchError, isFetchSuccess } =
-    useTimetableData();
-
-  //updating selectedData on refetches
   useEffect(() => {
-    if (selectedTimetableData) {
-      selectTimeTableData(
-        timetables.find((e) => e?.id === selectedTimetableData?.id) ?? null,
-      );
-    }
-  }, [timetables]);
+    if (!selectedTimetableData) return;
+    selectTimeTableData(
+      timetables.find((e) => e?.id === selectedTimetableData?.id) ?? null
+    );
+  }, [timetables, selectTimeTableData, selectedTimetableData]);
 
-  const handleMenuToggle = () => {
-    if (isFetchPending || isFetchError) return;
-    if (isFetchSuccess && timetables?.length === 0) return;
-
-    setMenuVisible((prev) => !prev);
-  };
-  // for updating ui state according to selected timetable
   useEffect(() => {
     if (!selectedTimetableData) {
-      // If no timetables exist and fetch is successful, show empty tagline
-      if (isFetchSuccess && timetables?.length === 0) {
-        setUiData({
-          header: "No timetable",
-          tagline: "Create now",
-        });
-      } else {
-        setUiData(UI_RESET);
-      }
+      setUiData(
+        isFetchSuccess && timetables?.length === 0
+          ? { header: "No timetable", tagline: "Create now" }
+          : UI_RESET
+      );
     } else {
       setUiData({
         header: selectedTimetableData.name,
@@ -71,16 +53,19 @@ const SelectedTimeTable = () => {
     }
   }, [selectedTimetableData, isFetchSuccess, timetables]);
 
+  const handleMenuToggle = () => {
+    if (isFetchPending || isFetchError) return;
+    if (isFetchSuccess && timetables?.length === 0) return;
+    setMenuVisible((prev) => !prev);
+  };
+
   const handleSelect = (target) => {
-    // i.e null
     selectTimeTableData(target);
     setMenuVisible(false);
   };
-  const Menu = () => {
-    // Don't show menu if no timetables exist and fetch is successful
-    if (isFetchSuccess && timetables?.length === 0) {
-      return null;
-    }
+
+  const menuContent = (() => {
+    if (!menuVisible) return null;
 
     return (
       <DropDownMenu
@@ -91,59 +76,53 @@ const SelectedTimeTable = () => {
         }}
       >
         {isFetchSuccess &&
-          timetables.map((e, i) => {
-            const selected = selectedTimetableData?.id === e?.id;
-            return (
-              <div
-                key={e?.id}
-                className={styles.dropDownItem}
-                onClick={() => handleSelect(e)}
-              >
-                <div className={styles.dropItem__left}>
-                  <Table size={14} />
-
-                  <p>{e.name}</p>
-                </div>
-                {selected && <Check size={14} />}
+          timetables.map((e) => (
+            <div
+              key={e?.id}
+              className={styles.dropDownItem}
+              onClick={() => handleSelect(e)}
+            >
+              <div className={styles.dropItem__left}>
+                <Table size={14} />
+                <p>{e.name}</p>
               </div>
-            );
-          })}
-        {isFetchSuccess && timetables?.length != 0 && (
-          <div className={styles.seperator}></div>
+              {selectedTimetableData?.id === e?.id && <Check size={14} />}
+            </div>
+          ))}
+        {isFetchSuccess && timetables?.length > 0 && (
+          <div className={styles.seperator} />
         )}
-        <div
-          className={`${styles.dropDownItem}`}
-          onClick={() => handleSelect(null)}
-        >
+        <div className={styles.dropDownItem} onClick={() => handleSelect(null)}>
           <p>View all timetables</p>
         </div>
       </DropDownMenu>
     );
-  };
+  })();
 
-  // only need to hide info div in desktop.. mobile has it
-  if (navbarCollapsed && width > 615)
+  if (navbarCollapsed && width > 615) {
     return (
       <div
         className={styles.selectedTimetable}
         onClick={handleMenuToggle}
         ref={menuRef}
       >
-        {" "}
-        <Menu />
+        {menuContent}
         <div className={styles.collapsedIcon}>
           <Table2 size={18} />
         </div>
       </div>
     );
+  };
+
+  if (isFetchSuccess && timetables?.length === 0) return null;
+
   return (
     <div
       className={styles.selectedTimetable}
       onClick={handleMenuToggle}
       ref={menuRef}
     >
-      <Menu />
-
+      {menuContent}
       <div className={styles.selectedTimeTable__left}>
         <span className={styles.iconWrapper}>
           <Table2 size={18} />
@@ -153,7 +132,6 @@ const SelectedTimeTable = () => {
           <p>{uiData.tagline}</p>
         </div>
       </div>
-
       <ChevronDown className={styles.chevron} size={16} />
     </div>
   );
