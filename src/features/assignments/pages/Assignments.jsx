@@ -53,8 +53,8 @@ const Assignments = () => {
 
   return (
     <div className="App">
+      <Topbar page={"Assignments"} />
       <div className="mainPlaceholder">
-        <Topbar page={"Assignments"} />
 
         <PageHeader
           title={"Assignments"}

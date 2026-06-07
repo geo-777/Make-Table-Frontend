@@ -22,8 +22,8 @@ const Settings = () => {
 
   return (
     <div className="App">
+      <Topbar page={"Settings"} />
       <div className="mainPlaceholder">
-        <Topbar page={"Settings"} />
         <div className={`main ${styles.settingsPage}`}>
           <div className={styles.pageHeader}>
             <h4>Settings</h4>

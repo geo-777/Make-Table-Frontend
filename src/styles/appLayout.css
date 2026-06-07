@@ -16,8 +16,7 @@ body {
   overflow: auto;
 }
 .main {
-  margin-top: 2rem;
-  padding-inline: 2rem;
+  padding: 2rem;
 }
 .header {
   display: flex;

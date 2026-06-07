@@ -15,8 +15,8 @@ import { Link } from "react-router-dom";
 const HelpSupport = () => {
   return (
     <div className="App">
+      <Topbar page={"Help & Support"} />
       <div className="mainPlaceholder">
-        <Topbar page={"Help & Support"} />
         <div className={styles.container}>
           <div className={styles.header}>
             <h1 className={styles.title}>Help & Support</h1>
