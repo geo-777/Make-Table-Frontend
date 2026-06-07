@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { useToast } from "../../../shared/components/toast/Toast";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
+import { toast } from "react-toastify";
 
 import {
   createSubject_POST,
@@ -18,6 +19,7 @@ export const subjectKeys = {
 
 // --- Error Handling --------------------------------------------
 const handleError = (error) => {
+  
   const status = error?.response?.status;
   if (!status) {
     toast.error("Unknown error occurred.");
@@ -39,6 +41,7 @@ const useSubjects = () => {
   const queryClient = useQueryClient();
   const { selectedTimetableData } = useTimeTableSelect();
   const timetableId = selectedTimetableData?.id;
+  const { addToast } = useToast();
 
   const subjectQuery = useQuery({
     queryKey: subjectKeys.timetable(timetableId),
@@ -64,7 +67,13 @@ const useSubjects = () => {
           return { ...oldData, data: [...(oldData?.data ?? []), newSubject] };
         },
       );
-      toast.success("Subject created successfully.");
+
+      addToast({
+        type: "success",
+        title: "Subject created successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
     onError: handleError,
   });
@@ -100,7 +109,12 @@ const useSubjects = () => {
     },
     onSuccess: (_, variables) => {
       queryClient.removeQueries({ queryKey: subjectKeys.single(variables) });
-      toast.success("Subject deleted successfully.");
+      addToast({
+        type: "success",
+        title: "Subject deleted successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({
@@ -155,7 +169,13 @@ const useSubjects = () => {
           };
         },
       );
-      toast.success("Subject updated successfully");
+
+      addToast({
+        type: "success",
+        title: "Subject updated successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
     onError: (error, _, context) => {
       queryClient.setQueryData(

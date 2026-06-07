@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useToast } from "../../../shared/components/toast/Toast";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import {
   createTeacher_POST,
@@ -38,6 +39,7 @@ const useTeachers = () => {
   const queryClient = useQueryClient();
   const { selectedTimetableData } = useTimeTableSelect();
   const timetableId = selectedTimetableData?.id;
+  const { addToast } = useToast();
 
   const teacherQuery = useQuery({
     queryKey: teacherKeys.timetable(timetableId),
@@ -63,7 +65,13 @@ const useTeachers = () => {
           return { ...oldData, data: [...(oldData?.data ?? []), newTeacher] };
         },
       );
-      toast.success("Teacher created successfully.");
+
+      addToast({
+        type: "success",
+        title: "Teacher created successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
     onError: handleError,
   });
@@ -99,7 +107,12 @@ const useTeachers = () => {
     },
     onSuccess: (_, id) => {
       queryClient.removeQueries({ queryKey: teacherKeys.single(id) });
-      toast.success("Teacher deleted successfully.");
+      addToast({
+        type: "success",
+        title: "Teacher deleted successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({
@@ -154,7 +167,13 @@ const useTeachers = () => {
           };
         },
       );
-      toast.success("Teacher updated successfully");
+
+      addToast({
+        type: "success",
+        title: "Teacher updated successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
     onError: (error, _, context) => {
       queryClient.setQueryData(

@@ -7,7 +7,7 @@ import {
   viewStatusTable,
 } from "../../../api/timetables.api";
 import { updateQueryCache } from "../../../shared/utils/queryCacheHelper";
-import { toast } from "react-toastify";
+import { useToast } from "../../../shared/components/toast/Toast";
 import handleApiError, {
   Component_Type,
 } from "../../../shared/utils/apiErrorHandler";
@@ -17,7 +17,7 @@ const TIMETABLE_KEY = ["timetableListings"];
 
 const useTimetableListing = () => {
   const queryClient = useQueryClient();
-
+  const { addToast } = useToast();
   // querying read operation
   const query = useQuery({
     queryKey: TIMETABLE_KEY,
@@ -43,7 +43,12 @@ const useTimetableListing = () => {
         }),
       });
 
-      toast.success("Timetable created successfully.");
+      addToast({
+        type: "success",
+        title: "Timetable created successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
 
     onError: (error) => {
@@ -91,7 +96,13 @@ const useTimetableListing = () => {
         }),
       });
 
-      toast.success("Timetable edited successfully.");
+      addToast({
+        type: "success",
+        title: "Timetable edited successfully.",
+        message: "",
+        duration: 2000,
+      });
+
     },
 
     onError: (error) => {
@@ -118,11 +129,16 @@ const useTimetableListing = () => {
         }),
       });
 
-      toast.success(
-        editedTimetable.view_status === "Public"
-          ? "Timetable is now public."
-          : "Timetable is now private.",
-      );
+      addToast({
+        type: "success",
+        title:
+          editedTimetable.view_status === "Public"
+            ? "Timetable is now public."
+            : "Timetable is now private.",
+        message: "",
+        duration: 2000,
+      });
+      
     },
 
     onError: (error) => {

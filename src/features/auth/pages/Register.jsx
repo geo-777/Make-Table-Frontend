@@ -1,18 +1,19 @@
 import styles from "../styles/Auth.module.css";
 import RequiredInputField from "../components/inputFieldAuth/RequiredInputField";
 import { useState } from "react";
-import { Calendar, Github } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 import { register } from "../../../api/auth.api";
-import { toast } from "react-toastify";
 import useValidate from "../hooks/useValidate";
 import loginHelper from "../api/loginHelper";
 import { useAuth } from "../../../app/providers/AuthProvider";
 import { fadeUp } from "../../../shared/utils/animations";
 import { motion } from "framer-motion";
+import { useToast } from "../../../shared/components/toast/Toast";
 
 const Register = () => {
   const { confirmLogin } = useAuth();
+  const { addToast } = useToast();
 
   //states
   const [form, setForm] = useState({
@@ -45,7 +46,13 @@ const Register = () => {
         email: form.email,
         password: form.password,
       });
-      toast.success("Account created successfully.");
+
+      addToast({
+        type: "success",
+        title: "Account created successfully.",
+        message: "",
+        duration: 2000,
+      });
       //logging in
       await loginHelper(form);
       confirmLogin(form.username);
@@ -57,7 +64,12 @@ const Register = () => {
           email: "Username or mail already in use.",
         });
       } else {
-        toast.error("Unknown error occured.");
+        addToast({
+          type: "error",
+          title: "Unknown error occured.",
+          message: "",
+          duration: 2000,
+        });
       }
     } finally {
       setSubmitLoading(false);

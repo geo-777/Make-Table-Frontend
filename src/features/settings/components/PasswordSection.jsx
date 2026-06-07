@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import styles from "../styles/Settings.module.css";
 import RequiredInputField from "../../../shared/components/inputfields/RequiredInputField";
 import { passwordRegex } from "../../auth/hooks/useValidate";
-import { toast } from "react-toastify";
+import { useToast } from "../../../shared/components/toast/Toast";
 import { changePassword__PATCH } from "../../../api/settings.api";
 
 const INITIAL_FORM_STATE = {
@@ -21,6 +21,7 @@ const PasswordSection = () => {
   const [form, setForm] = useState(INITIAL_FORM_STATE);
   const [errorState, setErrorState] = useState(INITIAL_ERROR_STATE);
   const [isLoading, setIsLoading] = useState(false);
+  const { addToast } = useToast();
 
   const submitEnabled = useMemo(
     () =>
@@ -64,7 +65,14 @@ const PasswordSection = () => {
         new_password: form.newPassword,
         confirm_new_password: form.confirmPassword,
       });
-      toast.success("Password updated successfully.");
+
+      addToast({
+        type: "success",
+        title: "Password updated successfully.",
+        message: "",
+        duration: 2000,
+      });
+
       resetForm();
     } catch (e) {
       const status = e?.response?.status;
@@ -74,7 +82,12 @@ const PasswordSection = () => {
       if (status === 400) {
         errors.currentPassword = "Incorrect Password";
       } else {
-        toast.error("Unknown Error");
+        addToast({
+          type: "error",
+          title: "Unknown Error occurred.",
+          message: "",
+          duration: 2000,
+        });
       }
 
       setErrorState(errors);

@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import styles from "../styles/Settings.module.css";
 import RequiredInputField from "../../../shared/components/inputfields/RequiredInputField";
-import { toast } from "react-toastify";
 import { changeUsername__PATCH } from "../../../api/settings.api";
 import { useAuth } from "../../../app/providers/AuthProvider";
+import { useToast } from "../../../shared/components/toast/Toast";
 
 const INITIAL_FORM_STATE = {
   username: "",
@@ -20,6 +20,7 @@ const ChangeUsernameSection = () => {
   const [form, setForm] = useState(INITIAL_FORM_STATE);
   const [errorState, setErrorState] = useState(INITIAL_ERROR_STATE);
   const [isLoading, setIsLoading] = useState(false);
+  const { addToast } = useToast();
 
   const submitEnabled = useMemo(
     () =>
@@ -56,7 +57,12 @@ const ChangeUsernameSection = () => {
         confirmLogin(response.data.username, response.data);
       }
 
-      toast.success("Username updated successfully.");
+      addToast({
+        type: "success",
+        title: "Username updated successfully.",
+        message: "",
+        duration: 2000,
+      });
       resetForm();
     } catch (e) {
       const status = e?.response?.status;
@@ -77,7 +83,12 @@ const ChangeUsernameSection = () => {
           errors.username = errorData?.detail?.[0]?.msg || "Invalid username";
         }
       } else {
-        toast.error(errorData?.detail || "Unknown Error");
+        addToast({
+          type: "error",
+          title: errorData?.detail || "Unknown Error",
+          message: "",
+          duration: 2000,
+        });
       }
 
       setErrorState(errors);

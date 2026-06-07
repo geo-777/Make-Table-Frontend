@@ -11,7 +11,7 @@ import apiErrorHandler, {
 } from "../../../shared/utils/apiErrorHandler";
 import useTimeTableSelect from "../../../shared/zustand/timetableSelectStore";
 import { updateQueryCache } from "../../../shared/utils/queryCacheHelper";
-import { toast } from "react-toastify";
+import { useToast } from "../../../shared/components/toast/Toast";
 
 const useClasses = () => {
   const { selectedTimetableData } = useTimeTableSelect();
@@ -19,6 +19,7 @@ const useClasses = () => {
   const timetableId = selectedTimetableData?.id;
   const CLASS_KEY = ["classes", timetableId];
   const queryClient = useQueryClient();
+  const { addToast } = useToast();
 
   /*QUERY*/
 
@@ -55,7 +56,12 @@ const useClasses = () => {
         }),
       });
 
-      toast.success("Class created successfully.");
+      addToast({
+        type: "success",
+        title: "Class created successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
 
     onError: (error) => {
@@ -78,7 +84,12 @@ const useClasses = () => {
         }),
       });
 
-      toast.success("Class deleted.");
+      addToast({
+        type: "success",
+        title: "Class deleted successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
 
     onError: (error) => {
@@ -100,7 +111,13 @@ const useClasses = () => {
           data: oldData.data.map((e) => (e.id === classId ? updatedClass : e)),
         }),
       });
-      toast.success("Class updated.");
+
+      addToast({
+        type: "success",
+        title: "Class updated successfully.",
+        message: "",
+        duration: 2000,
+      });
     },
     onError: (error) => {
       apiErrorHandler(error?.response?.stus, Component_Type.CLASSES);
