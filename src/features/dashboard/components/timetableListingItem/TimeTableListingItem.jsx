@@ -14,6 +14,7 @@ import DropDownMenu from "../../../../shared/components/dropDownMenu/DropDownMen
 import useTimetableListing from "../../hooks/useTimetableListing";
 import useTimeTableSelect from "../../../../shared/zustand/timetableSelectStore.js";
 import { motion } from "framer-motion";
+import { createPortal } from "react-dom";
 /*
 listingData of the format {
     name : "Timetable name"
@@ -22,6 +23,11 @@ listingData of the format {
     Type : published or draft
 }
 */
+
+const Portal = ({ children }) => {
+  return createPortal(children, document.body);
+};
+
 const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
   const { selectTimeTableData } = useTimeTableSelect();
 
@@ -31,6 +37,8 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
   const menuIconStrokeWidth = 2;
 
   const menuRef = useRef(null);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const buttonRef = useRef(null);
 
   //handling clicking out of menu to close menu
   useEffect(() => {
@@ -61,6 +69,27 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
     await deleteListing.mutateAsync(id);
     setMenuVisible(false);
   };
+
+  useEffect(() => {
+    if (!menuVisible || !buttonRef.current) return;
+
+    const updatePosition = () => {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setMenuPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX + 50,
+      });
+    };
+
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+    };
+  }, [menuVisible]);
+
   return (
     <>
       <motion.div
@@ -114,51 +143,79 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
           </button>
           <div className={styles.extraMenu} ref={menuRef}>
             <button
+              ref={buttonRef}
               className={styles.threeDots}
               onClick={(e) => {
                 e.stopPropagation();
+                const rect = buttonRef.current.getBoundingClientRect();
+                setMenuPosition({
+                  top: rect.bottom + window.scrollY,
+                  left: rect.left + window.scrollX + 50,
+                });
                 setMenuVisible((prev) => !prev);
               }}
             >
               <EllipsisVertical size={18} />
             </button>
-            <DropDownMenu
-              key={`${listingData.id}-dropdown`}
-              visible={menuVisible}
-            >
+
+            <Portal>
               <div
-                className={styles.dropDownItem}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  selectTimeTableData(fullData);
+                style={{
+                  position: "fixed",
+                  top: menuPosition.top,
+                  left: menuPosition.left,
+                  zIndex: 9999,
                 }}
+                ref={menuRef}
               >
-                <Eye size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
-                <p>Open</p>
+                <DropDownMenu
+                  key={`${listingData.id}-dropdown`}
+                  visible={menuVisible}
+                >
+                  <div
+                    className={styles.dropDownItem}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      selectTimeTableData(fullData);
+                    }}
+                  >
+                    <Eye
+                      size={menuIconSize}
+                      strokeWidth={menuIconStrokeWidth}
+                    />
+                    <p>Open</p>
+                  </div>
+                  <div
+                    className={styles.dropDownItem}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      editFunction(listingData.id);
+                      setMenuVisible(false);
+                    }}
+                  >
+                    <Pencil
+                      size={menuIconSize}
+                      strokeWidth={menuIconStrokeWidth}
+                    />
+                    <p>Edit</p>
+                  </div>
+                  <div className={styles.seperator}></div>
+                  <div
+                    className={`${styles.dropDownItem} ${styles.deleteBtn}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeletion(listingData.id);
+                    }}
+                  >
+                    <Trash2
+                      size={menuIconSize}
+                      strokeWidth={menuIconStrokeWidth}
+                    />
+                    <p>Delete</p>
+                  </div>
+                </DropDownMenu>
               </div>
-              <div
-                className={styles.dropDownItem}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  editFunction(listingData.id);
-                  setMenuVisible(false);
-                }}
-              >
-                <Pencil size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
-                <p>Edit</p>
-              </div>
-              <div className={styles.seperator}></div>
-              <div
-                className={`${styles.dropDownItem} ${styles.deleteBtn}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeletion(listingData.id);
-                }}
-              >
-                <Trash2 size={menuIconSize} strokeWidth={menuIconStrokeWidth} />
-                <p>Delete</p>
-              </div>
-            </DropDownMenu>
+            </Portal>
           </div>
         </div>
       </motion.div>

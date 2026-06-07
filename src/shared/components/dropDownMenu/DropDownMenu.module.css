@@ -12,6 +12,6 @@
   flex-direction: column;
   gap: 0.1rem;
   width: max-content;
-  z-index: 200;
+  z-index: 899;
   box-shadow: var(--shadow-card);
 }
