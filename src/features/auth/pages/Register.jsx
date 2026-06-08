@@ -8,7 +8,7 @@ import useValidate from "../hooks/useValidate";
 import loginHelper from "../api/loginHelper";
 import { useAuth } from "../../../app/providers/AuthProvider";
 import { fadeUp } from "../../../shared/utils/animations";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useToast } from "../../../shared/components/toast/Toast";
 
 const Register = () => {
@@ -81,7 +81,7 @@ const Register = () => {
       <div className={styles.blob1} />
       <div className={styles.blob2} />
 
-      <motion.div
+      <m.div
         className={styles.pageContainer}
         variants={fadeUp}
         initial="hidden"
@@ -137,7 +137,7 @@ const Register = () => {
               <span>MakeTable</span>
             </Link>
 
-            <motion.div
+            <m.div
               className={styles.authCard}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -229,14 +229,14 @@ const Register = () => {
               <p className={styles.switchPrompt}>
                 Already have an account? <Link to="/login">Sign in</Link>
               </p>
-            </motion.div>
+            </m.div>
 
             <p className={styles.footerText}>
               By continuing, you agree to our Terms and Privacy Policy.
             </p>
           </section>
         </div>
-      </motion.div>
+      </m.div>
     </main>
   );
 };

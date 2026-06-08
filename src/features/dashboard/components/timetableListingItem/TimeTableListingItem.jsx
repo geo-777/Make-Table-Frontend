@@ -13,7 +13,6 @@ import { useState, useRef, useEffect } from "react";
 import DropDownMenu from "../../../../shared/components/dropDownMenu/DropDownMenu";
 import useTimetableListing from "../../hooks/useTimetableListing";
 import useTimeTableSelect from "../../../../shared/zustand/timetableSelectStore.js";
-import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
 /*
 listingData of the format {
@@ -92,7 +91,7 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
 
   return (
     <>
-      <motion.div
+      <div
         className={styles.listing}
         onClick={() => selectTimeTableData(fullData)}
       >
@@ -218,7 +217,7 @@ const TimeTableListingItem = ({ listingData, editFunction, fullData }) => {
             </Portal>
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };

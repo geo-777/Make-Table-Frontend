@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import styles from "./PopupBox.module.css";
 
 const PopupBox = ({
@@ -44,7 +44,7 @@ const PopupBox = ({
     <AnimatePresence>
       {visible && (
         <div className={styles.root} onKeyDown={onKeyDown}>
-          <motion.div
+          <m.div
             className={styles.overlay}
             onClick={closeFunction}
             initial={{ opacity: 0 }}
@@ -53,7 +53,7 @@ const PopupBox = ({
             transition={{ duration: 0.15, ease: "easeOut" }}
           />
 
-          <motion.div
+          <m.div
             role="dialog"
             aria-modal="true"
             aria-labelledby="popup-title"
@@ -93,7 +93,7 @@ const PopupBox = ({
                 {primaryBtnText}
               </button>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       )}
     </AnimatePresence>,

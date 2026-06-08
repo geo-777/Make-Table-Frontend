@@ -1,6 +1,6 @@
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import styles from "./CTA.module.css";
 import { easeOut } from "../../utils/animationHelpers";
 
@@ -9,7 +9,7 @@ const CTA = () => {
 
   return (
     <section className={styles.section}>
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -44,7 +44,7 @@ const CTA = () => {
             Read the docs
           </button>
         </div>
-      </motion.div>
+      </m.div>
     </section>
   );
 };

@@ -1,12 +1,12 @@
 import styles from "./Features.module.css";
 import FeatureCard from "./FeatureCard";
 import { FEATURES } from "../../data/landingData";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 const Features = () => {
   return (
     <section id="features" className={styles.section}>
       <div className={styles.container}>
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -19,7 +19,7 @@ const Features = () => {
             Everything you need to ship a timetable.
             <span> Nothing you don't.</span>
           </h2>
-        </motion.div>
+        </m.div>
 
         <div className={styles.grid}>
           {FEATURES.map((feature, i) => (

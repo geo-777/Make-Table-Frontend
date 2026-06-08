@@ -1,5 +1,5 @@
 import { School, GraduationCap, Building2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import styles from "./Customers.module.css";
 import { easeOut } from "../../utils/animationHelpers";
 const audiences = [
@@ -26,7 +26,7 @@ const Customers = () => {
   return (
     <section id="customers" className={styles.section}>
       <div className={styles.container}>
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -36,14 +36,14 @@ const Customers = () => {
           <span className={styles.label}>Built for</span>
 
           <h2>The people who actually run the schedule.</h2>
-        </motion.div>
+        </m.div>
 
         <div className={styles.grid}>
           {audiences.map((item, i) => {
             const Icon = item.icon;
 
             return (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -56,7 +56,7 @@ const Customers = () => {
                 <h3>{item.title}</h3>
 
                 <p>{item.description}</p>
-              </motion.div>
+              </m.div>
             );
           })}
         </div>

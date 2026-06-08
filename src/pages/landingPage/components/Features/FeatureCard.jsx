@@ -1,10 +1,10 @@
 import styles from "./FeatureCard.module.css";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { easeOut } from "../../utils/animationHelpers";
 
 const FeatureCard = ({ icon: Icon, title, desc, idx: i }) => {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
@@ -18,7 +18,7 @@ const FeatureCard = ({ icon: Icon, title, desc, idx: i }) => {
       <h3>{title}</h3>
 
       <p>{desc}</p>
-    </motion.div>
+    </m.div>
   );
 };
 

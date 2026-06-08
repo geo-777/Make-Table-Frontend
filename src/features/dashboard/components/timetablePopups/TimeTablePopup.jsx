@@ -5,7 +5,7 @@ import DaySelector from "../../../../shared/components/daySelector/DaySelector";
 import { useEffect, useState } from "react";
 import useTimetableListing from "../../hooks/useTimetableListing";
 
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const INITIAL_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
 const initialForm = () => ({
   name: "",
@@ -27,13 +27,13 @@ const TimeTablePopup = ({
   const isEditMode = mode === "edit";
   const { createListing, patchListing } = useTimetableListing();
 
-  const [selectedDays, setSelectedDays] = useState(["Mon"]);
+  const [selectedDays, setSelectedDays] = useState(INITIAL_DAYS);
   const [form, setForm] = useState(initialForm);
   const [errorStates, setErrorStates] = useState(initialErrors);
   const [isPatched, setIsPatched] = useState(false);
 
   const resetForm = () => {
-    setSelectedDays(["Mon"]);
+    setSelectedDays(INITIAL_DAYS);
     setForm(initialForm());
     setErrorStates(initialErrors());
     setIsPatched(false);
@@ -43,7 +43,7 @@ const TimeTablePopup = ({
     if (!visible) return;
 
     if (isEditMode && existingData) {
-      setSelectedDays(existingData.days ?? ["Mon"]);
+      setSelectedDays(existingData.days ?? INITIAL_DAYS);
       setForm({
         name: existingData.name ?? "",
         slots: existingData.slots ?? 6,

@@ -2,14 +2,14 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import styles from "./Workflow.module.css";
 import { STEPS } from "../../data/landingData";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { easeOut } from "../../utils/animationHelpers";
 
 const Workflow = () => {
   return (
     <section id="how" className={styles.section}>
       <div className={styles.container}>
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -30,11 +30,11 @@ const Workflow = () => {
             See the full guide
             <ArrowRight size={14} />
           </Link>
-        </motion.div>
+        </m.div>
 
         <div className={styles.grid}>
           {STEPS.map((step, i) => (
-            <motion.div
+            <m.div
               key={step.n}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -47,7 +47,7 @@ const Workflow = () => {
               <h3>{step.t}</h3>
 
               <p>{step.d}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

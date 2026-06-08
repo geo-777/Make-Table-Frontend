@@ -7,7 +7,7 @@ import { useToast } from "../../../shared/components/toast/Toast";
 import { Link } from "react-router-dom";
 import useValidate from "../hooks/useValidate";
 import loginHelper from "../api/loginHelper";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { fadeUp } from "../../../shared/utils/animations";
 
 const Login = () => {
@@ -60,7 +60,7 @@ const Login = () => {
       <div className={styles.blob1} />
       <div className={styles.blob2} />
 
-      <motion.div
+      <m.div
         className={styles.pageContainer}
         variants={fadeUp}
         initial="hidden"
@@ -115,7 +115,7 @@ const Login = () => {
               <span>MakeTable</span>
             </Link>
 
-            <motion.div
+            <m.div
               className={styles.authCard}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -182,14 +182,14 @@ const Login = () => {
               <p className={styles.switchPrompt}>
                 New to MakeTable? <Link to="/register">Create one</Link>
               </p>
-            </motion.div>
+            </m.div>
 
             <p className={styles.footerText}>
               By continuing, you agree to our Terms and Privacy Policy.
             </p>
           </section>
         </div>
-      </motion.div>
+      </m.div>
     </main>
   );
 };

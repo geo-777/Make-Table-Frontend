@@ -11,7 +11,6 @@ const GridItem = memo(({ data, openEditPopup, onDelete }) => {
   const actionbtnStroke = 1.75;
 
   const color = createColor(data.class_name);
-  console.log("Rerendered,", data?.id);
   return (
     <div className={styles.gridItem}>
       <div className={styles.gridItem__header}>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Hero.module.css";
 import TimetablePreview from "../TimetablePreview/TimetablePreview";
 import useWindowDimensions from "../../../../shared/hooks/useWindowDimensions";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 import { easeOut, fadeUp } from "../../utils/animationHelpers";
 
@@ -13,7 +13,7 @@ const Hero = () => {
   return (
     <section className={styles.hero}>
       <div className={styles.container}>
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: easeOut }}
@@ -24,9 +24,9 @@ const Hero = () => {
             <span>v1.0 — now with expanded constraints</span>
             <span className={styles.separator}>•</span>
           </Link>
-        </motion.div>
+        </m.div>
 
-        <motion.h1
+        <m.h1
           variants={fadeUp}
           initial="hidden"
           animate="visible"
@@ -36,9 +36,9 @@ const Hero = () => {
           Timetabling, finally
           <br />
           <span>solved.</span>
-        </motion.h1>
+        </m.h1>
 
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           animate="visible"
@@ -48,9 +48,9 @@ const Hero = () => {
           MakeTable is a deterministic scheduling engine for schools. Model your
           constraints once, generate conflict-free timetables in seconds,
           publish in minutes.
-        </motion.p>
+        </m.p>
 
-        <motion.div
+        <m.div
           variants={fadeUp}
           initial="hidden"
           animate="visible"
@@ -72,16 +72,16 @@ const Hero = () => {
             <BookOpen size={15} />
             Read the docs
           </button>
-        </motion.div>
+        </m.div>
 
-        <motion.p
+        <m.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.55 }}
           className={styles.meta}
         >
           No credit card · MIT licensed · Self-host or use ours
-        </motion.p>
+        </m.p>
 
         {width > 600 && <TimetablePreview />}
       </div>

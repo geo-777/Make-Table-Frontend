@@ -154,7 +154,7 @@ export default function Documentation() {
           !isSearching ||
           c.h.toLowerCase().includes(query.toLowerCase()) ||
           c.p.toLowerCase().includes(query.toLowerCase()) ||
-          s.title.toLowerCase().includes(query.toLowerCase())
+          s.title.toLowerCase().includes(query.toLowerCase()),
       ),
     }))
     .filter((s) => s.content.length > 0);
@@ -207,7 +207,7 @@ export default function Documentation() {
       {/* Hero */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -215,8 +215,8 @@ export default function Documentation() {
           >
             <BookOpen size={12} className={styles.heroBadgeIcon} />
             Documentation • v1.0
-          </motion.div>
-          <motion.h1
+          </m.div>
+          <m.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
@@ -224,8 +224,8 @@ export default function Documentation() {
           >
             Everything you need to{" "}
             <span className={styles.textGradient}>ship a timetable.</span>
-          </motion.h1>
-          <motion.div
+          </m.h1>
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
@@ -239,7 +239,7 @@ export default function Documentation() {
               placeholder="Search the docs…"
               className={styles.searchInput}
             />
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -300,7 +300,7 @@ export default function Documentation() {
 
           <AnimatePresence mode="wait">
             {filtered.map((section) => (
-              <motion.div
+              <m.div
                 key={section.id}
                 id={section.id}
                 initial={{ opacity: 0, y: 15 }}
@@ -310,7 +310,9 @@ export default function Documentation() {
                 className={styles.section}
               >
                 <div className={styles.sectionHeader}>
-                  <div className={`${styles.sectionIconWrapper} ${styles.glass}`}>
+                  <div
+                    className={`${styles.sectionIconWrapper} ${styles.glass}`}
+                  >
                     <section.icon size={16} className={styles.sectionIcon} />
                   </div>
                   <h2 className={styles.sectionTitle}>{section.title}</h2>
@@ -323,12 +325,12 @@ export default function Documentation() {
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </m.div>
             ))}
 
             {/* Video Tutorial */}
             {showVideo && (
-              <motion.div
+              <m.div
                 key="video-tutorial"
                 id="video-tutorial"
                 initial={{ opacity: 0, y: 15 }}
@@ -338,7 +340,9 @@ export default function Documentation() {
                 className={styles.section}
               >
                 <div className={styles.sectionHeader}>
-                  <div className={`${styles.sectionIconWrapper} ${styles.glass}`}>
+                  <div
+                    className={`${styles.sectionIconWrapper} ${styles.glass}`}
+                  >
                     <Play size={16} className={styles.sectionIcon} />
                   </div>
                   <h2 className={styles.sectionTitle}>Video Tutorial</h2>
@@ -352,7 +356,7 @@ export default function Documentation() {
                     allowFullScreen
                   />
                 </div>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
 

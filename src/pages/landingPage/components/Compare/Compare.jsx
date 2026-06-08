@@ -1,6 +1,6 @@
 import { Check, X } from "lucide-react";
 import styles from "./Compare.module.css";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { easeOut } from "../../utils/animationHelpers";
 
 const oldWay = [
@@ -23,7 +23,7 @@ const Compare = () => {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -36,10 +36,10 @@ const Compare = () => {
             <br />
             More school.
           </h2>
-        </motion.div>
+        </m.div>
 
         <div className={styles.compareGrid}>
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -56,9 +56,9 @@ const Compare = () => {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -76,7 +76,7 @@ const Compare = () => {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

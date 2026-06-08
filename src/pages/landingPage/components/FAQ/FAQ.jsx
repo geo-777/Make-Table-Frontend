@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import styles from "./FAQ.module.css";
 import { FAQS } from "../../data/landingData";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 const FAQ = () => {
   const [open, setOpen] = useState(null);
 
@@ -13,7 +13,7 @@ const FAQ = () => {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -26,11 +26,11 @@ const FAQ = () => {
             <br />
             answered.
           </h2>
-        </motion.div>
+        </m.div>
 
         <div className={styles.faqList}>
           {FAQS.map((faq, index) => (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -54,7 +54,7 @@ const FAQ = () => {
                   <p>{faq.a}</p>
                 </div>
               )}
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
