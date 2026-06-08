@@ -43,7 +43,7 @@
 
   border-radius: 8px;
 
-  background: var(--primary);
+  background: var(--gradient-primary);
   color: white;
 }
 

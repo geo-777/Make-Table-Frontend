@@ -1,6 +1,7 @@
 .tableWrapper {
   border-radius: var(--radius);
   overflow: hidden;
+  overflow-x: auto;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-card);
   background: var(--card);

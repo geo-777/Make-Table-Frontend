@@ -67,7 +67,7 @@
 .primaryBtn {
   border: none;
 
-  background: var(--primary);
+  background: var(--gradient-primary);
   color: white;
 }
 
