@@ -2,7 +2,7 @@ import { ArrowUpRight, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import styles from "./CTA.module.css";
-import { easeOut } from "../../LandingPage";
+import { easeOut } from "../../utils/animationHelpers";
 
 const CTA = () => {
   const navigate = useNavigate();

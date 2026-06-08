@@ -1,10 +1,10 @@
 import { Fragment } from "react";
 import styles from "./TimetablePreview.module.css";
-import { easeOut } from "../../LandingPage";
+import { easeOut } from "../../utils/animationHelpers";
+
 import { motion } from "framer-motion";
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const SLOTS = ["Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5", "Slot 6"];
-
 const DATA = [
   ["Math", "Eng", "Sci", "Hist", "PE"],
   ["Eng", "Math", "Art", "Sci", "Math"],

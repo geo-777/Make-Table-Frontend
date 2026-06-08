@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import styles from "./Workflow.module.css";
 import { STEPS } from "../../data/landingData";
 import { motion } from "framer-motion";
-import { easeOut } from "../../LandingPage";
+import { easeOut } from "../../utils/animationHelpers";
+
 const Workflow = () => {
   return (
     <section id="how" className={styles.section}>

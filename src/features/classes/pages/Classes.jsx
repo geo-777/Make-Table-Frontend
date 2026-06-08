@@ -10,6 +10,7 @@ import useClasses from "../hooks/useClasses";
 import StatusWrapper from "../../../shared/components/statusWrapper/StatusWrapper";
 import PageHeader from "../../../shared/components/pageHeader/PageHeader";
 import ImportDialog from "../../../shared/components/importDialog/ImportDialog";
+
 const Classes = () => {
   const [isCreateClassOpen, setCreateClassOpen] = useState(false);
   const [openImportDialog, setOpenImportDialog] = useState(false);
@@ -18,7 +19,13 @@ const Classes = () => {
 
   const { selectedTimetableData } = useTimeTableSelect();
 
-  const { data: listings, isLoading, isError, error } = useClasses();
+  const {
+    data: listings,
+    isLoading,
+    isError,
+    error,
+    deleteListing,
+  } = useClasses();
 
   if (!selectedTimetableData) {
     return (
@@ -76,7 +83,11 @@ const Classes = () => {
             <ListView data={listings?.data || []} isLoading={isLoading} />
           )}
           {activeView === "grid" && (
-            <GridView data={listings?.data || []} isLoading={isLoading} />
+            <GridView
+              data={listings?.data || []}
+              isLoading={isLoading}
+              deleteListing={deleteListing}
+            />
           )}
           {isError && <StatusWrapper isError={true} error={error} />}
         </div>

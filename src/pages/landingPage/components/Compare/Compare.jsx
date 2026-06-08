@@ -1,7 +1,8 @@
 import { Check, X } from "lucide-react";
 import styles from "./Compare.module.css";
 import { motion } from "framer-motion";
-import { easeOut } from "../../LandingPage";
+import { easeOut } from "../../utils/animationHelpers";
+
 const oldWay = [
   "Hours spent arranging schedules manually",
   "Finding conflicts takes time",

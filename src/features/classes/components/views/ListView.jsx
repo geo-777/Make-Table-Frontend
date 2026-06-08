@@ -1,21 +1,22 @@
 import { useMemo, useState } from "react";
 import styles from "../../styles/Classes.module.css";
 import { Pencil, Trash2, X, Check } from "lucide-react";
-import CircularCheckBox from "../../../../shared/components/specialButtons/CircularCheckBox";
 import useClasses from "../../hooks/useClasses";
-import StatusWrapper from "../../../../shared/components/statusWrapper/StatusWrapper";
 import ListSkeleton from "../../../../shared/components/skeltonLoading/ListSkeleton";
+
+const IsLabLabel = ({ data }) => (
+  <div className={`${styles.listItem} `}>
+    <span className={`${styles.typeLabel} ${data.isLab ? styles.typeLab : ""}`}>
+      {data.isLab ? "Lab" : "Regular"}
+    </span>
+  </div>
+);
 
 const Row = ({ data, editClass, deleteClass }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editForm, setEditForm] = useState(data);
   const actionbtnSize = 16;
   const actionbtnStroke = 1.75;
-
-  const closeEditMode = () => {
-    setEditForm(data);
-    setIsEditMode(false);
-  };
 
   // this controls the enabling and disabling of the check button
   const payload = useMemo(() => {
@@ -25,20 +26,19 @@ const Row = ({ data, editClass, deleteClass }) => {
     if (editForm.class_name.trim() !== data?.class_name?.trim()) {
       changedFields.class_name = editForm.class_name;
     }
-
     if (editForm.room_name.trim() !== data?.room_name?.trim()) {
       changedFields.room_name = editForm.room_name;
     }
-
-    if (editForm.isLab !== data?.isLab) {
-      changedFields.isLab = editForm.isLab;
-    }
-
     return changedFields;
-  }, [editForm]);
+  }, [editForm, data?.class_name, data?.room_name]);
+
+  const closeEditMode = () => {
+    setEditForm(data);
+    setIsEditMode(false);
+  };
 
   const editClassHandler = async () => {
-    await editClass(data?.id, payload);
+    if (Object.keys(payload).length > 0) await editClass(data?.id, payload);
     closeEditMode();
   };
 
@@ -68,15 +68,7 @@ const Row = ({ data, editClass, deleteClass }) => {
             }
           />
         </div>
-        <div
-          className={`${styles.listItem} ${styles.isLabChecker} unselectable  `}
-          onClick={() =>
-            setEditForm((prev) => ({ ...prev, isLab: !prev.isLab }))
-          }
-        >
-          <CircularCheckBox checked={editForm.isLab} />
-          <p>Is lab ?</p>
-        </div>
+        <IsLabLabel data={data} />
         <div className={`${styles.listItem} ${styles.listItem__actionBtns}`}>
           <button
             className={`${styles.actionBtn__list} ${styles.actionBtn__delete}`}
@@ -100,13 +92,8 @@ const Row = ({ data, editClass, deleteClass }) => {
     <>
       <div className={styles.listItem}>{data.class_name}</div>
       <div className={styles.listItem}>{data.room_name}</div>
-      <div className={`${styles.listItem} `}>
-        <span
-          className={`${styles.typeLabel} ${data.isLab ? styles.typeLab : ""}`}
-        >
-          {data.isLab ? "Lab" : "Regular"}
-        </span>
-      </div>
+      <IsLabLabel data={data} />
+
       <div className={`${styles.listItem} ${styles.listItem__actionBtns}`}>
         <button
           className={styles.actionBtn__list}
@@ -127,8 +114,8 @@ const Row = ({ data, editClass, deleteClass }) => {
 
 const ListView = ({ data, isLoading = false }) => {
   const { patchListing, deleteListing } = useClasses();
-  
-  if(isLoading) return <ListSkeleton />;
+
+  if (isLoading) return <ListSkeleton />;
 
   const editClass = async (id, data) => {
     await patchListing.mutateAsync({
@@ -137,14 +124,16 @@ const ListView = ({ data, isLoading = false }) => {
     });
   };
   const deleteClass = async (id) => {
-    deleteListing.mutateAsync(id);
+    await deleteListing.mutateAsync(id);
   };
   return (
     <div className={`${styles.listview__Container} fadeInUp fast`}>
-      <div className={styles.listHeading__item}>Class Name</div>
-      <div className={styles.listHeading__item}>Room </div>
-      <div className={styles.listHeading__item}>Type</div>
-      <div className={styles.listHeading__item}>Actions</div>
+      {["Class Name", "Room", "Type", "Actions"].map((e, i) => (
+        <div className={styles.listHeading__item} key={i}>
+          {e}
+        </div>
+      ))}
+
       {data.map((e, i) => (
         <Row
           data={e}

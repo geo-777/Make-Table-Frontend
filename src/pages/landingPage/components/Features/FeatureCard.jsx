@@ -1,6 +1,6 @@
 import styles from "./FeatureCard.module.css";
 import { motion } from "framer-motion";
-import { easeOut } from "../../LandingPage";
+import { easeOut } from "../../utils/animationHelpers";
 
 const FeatureCard = ({ icon: Icon, title, desc, idx: i }) => {
   return (

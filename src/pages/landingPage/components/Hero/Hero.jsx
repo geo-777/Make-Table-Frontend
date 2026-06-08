@@ -4,7 +4,9 @@ import styles from "./Hero.module.css";
 import TimetablePreview from "../TimetablePreview/TimetablePreview";
 import useWindowDimensions from "../../../../shared/hooks/useWindowDimensions";
 import { motion } from "framer-motion";
-import { easeOut, fadeUp } from "../../LandingPage";
+
+import { easeOut, fadeUp } from "../../utils/animationHelpers";
+
 const Hero = () => {
   const navigate = useNavigate();
   const { width } = useWindowDimensions();

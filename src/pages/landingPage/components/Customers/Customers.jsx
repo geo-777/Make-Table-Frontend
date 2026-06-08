@@ -1,7 +1,7 @@
 import { School, GraduationCap, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 import styles from "./Customers.module.css";
-import { easeOut } from "../../LandingPage";
+import { easeOut } from "../../utils/animationHelpers";
 const audiences = [
   {
     icon: School,

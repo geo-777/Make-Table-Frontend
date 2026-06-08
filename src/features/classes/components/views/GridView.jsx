@@ -1,6 +1,5 @@
 import styles from "../../styles/Classes.module.css";
 import { Pencil, Trash2, Badge } from "lucide-react";
-import useClasses from "../../hooks/useClasses";
 import ClassPopup from "../popups/ClassPopup";
 import { useState, memo, useCallback } from "react";
 import StatusWrapper from "../../../../shared/components/statusWrapper/StatusWrapper";
@@ -58,10 +57,10 @@ data object structure :
       isLab: false,
       created_at: "2026-04-10T10:44:53.876Z",
 */
-const GridView = ({ data, isLoading = false }) => {
+const GridView = ({ data, isLoading = false, deleteListing }) => {
   const [existingData, setExistingData] = useState(null);
   const [editPopupOpen, setEditPopupOpen] = useState(false);
-  const { deleteListing } = useClasses();
+
   const openEditPopup = useCallback(
     (id) => {
       const itemToEdit = data.find((e) => e.id === id);
