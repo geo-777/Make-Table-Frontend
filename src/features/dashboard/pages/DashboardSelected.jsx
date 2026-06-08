@@ -143,11 +143,11 @@ export default function DashboardSelected() {
   const handleTeacherChange = useCallback(
     (teacherName) => {
       const found = teachers?.data?.find((t) => t.name === teacherName);
+      
       if (!found) return;
       setSelectedTeacher(found);
-      fetchTeacherTimetable();
     },
-    [teachers, fetchTeacherTimetable],
+    [teachers],
   );
 
   const handleTabChange = useCallback(

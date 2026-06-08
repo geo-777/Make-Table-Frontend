@@ -18,7 +18,8 @@ export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
     queryKey: ["timetables", "class", selectedClassId],
     queryFn: () => getClassTimetable_GET(selectedClassId),
     enabled: selectedClassId != null && selectedClassId !== "",
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: Infinity,
     refetchOnWindowFocus: false,
     retry: 1,
   });
@@ -31,7 +32,8 @@ export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
     queryKey: ["timetables", "teacher", selectedTeacherId],
     queryFn: () => getTeacherTimetable_GET(selectedTeacherId),
     enabled: selectedTeacherId != null && selectedTeacherId !== "",
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: Infinity,
     refetchOnWindowFocus: false,
     retry: 1,
   });
