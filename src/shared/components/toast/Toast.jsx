@@ -7,12 +7,7 @@ import {
   useRef,
 } from "react";
 import styles from "./Toast.module.css";
-import {
-  CheckIcon,
-  CircleAlert,
-  TriangleAlert,
-  X,
-} from "lucide-react";
+import { CheckIcon, CircleAlert, TriangleAlert, X } from "lucide-react";
 
 /*
   Usage:
@@ -45,10 +40,10 @@ export const useToast = () => {
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
 const icons = {
-  success: <CheckIcon     size={16} />,
-  error:   <CircleAlert   size={16} />,
+  success: <CheckIcon size={16} />,
+  error: <CircleAlert size={16} />,
   warning: <TriangleAlert size={16} />,
-  info:    <CircleAlert   size={16} />,
+  info: <CircleAlert size={16} />,
 };
 
 // ─── Single Toast Item ─────────────────────────────────────────────────────────
@@ -86,7 +81,7 @@ function ToastItem({ toast, onRemove }) {
     <div
       className={`${styles.toast} ${styles[toast.type]} ${styles[state]}`}
       role="alert"
-      aria-live="assertive"
+      aria-live="polite"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -102,7 +97,7 @@ function ToastItem({ toast, onRemove }) {
         onClick={startLeave}
         aria-label="Dismiss notification"
       >
-        <X size={24} strokeWidth={2}/>
+        <X size={24} strokeWidth={2} />
       </button>
 
       <div

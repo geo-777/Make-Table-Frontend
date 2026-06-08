@@ -2,18 +2,17 @@ import styles from "../../styles/Classes.module.css";
 import { Pencil, Trash2, Badge } from "lucide-react";
 import useClasses from "../../hooks/useClasses";
 import ClassPopup from "../popups/ClassPopup";
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import StatusWrapper from "../../../../shared/components/statusWrapper/StatusWrapper";
 import GridSkelton from "../../../../shared/components/skeltonLoading/GridSkelton";
 import createColor from "../../../../shared/utils/hashColor";
 // individual grid items.
-const GridItem = ({ data, openEditPopup }) => {
+const GridItem = memo(({ data, openEditPopup, onDelete }) => {
   const actionbtnSize = 16;
   const actionbtnStroke = 1.75;
-  const { deleteListing } = useClasses();
 
   const color = createColor(data.class_name);
-
+  console.log("Rerendered,", data?.id);
   return (
     <div className={styles.gridItem}>
       <div className={styles.gridItem__header}>
@@ -41,7 +40,7 @@ const GridItem = ({ data, openEditPopup }) => {
         </button>
         <button
           className={`${styles.actionBtn} ${styles.deleteBtn}`}
-          onClick={() => deleteListing.mutateAsync(data.id)}
+          onClick={() => onDelete(data.id)}
         >
           <Trash2 size={actionbtnSize} strokeWidth={actionbtnStroke} />
           <p>Delete</p>
@@ -49,7 +48,7 @@ const GridItem = ({ data, openEditPopup }) => {
       </div>
     </div>
   );
-};
+});
 
 /* 
 data object structure :
@@ -60,15 +59,24 @@ data object structure :
       created_at: "2026-04-10T10:44:53.876Z",
 */
 const GridView = ({ data, isLoading = false }) => {
-  const [existingData, setExistingData] = useState({});
+  const [existingData, setExistingData] = useState(null);
   const [editPopupOpen, setEditPopupOpen] = useState(false);
-  const openEditPopup = (id) => {
-    const itemToEdit = data.find((e) => e.id === id);
-    if (!itemToEdit) return;
+  const { deleteListing } = useClasses();
+  const openEditPopup = useCallback(
+    (id) => {
+      const itemToEdit = data.find((e) => e.id === id);
+      if (!itemToEdit) return;
 
-    setExistingData(itemToEdit);
-    setEditPopupOpen(true);
-  };
+      setExistingData(itemToEdit);
+      setEditPopupOpen(true);
+    },
+    [data],
+  );
+
+  const onDelete = useCallback(
+    (id) => deleteListing.mutate(id),
+    [deleteListing],
+  );
   return (
     <>
       <ClassPopup
@@ -79,7 +87,7 @@ const GridView = ({ data, isLoading = false }) => {
           setExistingData(null);
         }}
       />
-      {data.length == 0 && !isLoading && (
+      {data.length === 0 && !isLoading && (
         <StatusWrapper isError={true}>
           <div className={styles.error404}>
             <h4>No classes created yet</h4>
@@ -94,8 +102,13 @@ const GridView = ({ data, isLoading = false }) => {
         <div
           className={`${styles.gridContainer} stagger-children fast grid-fast-stagger `}
         >
-          {data.map((e, i) => (
-            <GridItem openEditPopup={openEditPopup} data={e} key={i} />
+          {data.map((e) => (
+            <GridItem
+              onDelete={onDelete}
+              openEditPopup={openEditPopup}
+              data={e}
+              key={e.id}
+            />
           ))}
         </div>
       )}
