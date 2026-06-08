@@ -84,10 +84,14 @@
   display: inline-block;
   padding: 3px 12px;
   border-radius: 999px;
-  background: var(--secondary);
-  color: var(--secondary-foreground);
+  color: color-mix(in srgb, var(--muted-foreground) 50%, var(--foreground));
   font-size: 12px;
   font-weight: 500;
+  border: 1px solid color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+}
+[data-theme="dark"] .isLabNo {
+  background-color: var(--color-grey-100);
+  border: none;
 }
 
 .isLabYes {
@@ -95,7 +99,8 @@
   padding: 3px 12px;
   border-radius: 999px;
   background: var(--accent-violet-bg);
-  color: var(--accent-violet-fg);
+  color: var(--primary);
+  border: none;
   font-size: 12px;
   font-weight: 500;
 }

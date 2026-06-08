@@ -12,7 +12,7 @@
 }
 .typeLabel {
   border-radius: 999px;
-  background-color: var(--color-grey-100);
+  color: color-mix(in srgb, var(--muted-foreground) 50%, var(--foreground));
   font-size: 11px;
   font-weight: 600;
   padding: 6px 10px;
@@ -20,10 +20,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-wrap: nowrap;
+  border: 1px solid color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+}
+[data-theme="dark"] .typeLabel{
+  background-color: var(--color-grey-100);
+  border: none;
 }
 .classTeacher {
   background-color: var(--accent-violet-bg);
   color: var(--primary);
+  border: none;
 }
 .daysContainer {
   margin-top: 0.7rem;
