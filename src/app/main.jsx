@@ -9,11 +9,11 @@ import { ToastProvider } from "../shared/components/toast/Toast.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AppProvider>
-      <AuthProvider>
-        <ToastProvider>
-          <App />
-        </ToastProvider>
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider>
+            <App />
+        </AuthProvider>
+      </ToastProvider>
     </AppProvider>
   </StrictMode>,
 );

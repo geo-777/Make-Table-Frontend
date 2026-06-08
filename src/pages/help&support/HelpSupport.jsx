@@ -107,8 +107,9 @@ const HelpSupport = () => {
                   className={styles.iframe}
                   src="https://www.youtube.com/embed/dQw4w9WgXcQ"
                   title="MakeTable tutorial"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
+                  loading="lazy"
                 />
               </div>
               <div className={styles.videoSteps}>
