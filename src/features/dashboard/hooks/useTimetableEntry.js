@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import {
   getClassTimetable_GET,
   getTeacherTimetable_GET,
@@ -6,10 +6,6 @@ import {
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
-  //status states
-  const [loading, setLoading] = useState({ class: false, teacher: false });
-  const [error, setError] = useState({ class: null, teacher: null });
-  const [success, setSuccess] = useState({ class: false, teacher: false });
   const queryClient = useQueryClient();
 
   //queries
@@ -21,7 +17,7 @@ export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
   } = useQuery({
     queryKey: ["timetables", "class", selectedClassId],
     queryFn: () => getClassTimetable_GET(selectedClassId),
-    enabled: !!selectedClassId,
+    enabled: selectedClassId != null && selectedClassId !== "",
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     retry: 1,
@@ -34,7 +30,7 @@ export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
   } = useQuery({
     queryKey: ["timetables", "teacher", selectedTeacherId],
     queryFn: () => getTeacherTimetable_GET(selectedTeacherId),
-    enabled: !!selectedTeacherId,
+    enabled: selectedTeacherId != null && selectedTeacherId !== "",
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     retry: 1,
@@ -43,50 +39,31 @@ export function useTimetableEntry({ selectedClassId, selectedTeacherId }) {
   // entries
   const classTimetables = classTimetablesData?.entries ?? [];
   const teacherTimetables = teacherTimetableData?.entries ?? [];
-  //handling error and loading states
-  useEffect(() => {
-    setError({ teacher: teacherError, class: classError });
-  }, [classError, teacherError]);
-  useEffect(() => {
-    setLoading({ teacher: isTeacherPending, class: isClassPending });
-  }, [isClassPending, isTeacherPending]);
-
-  useEffect(() => {
-    setSuccess({ teacher: isTeacherSuccess, class: isClassSuccess });
-  }, [isClassSuccess, isTeacherSuccess]);
-
-  //invalidating query
-  const fetchClassTimetable = () => {
+  const invalidateClassTimetable = useCallback(() => {
     queryClient.invalidateQueries({
       queryKey: ["timetables", "class", selectedClassId],
     });
-  };
+  }, [queryClient, selectedClassId]);
 
-  const fetchTeacherTimetable = () => {
+  const invalidateTeacherTimetable = useCallback(() => {
     queryClient.invalidateQueries({
       queryKey: ["timetables", "teacher", selectedTeacherId],
     });
-  };
+  }, [queryClient, selectedTeacherId]);
 
-  //this is for invalidating all queries and refetching
-  //this is used while generating to clear previous entry data
-  const refetchTimetables = () => {
-    queryClient.invalidateQueries({
-      queryKey: ["timetables", "class"],
-    });
+  const refetchTimetables = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ["timetables", "class"] });
+    queryClient.invalidateQueries({ queryKey: ["timetables", "teacher"] });
+  }, [queryClient]);
 
-    queryClient.invalidateQueries({
-      queryKey: ["timetables", "teacher"],
-    });
-  };
   return {
     classTimetables,
     teacherTimetables,
-    loading,
-    error,
-    fetchTeacherTimetable,
-    fetchClassTimetable,
+    loading: { class: isClassPending, teacher: isTeacherPending },
+    error: { class: classError, teacher: teacherError },
+    success: { class: isClassSuccess, teacher: isTeacherSuccess },
+    fetchClassTimetable: invalidateClassTimetable,
+    fetchTeacherTimetable: invalidateTeacherTimetable,
     refetchTimetables,
-    success,
   };
 }

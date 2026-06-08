@@ -122,3 +122,7 @@
   text-overflow: ellipsis;
   font-size: 0.625rem;
 }
+
+[data-theme="dark"] .entryMeta {
+  color: var(--foreground);
+}
