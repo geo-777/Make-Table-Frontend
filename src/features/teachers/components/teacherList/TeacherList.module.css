@@ -81,7 +81,6 @@
   color: var(--foreground);
   background-color: var(--secondary-bg);
   outline: none;
-  text-align: center;
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;

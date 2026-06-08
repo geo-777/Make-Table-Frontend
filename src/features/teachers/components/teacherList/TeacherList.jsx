@@ -71,7 +71,7 @@ const EditRow = ({
 const TeacherRow = ({ teacher, handleEditClick, onDelete }) => {
   return (
     <tr>
-      <td className={styles.nameCell}>{teacher.name}</td>
+      <td className={styles.nameCell} style={{textAlign: "left"}}>{teacher.name}</td>
       <td>{teacher.max_classes_day}</td>
       <td>{teacher.max_classes_week}</td>
       <td>{teacher.max_classes_consecutive}</td>
@@ -144,7 +144,7 @@ export default function TeacherList({ teachers = [], onEdit, onDelete }) {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Name</th>
+            <th style={{ textAlign: "left" }}>Name</th>
             <th>Max/Day</th>
             <th>Max/Week</th>
             <th>Max Consec.</th>
@@ -152,10 +152,9 @@ export default function TeacherList({ teachers = [], onEdit, onDelete }) {
           </tr>
         </thead>
         <tbody>
-
           {teachers.map((teacher) =>
             editingId === teacher.id ? (
-              <EditRow 
+              <EditRow
                 key={teacher.id}
                 editForm={editForm}
                 handleChange={handleChange}
@@ -163,7 +162,7 @@ export default function TeacherList({ teachers = [], onEdit, onDelete }) {
                 handleCancel={handleCancel}
               />
             ) : (
-              <TeacherRow 
+              <TeacherRow
                 key={teacher.id}
                 teacher={teacher}
                 handleEditClick={handleEditClick}
