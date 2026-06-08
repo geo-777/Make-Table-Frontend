@@ -77,7 +77,7 @@ function EntryCard({ entry }) {
 
   const cardStyle = {
     "--entry-color": rgbCode,
-    backgroundColor: `color-mix(in srgb, ${rgbCode} 20%, transparent)`,
+    backgroundColor: `color-mix(in srgb, ${rgbCode} 30%, transparent)`,
     border: `1px solid ${rgbCode}`,
     color: `color-mix(in srgb, ${rgbCode} 80%, var(--foreground))`,
   };
