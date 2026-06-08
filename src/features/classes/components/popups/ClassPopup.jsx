@@ -5,59 +5,57 @@ import { useEffect, useState } from "react";
 import CircularCheckBox from "../../../../shared/components/specialButtons/CircularCheckBox";
 import useClasses from "../../hooks/useClasses";
 
+const INITIAL_FORM = { class_name: "", room_name: "", isLab: false };
+const INITIAL_ERRORS = {
+  class_name: null,
+  room_name: null,
+};
 const ClassPopup = ({ visible, closePopup, existingData = null }) => {
   const { createListing, patchListing } = useClasses();
   const isEditMode = !!existingData;
 
-  const [form, setForm] = useState({
-    class_name: "",
-    room_name: "",
-    isLab: false,
-  });
-
-  const [errorStates, setErrorStates] = useState({
-    class_name: null,
-    room_name: null,
-  });
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [errorStates, setErrorStates] = useState(INITIAL_ERRORS);
+  const popupConfig = isEditMode
+    ? { title: "Edit Class", buttonText: "Edit" }
+    : { title: "Add Class", buttonText: "Create" };
 
   useEffect(() => {
+    if (!visible) return;
+
     if (isEditMode) {
       setForm({
         class_name: existingData?.class_name ?? "",
         room_name: existingData?.room_name ?? "",
-        isLab: existingData?.isLab ?? false,
       });
+    } else {
+      setForm(INITIAL_FORM);
     }
-  }, [existingData, isEditMode]);
+  }, [visible, existingData, isEditMode]);
 
   const handleCloseClicked = () => {
-    setForm({
-      class_name: "",
-      room_name: "",
-      isLab: false,
-    });
-    setErrorStates({
-      class_name: null,
-      room_name: null,
-    });
+    setForm(INITIAL_FORM);
+    setErrorStates(INITIAL_ERRORS);
     closePopup();
   };
 
   const validate = (form) => {
     let hasError = false;
-    const newErrors = { class_name: null, room_name: null, isLab: null };
+    const newErrors = { class_name: null, room_name: null };
 
-    if (!form.class_name.trim()) {
+    const className = form.class_name.trim();
+    const roomName = form.room_name.trim();
+    if (!className.trim()) {
       newErrors.class_name = "Required";
       hasError = true;
-    } else if (form.class_name.length >= 30) {
+    } else if (className.length >= 25) {
       newErrors.class_name = "Name is too long";
       hasError = true;
     } else {
       newErrors.class_name = null;
     }
 
-    if (form.room_name.length >= 30) {
+    if (roomName.length >= 25) {
       newErrors.room_name = "Name is too long";
       hasError = true;
     } else {
@@ -86,15 +84,9 @@ const ClassPopup = ({ visible, closePopup, existingData = null }) => {
       if (payload.class_name.trim() !== existingData?.class_name?.trim()) {
         changedFields.class_name = payload.class_name;
       }
-
       if (payload.room_name.trim() !== existingData?.room_name?.trim()) {
         changedFields.room_name = payload.room_name;
       }
-
-      if (payload.isLab !== existingData?.isLab) {
-        changedFields.isLab = payload.isLab;
-      }
-
       // If no changes, just close the popup
       if (Object.keys(changedFields).length === 0) {
         return handleCloseClicked();
@@ -112,9 +104,7 @@ const ClassPopup = ({ visible, closePopup, existingData = null }) => {
     handleCloseClicked();
   };
 
-  const popupConfig = isEditMode
-    ? { title: "Edit Class", buttonText: "Edit" }
-    : { title: "Add Class", buttonText: "Create" };
+  const toggleLab = () => setForm((prev) => ({ ...prev, isLab: !prev.isLab }));
 
   return (
     <PopupBox
@@ -144,20 +134,15 @@ const ClassPopup = ({ visible, closePopup, existingData = null }) => {
           errorState={errorStates.room_name}
         />
 
-        <div className={styles.formGroup}>
-          <CircularCheckBox
-            checked={form.isLab}
-            toggleCheck={() =>
-              setForm((prev) => ({ ...prev, isLab: !prev.isLab }))
-            }
-          />
-          <label
-            onClick={() => setForm((prev) => ({ ...prev, isLab: !prev.isLab }))}
-            className="unselectable"
-          >
-            Mark as lab
-          </label>
-        </div>
+        {/*is lab cant be changed in edit mode */}
+        {!isEditMode && (
+          <div className={styles.formGroup}>
+            <CircularCheckBox checked={form.isLab} toggleCheck={toggleLab} />
+            <label onClick={toggleLab} className="unselectable">
+              Mark as lab
+            </label>
+          </div>
+        )}
       </form>
     </PopupBox>
   );

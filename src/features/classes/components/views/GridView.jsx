@@ -76,7 +76,7 @@ const GridView = ({ data, isLoading = false }) => {
         existingData={existingData}
         closePopup={() => {
           setEditPopupOpen(false);
-          setExistingData({});
+          setExistingData(null);
         }}
       />
       {data.length == 0 && !isLoading && (
