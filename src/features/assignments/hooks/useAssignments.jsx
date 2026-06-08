@@ -20,7 +20,7 @@ const useAssignments = () => {
   const timetableId = selectedTimetableData?.id;
   const ASSIGN_KEY = useMemo(() => ["assignments", timetableId], [timetableId]);
   const queryClient = useQueryClient();
-  
+
   const { addToast } = useToast();
   /*QUERY*/
 
@@ -90,7 +90,7 @@ const useAssignments = () => {
     },
 
     onError: (error) => {
-      apiErrorHandler(error?.response?.stus, Component_Type.ASSIGNMENTS);
+      apiErrorHandler(error?.response?.status, Component_Type.ASSIGNMENTS);
     },
   });
 
@@ -117,7 +117,7 @@ const useAssignments = () => {
       });
     },
     onError: (error) => {
-      apiErrorHandler(error?.response?.stus, Component_Type.CLASSES);
+      apiErrorHandler(error?.response?.status, Component_Type.CLASSES);
     },
   });
 

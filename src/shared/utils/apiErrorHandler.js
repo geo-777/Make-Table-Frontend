@@ -17,7 +17,7 @@ const ERROR_MESSAGES = {
   401: () => "Session expired. Please login again.",
   403: (item) => `You don't have permission to modify this ${item}.`,
   404: (item) => `${capitalize(item)} not found.`,
-  409: (item) => `A similar ${item} already exists.`,
+  409: (item) => `Conflict : A similar ${item} already exists.`,
   422: (item) => `Please check the ${item} details and try again.`,
   429: () => "Too many attempts. Please wait a moment.",
 };
@@ -25,12 +25,12 @@ const ERROR_MESSAGES = {
 const handleApiError = (status, component) => {
   const item = component ?? "resource";
 
-  const getMessage = ERROR_MESSAGES[status] ?? 
-  (
-    (i) => status >= 500 
-    ? `Couldn't process ${i} right now. Try again later.`
-    : `Something went wrong while processing ${i}`
-  );
+  const getMessage =
+    ERROR_MESSAGES[status] ??
+    ((i) =>
+      status >= 500
+        ? `Couldn't process ${i} right now. Try again later.`
+        : `Something went wrong while processing ${i}`);
 
   toast.error(getMessage(item));
 };

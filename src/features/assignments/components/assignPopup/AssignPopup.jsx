@@ -8,13 +8,17 @@ import useTeachers from "../../../teachers/hooks/useTeachers";
 import useClasses from "../../../classes/hooks/useClasses";
 import useSubjects from "../../../subjects/hooks/useSubjects";
 import useAssignments from "../../hooks/useAssignments";
-import useTimeTableSelect from "../../../../shared/zustand/timetableSelectStore";
 
 const ROLE_OPTIONS = [
   { label: "Subject Teacher", value: "Subject_Teacher" },
   { label: "Class Teacher", value: "Class_Teacher" },
 ];
-
+const INITIAL_FORM = {
+  teacher_id: null,
+  class_id: null,
+  subject_id: null,
+  role: ROLE_OPTIONS[0].value,
+};
 const AssignPopup = ({ visible, closePopup, existingData = null }) => {
   const { createListing, patchListing } = useAssignments();
   const isEditMode = !!existingData;
@@ -23,32 +27,26 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
   const { data: subjectData } = useSubjects();
   const [selectedDays, setSelectedDays] = useState([]);
   const [isPatched, setIsPatched] = useState(false);
-  const { selectedTimetableData } = useTimeTableSelect();
 
   const CLASS_OPTIONS = useMemo(
     () =>
       classData?.data.map((e) => ({ label: e?.class_name, value: e?.id })) ??
       [],
-    [classData, selectedTimetableData],
+    [classData],
   );
 
   const TEACHER_OPTIONS = useMemo(
     () =>
       teacherData?.data.map((e) => ({ label: e?.name, value: e?.id })) ?? [],
-    [teacherData, selectedTimetableData],
+    [teacherData],
   );
 
   const SUBJECT_OPTIONS = useMemo(
     () =>
       subjectData?.data.map((e) => ({ label: e?.name, value: e?.id })) ?? [],
-    [subjectData, selectedTimetableData],
+    [subjectData],
   );
-  const [form, setForm] = useState({
-    teacher_id: existingData?.teacher_id ?? null,
-    class_id: null,
-    subject_id: null,
-    role: ROLE_OPTIONS[0].value,
-  });
+  const [form, setForm] = useState(INITIAL_FORM);
 
   useEffect(() => {
     if (!visible) return;
@@ -65,13 +63,6 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
       return;
     }
 
-    setForm({
-      teacher_id: null,
-      class_id: null,
-      subject_id: null,
-      role: ROLE_OPTIONS[0].value,
-    });
-    setSelectedDays([]);
     setIsPatched(false);
   }, [visible, isEditMode, existingData]);
 
@@ -87,13 +78,9 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
 
   const isClassTeacher = form.role === ROLE_OPTIONS[1].value;
 
-  const submitEnabled = useMemo(() => {
-    if (isEditMode) return isPatched;
-
-    if (!form.teacher_id || !form.class_id || !form.subject_id) return false;
-    if (isClassTeacher && selectedDays.length === 0) return false;
-    return true;
-  }, [form, selectedDays, isEditMode, isPatched, isClassTeacher]);
+  const submitEnabled = isEditMode
+    ? isPatched
+    : form.teacher_id && form.class_id && form.subject_id;
 
   useEffect(() => {
     if (form.role !== ROLE_OPTIONS[1].value) {
@@ -138,12 +125,7 @@ const AssignPopup = ({ visible, closePopup, existingData = null }) => {
   };
 
   const handleClose = () => {
-    setForm({
-      teacher_id: null,
-      class_id: null,
-      subject_id: null,
-      role: ROLE_OPTIONS[0].value,
-    });
+    setForm(INITIAL_FORM);
     setSelectedDays([]);
     closePopup();
   };
