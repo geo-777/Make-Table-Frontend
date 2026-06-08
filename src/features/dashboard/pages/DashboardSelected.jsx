@@ -1,8 +1,8 @@
 import "../../../styles/appLayout.css";
 import styles from "../styles/DashboardSelected.module.css";
 
-import { Link2, CheckIcon } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { Link2, CheckIcon, TriangleAlert } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useToast } from "../../../shared/components/toast/Toast";
 
 import Topbar from "../../../shared/components/topbar/Topbar";
@@ -107,6 +107,9 @@ export default function DashboardSelected() {
   });
 
   const [isLinkCopied, setIsLinkCopied] = useState(false);
+  const isGenerated = useMemo(() => {
+    return classTimetables.length !== 0;
+  }, [classTimetables]);
 
   useEffect(() => {
     const firstClass = classes?.data?.[0];
@@ -319,6 +322,7 @@ export default function DashboardSelected() {
                     defaultValue={selectedClass?.class_name ?? ""}
                     placeholder="Select a class"
                     onChange={handleClassChange}
+                    emptyMessage="No classes found"
                   />
 
                   {selectedTimetableData &&
@@ -364,6 +368,7 @@ export default function DashboardSelected() {
                     defaultValue={selectedTeacher?.name ?? ""}
                     placeholder="Select a Teacher"
                     onChange={handleTeacherChange}
+                    emptyMessage="No teachers found"
                   />
 
                   {selectedTimetableData &&
@@ -392,11 +397,26 @@ export default function DashboardSelected() {
                   )}
 
                 {!loading?.teacher &&
-                  Object.keys(teacherEntries).length === 0 && (
+                  Object.keys(teacherEntries).length === 0 &&
+                  !isGenerated && (
                     <div className={styles.emptyState}>
                       <p>
                         No generated timetable yet. Click Generate to create
                         one.
+                      </p>
+                    </div>
+                  )}
+
+                {!loading?.teacher &&
+                  Object.keys(teacherEntries).length === 0 &&
+                  isGenerated && (
+                    <div className={styles.emptyState}>
+                      <TriangleAlert size={32}/>
+                      <p>
+                        No classes were scheduled for {selectedTeacher.name}. This may
+                        be due to conflicts or constraints that couldn't be
+                        resolved. Try adjusting the constraints and
+                        regenerating.
                       </p>
                     </div>
                   )}

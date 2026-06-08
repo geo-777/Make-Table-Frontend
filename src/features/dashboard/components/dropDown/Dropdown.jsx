@@ -11,6 +11,7 @@ export default function Dropdown({
   defaultValue,
   onChange,
   placeholder = "Select an option",
+  emptyMessage = "No items found"
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(defaultValue);
@@ -75,6 +76,15 @@ export default function Dropdown({
 
       {isOpen && (
         <ul className={styles.menu} role="listbox" aria-label="Options">
+          {options.length === 0 && (
+            <li
+              className={styles.item}
+              style={{ pointerEvents: "none" }}
+            >
+              {emptyMessage}
+            </li>
+          )}
+
           {options.map((option) => {
             const isSelected = option === selected;
             return (

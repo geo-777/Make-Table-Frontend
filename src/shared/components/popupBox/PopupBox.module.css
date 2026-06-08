@@ -133,6 +133,10 @@
   box-shadow: 0 1px 4px hsl(255 65% 54% / 0.3);
 }
 
+[data-theme="dark"] .submitBtn {
+  color: var(--foreground);
+}
+
 .submitBtn:hover:not(:disabled) {
   opacity: 0.92;
   box-shadow: 0 3px 10px hsl(255 65% 54% / 0.35);

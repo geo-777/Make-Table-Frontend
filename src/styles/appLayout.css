@@ -79,6 +79,9 @@ body {
   justify-content: center;
   cursor: pointer;
 }
+[data-theme="dark"] .primary {
+  color: var(--foreground);
+}
 .primary p {
   font-size: 16px;
   font-weight: 600;

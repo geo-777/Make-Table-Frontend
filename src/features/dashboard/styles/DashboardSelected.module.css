@@ -109,6 +109,12 @@
   border-radius: var(--radius);
   border: 2px dashed var(--border);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 6px;
+}
+
+.emptyState p {
+  text-align: center;
 }
