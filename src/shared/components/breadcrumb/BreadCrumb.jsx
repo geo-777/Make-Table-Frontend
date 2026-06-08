@@ -24,7 +24,7 @@ const BreadCrumb = () => {
 
   const { selectedTimetableData, selectTimeTableData } = useTimeTableSelect();
   const crumbs = useMemo(() => {
-    let crumbs = [];
+    const crumbs = [];
 
     if (!MAIN_LINKS.includes(pathname)) return [];
 
@@ -54,7 +54,7 @@ const BreadCrumb = () => {
     }
 
     return crumbs;
-  }, [selectedTimetableData]);
+  }, [selectedTimetableData, navigate, pathname, selectTimeTableData]);
 
   return (
     <div className={styles.breadCrumbContainer}>

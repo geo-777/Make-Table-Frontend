@@ -1,10 +1,13 @@
-import { useMemo, useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "../../styles/Classes.module.css";
 import { Pencil, Trash2, X, Check } from "lucide-react";
 import useClasses from "../../hooks/useClasses";
 import ListSkeleton from "../../../../shared/components/skeltonLoading/ListSkeleton";
+//global data
+const actionbtnSize = 16;
+const actionbtnStroke = 1.75;
 
-const IsLabLabel = ({ data }) => (
+const IsLabContainer = ({ data }) => (
   <div className={`${styles.listItem} `}>
     <span className={`${styles.typeLabel} ${data.isLab ? styles.typeLab : ""}`}>
       {data.isLab ? "Lab" : "Regular"}
@@ -15,22 +18,30 @@ const IsLabLabel = ({ data }) => (
 const Row = ({ data, editClass, deleteClass }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editForm, setEditForm] = useState(data);
-  const actionbtnSize = 16;
-  const actionbtnStroke = 1.75;
 
-  // this controls the enabling and disabling of the check button
-  const payload = useMemo(() => {
-    // Build object with only changed fields
+  const isChanged = (next, prev) => next?.trim() !== prev?.trim();
+
+  useEffect(() => {
+    setEditForm(data);
+  }, [data]);
+
+  const hasChanges =
+    isChanged(editForm.class_name, data.class_name) ||
+    isChanged(editForm.room_name, data.room_name);
+
+  const getPayload = () => {
     const changedFields = {};
 
-    if (editForm.class_name.trim() !== data?.class_name?.trim()) {
+    if (isChanged(editForm.class_name, data.class_name)) {
       changedFields.class_name = editForm.class_name;
     }
-    if (editForm.room_name.trim() !== data?.room_name?.trim()) {
+
+    if (isChanged(editForm.room_name, data.room_name)) {
       changedFields.room_name = editForm.room_name;
     }
+
     return changedFields;
-  }, [editForm, data?.class_name, data?.room_name]);
+  };
 
   const closeEditMode = () => {
     setEditForm(data);
@@ -38,6 +49,7 @@ const Row = ({ data, editClass, deleteClass }) => {
   };
 
   const editClassHandler = async () => {
+    const payload = getPayload();
     if (Object.keys(payload).length > 0) await editClass(data?.id, payload);
     closeEditMode();
   };
@@ -68,7 +80,7 @@ const Row = ({ data, editClass, deleteClass }) => {
             }
           />
         </div>
-        <IsLabLabel data={data} />
+        <IsLabContainer data={data} />
         <div className={`${styles.listItem} ${styles.listItem__actionBtns}`}>
           <button
             className={`${styles.actionBtn__list} ${styles.actionBtn__delete}`}
@@ -77,7 +89,7 @@ const Row = ({ data, editClass, deleteClass }) => {
             <X size={actionbtnSize} strokeWidth={actionbtnStroke} />
           </button>
           <button
-            disabled={Object.keys(payload).length === 0}
+            disabled={!hasChanges}
             onClick={editClassHandler}
             className={`${styles.actionBtn__list} ${styles.actionBtn__tick}`}
           >
@@ -92,7 +104,7 @@ const Row = ({ data, editClass, deleteClass }) => {
     <>
       <div className={styles.listItem}>{data.class_name}</div>
       <div className={styles.listItem}>{data.room_name}</div>
-      <IsLabLabel data={data} />
+      <IsLabContainer data={data} />
 
       <div className={`${styles.listItem} ${styles.listItem__actionBtns}`}>
         <button
