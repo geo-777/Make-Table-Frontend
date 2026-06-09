@@ -46,15 +46,16 @@ const Footer = () => {
             <a
               href="https://github.com/geo-777/Make-Table-Frontend"
               target="_blank"
+              aria-label="github repository"
             >
               <Github size={16} />
             </a>
 
-            <a href="#">
+            <a href="#" aria-label="X link">
               <Twitter size={16} />
             </a>
 
-            <a href="#">
+            <a href="#" aria-label="Gmail link">
               <Mail size={16} />
             </a>
           </div>

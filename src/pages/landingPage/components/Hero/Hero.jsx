@@ -11,7 +11,7 @@ const Hero = () => {
   const navigate = useNavigate();
   const { width } = useWindowDimensions();
   return (
-    <section className={styles.hero}>
+    <main className={styles.hero}>
       <div className={styles.container}>
         <m.div
           initial={{ opacity: 0, y: 12 }}
@@ -85,7 +85,7 @@ const Hero = () => {
 
         {width > 600 && <TimetablePreview />}
       </div>
-    </section>
+    </main>
   );
 };
 
