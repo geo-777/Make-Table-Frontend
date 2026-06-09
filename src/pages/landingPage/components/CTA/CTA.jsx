@@ -31,12 +31,14 @@ const CTA = () => {
           <button
             className={styles.primaryBtn}
             onClick={() => navigate("/register")}
+            aria-label="Register for free now"
           >
             Get started — it's free
             <ArrowUpRight size={16} />
           </button>
 
           <button
+            aria-label="Open documetation"
             className={styles.secondaryBtn}
             onClick={() => navigate("/docs")}
           >

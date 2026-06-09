@@ -38,7 +38,12 @@ const FAQ = () => {
               key={faq.q}
               className={styles.item}
             >
-              <button className={styles.question} onClick={() => toggle(index)}>
+              <button
+                className={styles.question}
+                onClick={() => toggle(index)}
+                aria-expanded={open === index}
+                aria-controls={`faq-answer-${index}`}
+              >
                 <span>{faq.q}</span>
 
                 <Plus
@@ -50,7 +55,7 @@ const FAQ = () => {
               </button>
 
               {open === index && (
-                <div className={styles.answer}>
+                <div id={`faq-answer-${index}`} className={styles.answer}>
                   <p>{faq.a}</p>
                 </div>
               )}

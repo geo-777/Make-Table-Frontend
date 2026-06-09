@@ -34,12 +34,17 @@ const Row = ({ data, deleteFn, editFn }) => {
       </div>
 
       <div className={`${styles.listItem} ${styles.listItem__actionBtns}`}>
-        <button className={styles.actionBtn__list} onClick={() => editFn(data)}>
+        <button
+          className={styles.actionBtn__list}
+          onClick={() => editFn(data)}
+          aria-label={`Edit ${data?.teacher?.name ?? "assignment"}`}
+        >
           <Pencil size={actionbtnSize} strokeWidth={actionbtnStroke} />
         </button>
         <button
           className={`${styles.actionBtn__list} ${styles.actionBtn__delete}`}
           onClick={async () => await deleteFn(data?.id)}
+          aria-label={`Delete ${data?.teacher?.name ?? "assignment"}`}
         >
           <Trash2 size={actionbtnSize} strokeWidth={actionbtnStroke} />
         </button>

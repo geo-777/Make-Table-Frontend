@@ -250,6 +250,7 @@ export default function Documentation() {
           <nav className={styles.nav}>
             {SECTIONS.map((s) => (
               <a
+                aria-label={s.title}
                 key={s.id}
                 href={`#${s.id}`}
                 onClick={(e) => {
@@ -282,6 +283,7 @@ export default function Documentation() {
                   ? styles.navLinkActive
                   : styles.navLinkInactive
               }`}
+              aria-label="video tutorial"
             >
               <Play size={14} />
               Video Tutorial

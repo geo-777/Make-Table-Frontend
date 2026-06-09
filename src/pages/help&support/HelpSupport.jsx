@@ -45,6 +45,7 @@ const HelpSupport = () => {
             </Link>
 
             <a
+              aria-label="Discord community"
               href="https://discord.gg/maketable"
               target="_blank"
               rel="noreferrer"
@@ -67,6 +68,7 @@ const HelpSupport = () => {
             </a>
 
             <a
+              aria-label="whatsapp community"
               href="https://chat.whatsapp.com/maketable"
               target="_blank"
               rel="noreferrer"
@@ -138,6 +140,7 @@ const HelpSupport = () => {
             {/* Extras (GitHub, Email, Response Times) */}
             <div className={styles.extrasSection}>
               <a
+                aria-label="github repository issues panel"
                 href="https://github.com/maketable/maketable/issues"
                 target="_blank"
                 rel="noreferrer"
@@ -156,6 +159,7 @@ const HelpSupport = () => {
               </a>
 
               <a
+                aria-label="support mail"
                 href="mailto:support@maketable.app"
                 className={styles.actionCard}
               >

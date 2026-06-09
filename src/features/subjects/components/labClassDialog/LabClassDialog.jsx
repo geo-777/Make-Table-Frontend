@@ -15,7 +15,7 @@ export default function LabClassDialog({
   const [selected, setSelected] = useState(new Set(selectedIds));
   const dialogRef = useRef(null);
   const searchRef = useRef(null);
-  
+
   const filteredClasses = labClasses.filter(
     (c) =>
       c.class_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -25,7 +25,7 @@ export default function LabClassDialog({
   const allFilteredSelected =
     filteredClasses.length > 0 &&
     filteredClasses.every((c) => selected.has(c.id));
-    
+
   useEffect(() => {
     if (isOpen) {
       setSelected(new Set(selectedIds));
@@ -79,7 +79,6 @@ export default function LabClassDialog({
     onClose();
   };
 
-
   if (!isOpen) return null;
 
   return createPortal(
@@ -116,6 +115,7 @@ export default function LabClassDialog({
             className={styles.searchInput}
             type="text"
             placeholder="Search by class or room…"
+            aria-label="Search lab classes"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -193,6 +193,6 @@ export default function LabClassDialog({
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }
