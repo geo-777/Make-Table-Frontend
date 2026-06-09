@@ -137,7 +137,7 @@ const Teachers = () => {
           {activeView === "grid" && (
             <>
               {isLoading && (
-                <GridSkelton count={12} height={200} columns={4} gap={18} />
+                <GridSkelton count={12} />
               )}
 
               {isSuccess && (

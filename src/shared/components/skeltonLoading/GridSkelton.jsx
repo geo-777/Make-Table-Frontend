@@ -1,23 +1,17 @@
-// Reusable grid skeleton placeholder component
-// Uses the `.shimmer` class from `src/styles/global.css`.
+const style = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr)",
+  gap: "1rem",
+};
+
 export default function GridSkelton({
   count = 6,
-  height = 120,
-  columns = 3,
-  gap = 16,
   className = "",
+  height = 185,
 }) {
-  const items = Array.from({ length: count });
-
-  const gridStyle = {
-    display: "grid",
-    gridTemplateColumns: `repeat(auto-fill, minmax(${Math.floor(100 / columns)}%, 1fr))`,
-    gap: `${gap}px`,
-  };
-
   return (
-    <div className={`shimmer-grid ${className}`} style={gridStyle}>
-      {items.map((_, i) => (
+    <div className={className} style={style}>
+      {Array.from({ length: count }).map((i) => (
         <div
           key={i}
           className="shimmer"

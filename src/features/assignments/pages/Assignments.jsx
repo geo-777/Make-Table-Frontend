@@ -91,7 +91,7 @@ const Assignments = () => {
           {activeView === "grid" && (
             <>
               {isLoading && (
-                <GridSkelton count={12} height={130} columns={5} gap={18} />
+                <GridSkelton count={12} />
               )}
 
               {isSuccess &&

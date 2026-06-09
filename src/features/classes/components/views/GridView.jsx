@@ -95,7 +95,7 @@ const GridView = ({ data, isLoading = false, deleteListing }) => {
       )}
 
       {isLoading ? (
-        <GridSkelton count={12} height={120} columns={5} gap={16} />
+        <GridSkelton count={12} />
       ) : (
         <div
           className={`${styles.gridContainer} stagger-children fast grid-fast-stagger `}
