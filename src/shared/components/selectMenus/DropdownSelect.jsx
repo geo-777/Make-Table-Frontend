@@ -10,6 +10,26 @@ const DropdownSelect = ({ initialPlaceholder, options, setValue, value }) => {
   const wrapperRef = useRef(null);
   const dropdownRef = useRef(null);
 
+  const updatePosition = () => {
+    const rect = wrapperRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const dropdownHeight = 200;
+    const openUpward =
+      spaceBelow < dropdownHeight && rect.top > dropdownHeight;
+
+    setDropdownStyle({
+      position: "fixed",
+      left: rect.left,
+      width: rect.width,
+      zIndex: 9999,
+      ...(openUpward
+        ? { bottom: window.innerHeight - rect.top, top: "auto" }
+        : { top: rect.bottom + 4, bottom: "auto" }),
+    });
+  };
+
   useEffect(() => {
     const selectedOption = options.find((opt) => opt.value === value);
     if (selectedOption) setPlaceholder(selectedOption.label);
@@ -17,26 +37,6 @@ const DropdownSelect = ({ initialPlaceholder, options, setValue, value }) => {
 
   useEffect(() => {
     if (!open) return;
-
-    const updatePosition = () => {
-      const rect = wrapperRef.current?.getBoundingClientRect();
-      if (!rect) return;
-
-      const spaceBelow = window.innerHeight - rect.bottom;
-      const dropdownHeight = 200;
-      const openUpward =
-        spaceBelow < dropdownHeight && rect.top > dropdownHeight;
-
-      setDropdownStyle({
-        position: "fixed",
-        left: rect.left,
-        width: rect.width,
-        zIndex: 9999,
-        ...(openUpward
-          ? { bottom: window.innerHeight - rect.top, top: "auto" }
-          : { top: rect.bottom + 4, bottom: "auto" }),
-      });
-    };
 
     updatePosition();
     window.addEventListener("scroll", updatePosition, true);
@@ -104,7 +104,10 @@ const DropdownSelect = ({ initialPlaceholder, options, setValue, value }) => {
     <div className={styles.wrapper} ref={wrapperRef}>
       <div
         className={styles.selectContainer}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => {
+          if(!open) updatePosition();
+          setOpen((prev) => !prev);
+        }}
       >
         <p>{placeholder}</p>
         <ChevronDown
