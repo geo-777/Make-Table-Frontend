@@ -1,110 +1,146 @@
-# MakeTable Frontend
+# MakeTable
 
-A polished React frontend for the MakeTable scheduling platform. This interface is built to model school constraints, generate conflict-free timetables quickly, and publish schedules with minimal friction.
+Frontend application for MakeTable, a timetable management platform built for schools, colleges, and training institutes. It provides an interface for managing classes, teachers, subjects, rooms, and schedules while integrating with the MakeTable backend for timetable generation and data management.
 
-## 🚀 Product Overview
+## Overview
 
-MakeTable is designed to solve the school timetabling problem with a deterministic scheduling engine.
+Creating and maintaining timetables is often a repetitive and error-prone process. MakeTable centralizes timetable management by allowing institutions to define their academic structure once and generate schedules that respect the constraints of their environment.
 
-- Model your school once and reuse the same constraint setup.
-- Generate schedules automatically in seconds.
-- Review, publish, and share timetables with one click.
-- Self-host or connect to your own backend.
+The frontend provides tools for managing timetable data, reviewing generated schedules, resolving conflicts, and publishing timetables for students and staff.
 
-## ⭐ Key Features
+## Features
 
-- **Constraint Solver** — respect teacher availability, room capacity, subject load, and break windows every time.
-- **Fast Regeneration** — update a class, lock a slot, or change a teacher and recompute schedules instantly.
-- **Class & Teacher Views** — toggle between per-class, per-teacher, and master schedule views.
-- **Easy Timetable Sharing** — publish schedules publicly and share them via link.
-- **Workspace Isolation** — each timetable exists in its own workspace with clean separation and permissions.
-- **Conflict Detection** — surface teacher overlaps, duplicate allocations, and scheduling issues before publishing.
+- Class, teacher, subject, and room management
+- Timetable generation through the MakeTable scheduling engine
+- Dedicated timetable views for classes and teachers
+- Conflict detection and schedule validation
+- Workspace-based timetable organization
+- Public timetable sharing
+- Responsive interface built for desktop and modern browsers
 
-## 🧩 Who It’s Built For
-
-- Schools managing daily class schedules
-- Colleges organizing faculty, courses, and labs
-- Training institutes planning batches, instructors, and rooms
-
-## 🛠️ Workflow
-
-1. **Model your school**
-   - Add classes, subjects, teachers, rooms, and scheduling constraints.
-   - Import existing data or clone previous setups.
-2. **Generate**
-   - Run the solver and produce a conflict-aware timetable.
-3. **Publish**
-   - Review results, tweak as needed, export, and share with a single link.
-
-## 📦 Tech Stack
+## Technology Stack
 
 - React 19
 - Vite
-- React Router DOM
-- @tanstack/react-query
+- React Router
+- TanStack Query
 - Zustand
 - Axios
 - Framer Motion
 - React Toastify
-- ESLint
+- CSS Modules
 
-## ⚙️ Setup
+## Backend Repository
+
+This project requires the MakeTable backend to function.
+
+Backend repository:
+
+https://github.com/viswajith275/Make-Table-Backend
+
+Follow the backend setup instructions before starting the frontend application.
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18 or newer
-- npm or yarn
+- Node.js 18 or later
+- npm
 
-### Install dependencies
+### 1. Clone the Repository
+
+```bash
+git clone <frontend-repository-url>
+cd <frontend-project-folder>
+```
+
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### Run locally
+### 3. Configure Environment Variables
+
+Create a `.env` file in the project root.
+
+For local development:
+
+```env
+VITE_API_URL=/api
+```
+
+If you are not using the Vite development proxy, provide the backend URL directly:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+Make sure the backend server is running and accessible before starting the frontend application.
+
+### 4. Start the Development Server
 
 ```bash
 npm run dev
 ```
 
-Open the app at `http://localhost:5173`.
+The application will be available at:
 
-### Build for production
+```text
+http://localhost:5173
+```
+
+## Production Build
+
+Create an optimized production build:
 
 ```bash
 npm run build
 ```
 
-### Preview production build
+Preview the production build locally:
 
 ```bash
 npm run preview
 ```
 
-### Lint the project
+## Project Structure
+
+```text
+src/
+├── api/          Backend API modules and Axios configuration
+├── app/          Application setup and routing
+├── features/     Feature-specific components and logic
+├── pages/        Application pages
+├── shared/       Shared components, hooks, stores, and utilities
+├── styles/       Global styles and animations
+└── tools/        Development utilities and helper functions
+```
+
+## Development
+
+Run ESLint:
 
 ```bash
 npm run lint
 ```
 
-## 📁 Project Structure
-
-- `src/api/` — backend API modules and axios instance
-- `src/app/` — app entrypoint, route definitions, and provider setup
-- `src/features/` — feature pages, hooks, styles, and components
-- `src/pages/` — landing page, docs, profile, legal, and error pages
-- `src/shared/` — reusable UI components, hooks, utilities, and Zustand stores
-- `src/styles/` — global styling, theme, and animations
-- `src/tools/` — mock data and helper utilities
-
-## 💡 Notes
-
-- This repository contains the frontend only. A backend API is required for authentication, timetable data, and CRUD operations.
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
-2. Create a branch: `git checkout -b feature/name`
+
+2. Create a feature branch
+
+   ```bash
+   git checkout -b feature/my-feature
+   ```
+
 3. Commit your changes
-4. Push your branch
+
+4. Push the branch
+
 5. Open a pull request
+
+## License
+
+This project is provided as-is for educational and development purposes.
