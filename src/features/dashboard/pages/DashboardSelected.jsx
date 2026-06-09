@@ -146,7 +146,7 @@ export default function DashboardSelected() {
   const handleTeacherChange = useCallback(
     (teacherName) => {
       const found = teachers?.data?.find((t) => t.name === teacherName);
-      
+
       if (!found) return;
       setSelectedTeacher(found);
     },
@@ -235,7 +235,7 @@ export default function DashboardSelected() {
           duration: 3000,
         });
       } finally {
-        refresh();
+        //refresh();
         setIsGenerating(false);
         invalidateTimeTableListings(); //for violations to get updated properly..
       }
@@ -411,11 +411,11 @@ export default function DashboardSelected() {
                   Object.keys(teacherEntries).length === 0 &&
                   isGenerated && (
                     <div className={styles.emptyState}>
-                      <TriangleAlert size={32}/>
+                      <TriangleAlert size={32} />
                       <p>
-                        No classes were scheduled for {selectedTeacher.name}. This may
-                        be due to conflicts or constraints that couldn't be
-                        resolved. Try adjusting the constraints and
+                        No classes were scheduled for {selectedTeacher.name}.
+                        This may be due to conflicts or constraints that
+                        couldn't be resolved. Try adjusting the constraints and
                         regenerating.
                       </p>
                     </div>

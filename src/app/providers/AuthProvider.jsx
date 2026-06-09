@@ -27,7 +27,16 @@ const AuthProvider = ({ children }) => {
     });
     refreshQueue.current = [];
   };
+  const fetchCurrentUser = async () => {
+    const response = await checkLoggedIn();
+    setUserData(response?.data);
+    return response.data;
+  };
 
+  const refreshToken = async () => {
+    await refresh();
+    return fetchCurrentUser();
+  };
   const confirmLogin = useCallback(async (username, fullUserData = null) => {
     setUser(username);
     if (fullUserData) {
@@ -48,17 +57,6 @@ const AuthProvider = ({ children }) => {
       setUserData(null);
     }
   }, []);
-
-  const fetchCurrentUser = async () => {
-    const response = await checkLoggedIn();
-    setUserData(response?.data);
-    return response.data;
-  };
-
-  const refreshToken = async () => {
-    await refresh();
-    return fetchCurrentUser();
-  };
 
   const initAuth = async () => {
     if (isInitialized.current) return;
@@ -88,6 +86,9 @@ const AuthProvider = ({ children }) => {
       async (error) => {
         const originalRequest = error.config;
 
+        if (originalRequest.url?.includes("/me")) {
+          return Promise.reject(error);
+        }
         if (originalRequest.url?.includes("/refresh")) {
           await logoutRef.current();
           return Promise.reject(error);
@@ -107,7 +108,7 @@ const AuthProvider = ({ children }) => {
           isRefreshing.current = true;
 
           try {
-            await refresh();
+            await refreshToken();
             processQueue(null);
             isRefreshing.current = false;
             return axiosInstance(originalRequest);

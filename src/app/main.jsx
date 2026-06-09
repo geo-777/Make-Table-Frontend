@@ -7,13 +7,11 @@ import { ToastProvider } from "../shared/components/toast/Toast.jsx";
 // import "../tools/mock.jsx" // <- use this is init mock data
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <AppProvider>
-      <ToastProvider>
-        <AuthProvider>
-            <App />
-        </AuthProvider>
-      </ToastProvider>
-    </AppProvider>
-  </StrictMode>,
+  <AppProvider>
+    <ToastProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ToastProvider>
+  </AppProvider>,
 );
