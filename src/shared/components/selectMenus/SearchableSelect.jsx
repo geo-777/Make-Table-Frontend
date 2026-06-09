@@ -1,46 +1,68 @@
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import styles from "./SearchableSelect.module.css";
 import { ChevronDown, Search, Check } from "lucide-react";
-/*Made it reusable.. might need this some other time too
-This was mainly built for the teacher class assigment section
 
-Options format : 
-{
-  label: "7A",
-  value: 7 <- this here will be the class id
-}
-  */
 const SearchableSelect = ({ initialPlaceholder, options, setValue, value }) => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [placeholder, setPlaceholder] = useState(initialPlaceholder);
+  const [dropdownStyle, setDropdownStyle] = useState({});
   const wrapperRef = useRef(null);
   const searchInputRef = useRef(null);
+  const dropdownRef = useRef(null);
 
-  // Update placeholder when value changes externally
   useEffect(() => {
     const selectedOption = options?.find((opt) => opt.value === value);
-    if (selectedOption) {
-      setPlaceholder(selectedOption.label);
-    } else {
-      setPlaceholder(initialPlaceholder);
-    }
+    setPlaceholder(selectedOption ? selectedOption.label : initialPlaceholder);
   }, [value, options]);
 
   useEffect(() => {
+    if (!open) return;
+
+    const updatePosition = () => {
+      const rect = wrapperRef.current?.getBoundingClientRect();
+      if (!rect) return;
+
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const dropdownHeight = 260;
+      const openUpward =
+        spaceBelow < dropdownHeight && rect.top > dropdownHeight;
+
+      setDropdownStyle({
+        position: "fixed",
+        left: rect.left,
+        width: rect.width,
+        zIndex: 9999,
+        ...(openUpward
+          ? { bottom: window.innerHeight - rect.top, top: "auto" }
+          : { top: rect.bottom + 4, bottom: "auto" }),
+      });
+    };
+
+    updatePosition();
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [open]);
+
+  useEffect(() => {
     const handleClickOutside = (e) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target) &&
+        !dropdownRef.current?.contains(e.target)
+      ) {
         setOpen(false);
       }
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    document.addEventListener("mouseup", handleClickOutside);
+    return () => document.removeEventListener("mouseup", handleClickOutside);
   }, []);
 
-  //resetting query on close + auto focus on search input
   useEffect(() => {
     if (!open) {
       setSearchQuery("");
@@ -48,6 +70,55 @@ const SearchableSelect = ({ initialPlaceholder, options, setValue, value }) => {
       searchInputRef.current?.focus();
     }
   }, [open]);
+
+  const dropdown = open && (
+    <div className={styles.dropdown} style={dropdownStyle} ref={dropdownRef} onMouseDown={(e) => e.preventDefault()}>
+      <div className={styles.inputField}>
+        <Search size={16} strokeWidth={1.75} />
+        <input
+          ref={searchInputRef}
+          value={searchQuery}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          type="text"
+          placeholder="Search"
+        />
+      </div>
+      <ul className={styles.options}>
+        {options
+          .filter((opt) =>
+            opt.label.toLowerCase().includes(searchQuery.toLowerCase()),
+          )
+          .map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <li
+                key={opt.value}
+                className={styles.option}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPlaceholder(opt.label);
+                  setOpen(false);
+                  setValue(opt.value);
+                }}
+              >
+                <span>{opt.label}</span>
+                {isSelected && (
+                  <Check
+                    size={16}
+                    strokeWidth={2}
+                    className={styles.checkIcon}
+                  />
+                )}
+              </li>
+            );
+          })}
+        {options.filter((opt) =>
+          opt.label.toLowerCase().includes(searchQuery.toLowerCase()),
+        ).length === 0 && <li className={styles.empty}>No results found</li>}
+      </ul>
+    </div>
+  );
 
   return (
     <div className={styles.wrapper} ref={wrapperRef}>
@@ -61,57 +132,7 @@ const SearchableSelect = ({ initialPlaceholder, options, setValue, value }) => {
           size={18}
         />
       </div>
-
-      {open && (
-        <div className={styles.dropdown}>
-          <div className={styles.inputField}>
-            <Search size={16} strokeWidth={1.75} />
-            <input
-              ref={searchInputRef}
-              value={searchQuery}
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              type="text"
-              placeholder="Search"
-            />
-          </div>
-          <ul className={styles.options}>
-            {options
-              .filter((opt) =>
-                opt.label.toLowerCase().includes(searchQuery.toLowerCase()),
-              )
-              .map((opt) => {
-                const isSelected = opt.value === value;
-                return (
-                  <li
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPlaceholder(opt.label);
-                      setOpen(false);
-                      setValue(opt.value);
-                    }}
-                    key={opt.value}
-                    className={styles.option}
-                  >
-                    <span>{opt.label}</span>
-                    {isSelected && (
-                      <Check
-                        size={16}
-                        strokeWidth={2}
-                        className={styles.checkIcon}
-                      />
-                    )}
-                  </li>
-                );
-              })}
-            {options.filter((opt) =>
-              opt.label.toLowerCase().includes(searchQuery.toLowerCase()),
-            ).length === 0 && (
-              <li className={styles.empty}>No results found</li>
-            )}
-          </ul>
-        </div>
-      )}
+      {createPortal(dropdown, document.body)}
     </div>
   );
 };

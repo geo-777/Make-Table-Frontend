@@ -201,6 +201,7 @@
   background-color: var(--card);
   border-radius: calc(var(--radius) - 2px);
   border: 1.5px solid var(--input);
+  color: var(--foreground);
 }
 
 .hardness:hover {
